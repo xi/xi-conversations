@@ -5,8 +5,12 @@ var monkeyPatchWindow = function(win) {
 	win.ThreadPaneDoubleClick = function () {
 		var tabmail = win.document.getElementById('tabmail');
 
+		var msgs = win.gFolderDisplay.selectedMessages;
+		var urls = msgs.map(msg => msg.folder.getUriForMsg(msg));
+		var queryString = '?urls=' + win.encodeURIComponent(urls);
+
 		tabmail.openTab('chromeTab', {
-			chromePage: 'chrome://xi-conversations/content/main.html'
+			chromePage: 'chrome://xi-conversations/content/main.html' + queryString
 		});
 	};
 };
