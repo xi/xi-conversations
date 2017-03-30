@@ -57,13 +57,34 @@ var getConversation = function(msgs, cb) {
 };
 
 var createMessageElement = function(glodaMsg) {
+	var author       = glodaMsg.folderMessage.author;
+	var date         = glodaMsg.folderMessage.date;
+	var to           = glodaMsg.folderMessage.recipients;
+	var cc           = glodaMsg.folderMessage.ccList;
+	var bcc          = glodaMsg.folderMessage.bccList;
+	var subject      = glodaMsg.folderMessage.mime2DecodedSubject;
+	var attachments  = glodaMsg.attachmentInfos;
+	var isEncrypted  = glodaMsg.isEncrypted;
+	var mailingLists = glodaMsg.mailingLists;
+	var summary      = glodaMsg._indexedBodyText.substring(0, 100);
+
+	var e = document.createElement('article');
+	e.className = 'message';
+
+	var header = document.createElement('header');
+	header.className = 'message__header';
+	header.textContent = author;
+	e.appendChild(header);
+
 	var iframe = document.createElement('iframe');
 	iframe.src = uri2url(msg2uri(glodaMsg.folderMessage));
 	iframe.className = 'message__body';
 	iframe.addEventListener('DOMContentLoaded', function() {
 		iframe.style.height = iframe.contentDocument.body.scrollHeight + 'px';
 	});
-	return iframe;
+	e.appendChild(iframe);
+
+	return e;
 };
 
 var initialUrls = (getParams().urls || '').split(',');
