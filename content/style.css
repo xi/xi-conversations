@@ -1,0 +1,31 @@
+.conversation__header {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	padding: 0.5em;
+	background-color: Menu;
+	box-shadow: 0 0 1em ThreeDShadow;
+}
+
+.conversation__main {
+	max-width: 70em;
+	padding: 3em 0.5em 0.5em;
+	margin: 0 auto;
+}
+
+.message {
+	background-color: -moz-default-background-color;
+	color: -moz-default-color;
+	margin-bottom: 2px;
+	box-shadow: 0 0 0.3em ThreeDShadow;
+}
+
+.message__header {
+	padding: 0.5em;
+}
+
+.message__body {
+	border: 0;
+	width: 100%;
+}
