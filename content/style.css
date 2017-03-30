@@ -29,3 +29,7 @@
 	border: 0;
 	width: 100%;
 }
+
+.message.is-collapsed .message__body {
+	display: none;
+}

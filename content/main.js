@@ -69,18 +69,23 @@ var createMessageElement = function(glodaMsg) {
 	var summary      = glodaMsg._indexedBodyText.substring(0, 100);
 
 	var e = document.createElement('article');
-	e.className = 'message';
+	e.className = 'message is-collapsed';
 
 	var header = document.createElement('header');
 	header.className = 'message__header';
 	header.textContent = author;
+	header.addEventListener('click', function() {
+		e.classList.toggle('is-collapsed');
+	});
 	e.appendChild(header);
 
 	var iframe = document.createElement('iframe');
 	iframe.src = uri2url(msg2uri(glodaMsg.folderMessage));
 	iframe.className = 'message__body';
 	iframe.addEventListener('DOMContentLoaded', function() {
+		iframe.style.display = 'block';
 		iframe.style.height = iframe.contentDocument.body.scrollHeight + 'px';
+		iframe.style.display = null;
 	});
 	e.appendChild(iframe);
 
