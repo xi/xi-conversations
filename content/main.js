@@ -1,5 +1,6 @@
 Components.utils.import('resource://gre/modules/Services.jsm');
 Components.utils.import("resource:///modules/gloda/gloda.js");
+Components.utils.import("resource:///modules/mailServices.js");
 var Messenger = Components.classes['@mozilla.org/messenger;1'].createInstance(Components.interfaces.nsIMessenger);
 
 var getParams = function() {
@@ -56,6 +57,13 @@ var getConversation = function(msgs, cb) {
 	Gloda.getMessageCollectionForHeaders(msgs, listener, null);
 };
 
+var getTags = function(msg) {
+	var keywords = msg.getStringProperty('keywords');
+	var keywordList = keywords.split(' ');
+	var allTags = MailServices.tags.getAllTags({});
+	return allTags.filter(tag => keywordList.indexOf(tag.key) !== -1);
+}
+
 var createMessageElement = function(glodaMsg) {
 	var author       = glodaMsg.folderMessage.author;
 	var date         = glodaMsg.folderMessage.date;
@@ -63,10 +71,13 @@ var createMessageElement = function(glodaMsg) {
 	var cc           = glodaMsg.folderMessage.ccList;
 	var bcc          = glodaMsg.folderMessage.bccList;
 	var subject      = glodaMsg.folderMessage.mime2DecodedSubject;
+	var isRead       = glodaMsg.folderMessage.isRead;
+	var isFlagged    = glodaMsg.folderMessage.isFlagged;  // markFlagged(true)
 	var attachments  = glodaMsg.attachmentInfos;
 	var isEncrypted  = glodaMsg.isEncrypted;
 	var mailingLists = glodaMsg.mailingLists;
 	var summary      = glodaMsg._indexedBodyText.substring(0, 100);
+	var tags         = getTags(glodaMsg.folderMessage);
 
 	var e = document.createElement('article');
 	e.className = 'message is-collapsed';
