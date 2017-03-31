@@ -4,7 +4,21 @@ var getTags = function(msg) {
 	var keywords = msg.getStringProperty('keywords');
 	var keywordList = keywords.split(' ');
 	var allTags = MailServices.tags.getAllTags({});
-	return allTags.filter(tag => keywordList.indexOf(tag.key) !== -1);
+	return allTags
+		.filter(tag => keywordList.indexOf(tag.key) !== -1)
+		.map(tag => ({
+			color: MailServices.tags.getColorForKey(tag.key).substr(1) || 'fff',
+			name: tag.tag,
+		}));
+};
+
+var createTag = function(tag) {
+	var e = document.createElement('span');
+	e.className = 'tag';
+	e.textContent = tag.name;
+	e.style.backgroundColor = '#' + tag.color;
+	e.style.color = contrastColor(tag.color);
+	return e;
 };
 
 var formatContacts = function(raw) {
@@ -87,6 +101,14 @@ var createMessageHeader = function(glodaMsg) {
 	summary.className = 'summary';
 	summary.textContent = (glodaMsg._indexedBodyText || '').substring(0, 150);
 	header.appendChild(summary);
+
+	var _tags = getTags(msg);
+	var tags = document.createElement('span');
+	tags.className = 'tags';
+	for (let tag of _tags) {
+		tags.appendChild(createTag(tag));
+	}
+	header.appendChild(tags);
 
 	if (glodaMsg.attachmentInfos.length) {
 		var attachments = createIcon('attachment');

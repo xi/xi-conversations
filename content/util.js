@@ -48,3 +48,9 @@ var prependChild = function(parent, child) {
 		parent.insertBefore(child, parent.childNodes[0]);
 	}
 };
+
+var contrastColor = function(color) {
+	var [, r, g, b] = color.match(/(..)(..)(..)/).map(x => parseInt(x, 16) / 255);
+	let l = 0.2126 * Math.pow(r, 2.4) + 0.7152 * Math.pow(g, 2.4) + 0.0722 * Math.pow(b, 2.4);
+	return l > 0.3 ? 'black' : 'white';
+};
