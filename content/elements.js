@@ -101,14 +101,27 @@ var createMessageElement = function(glodaMsg) {
 	});
 	e.appendChild(header);
 
-	var iframe = document.createElement('iframe');
-	iframe.src = uri2url(msg2uri(glodaMsg.folderMessage));
+	var iframe = document.createElementNS('http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul', 'iframe');
+	iframe.setAttribute('type', 'content');
 	iframe.className = 'message__body';
-	iframe.addEventListener('DOMContentLoaded', function() {
-		iframe.style.display = 'block';
-		iframe.style.height = iframe.contentDocument.body.scrollHeight + 'px';
-		iframe.style.display = null;
-	});
+
+	var onLoad = function(event, charset) {
+		iframe.removeEventListener('load', onLoad, true);
+
+		iframe.addEventListener('DOMContentLoaded', function() {
+			iframe.style.display = 'block';
+			iframe.style.height = iframe.contentDocument.body.scrollHeight + 'px';
+			iframe.style.display = null;
+		});
+
+		var uri = msg2uri(glodaMsg.folderMessage);
+		var messageService = Messenger.messageServiceFromURI(uri2url(uri));
+		var mainWindow = window.frameElement.ownerDocument.defaultView;
+		messageService.DisplayMessage(uri, iframe.docShell, mainWindow.msgWindow, {}, charset, {});
+	};
+
+	iframe.addEventListener('load', onLoad, true);
+
 	e.appendChild(iframe);
 
 	return e;
