@@ -90,6 +90,16 @@ var createMessageHeader = function(glodaMsg) {
 	return header;
 };
 
+var adjustHeight = function(iframe) {
+	var scrollX = window.scrollX;
+	var scrollY = window.scrollY;
+	iframe.style.display = 'block';
+	iframe.style.height = 'auto';
+	iframe.style.height = iframe.contentDocument.body.scrollHeight + 'px';
+	iframe.style.display = null;
+	window.scrollTo(scrollX, scrollY);
+};
+
 var createIframe = function(glodaMsg) {
 	var iframe = document.createElementNS('http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul', 'iframe');
 	iframe.setAttribute('type', 'content');
@@ -99,11 +109,8 @@ var createIframe = function(glodaMsg) {
 		iframe.removeEventListener('load', onLoad, true);
 
 		iframe.addEventListener('DOMContentLoaded', function() {
-			iframe.style.display = 'block';
-			iframe.style.height = iframe.contentDocument.body.scrollHeight + 'px';
-			iframe.style.display = null;
+			adjustHeight(iframe);
 		});
-
 		var uri = msg2uri(glodaMsg.folderMessage);
 		var messageService = Messenger.messageServiceFromURI(uri2url(uri));
 		var mainWindow = window.frameElement.ownerDocument.defaultView;
