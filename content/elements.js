@@ -63,7 +63,7 @@ var createMessageHeader = function(glodaMsg) {
 
 	var summary = document.createElement('span');
 	summary.className = 'summary';
-	summary.textContent = glodaMsg._indexedBodyText.substring(0, 150);
+	summary.textContent = (glodaMsg._indexedBodyText || '').substring(0, 150);
 	header.appendChild(summary);
 
 	if (glodaMsg.attachmentInfos.length) {
