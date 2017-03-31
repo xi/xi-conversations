@@ -77,6 +77,16 @@ var createMessageHeader = function(glodaMsg) {
 	date.textContent = d.toLocaleDateString();  // FIXME something like moment.js
 	header.appendChild(date);
 
+	var _reply = document.createElement('button');
+	_reply.className = 'action';
+	_reply.textContent = 'reply';
+	_reply.addEventListener('click', function(event) {
+		event.preventDefault();
+		event.stopPropagation();
+		replyToSender(msg);
+	});
+	header.appendChild(_reply);
+
 	return header;
 };
 
