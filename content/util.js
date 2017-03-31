@@ -24,3 +24,13 @@ var uri2msg = function(uri) {
 var msg2uri = function(msg) {
 	return msg.folder.getUriForMsg(msg);
 };
+
+var walkDOM = function(root, test, fn) {
+	if (test(root)) {
+		fn(root);
+	} else {
+		for (var i = root.childNodes.length - 1; i >= 0; --i) {
+			walkDOM(root.childNodes[i], test, fn);
+		}
+	}
+};
