@@ -1,6 +1,7 @@
 var createMessageElement = function(glodaMsg, expanded) {
 	var e = document.createElement('article');
 	e.className = 'message';
+	e.id = msg2uri(glodaMsg.folderMessage);
 
 	if (!expanded) {
 		e.classList.add('is-collapsed');

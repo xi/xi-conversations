@@ -21,7 +21,7 @@ var createTag = function(tag) {
 	return e;
 };
 
-var formatContacts = function(raw) {
+var parseContacts = function(raw) {
 	var emails = {};
 	var names = {};
 	var fullNames = {};
@@ -40,6 +40,12 @@ var formatContacts = function(raw) {
 		});
 	}
 
+	return contacts;
+}
+
+var formatContacts = function(raw) {
+	var contacts = parseContacts(raw);
+
 	var wrapper = document.createElement('span');
 	for (let i = 0; i < contacts.length; i++) {
 		let a = document.createElement('a');
@@ -48,6 +54,19 @@ var formatContacts = function(raw) {
 		wrapper.appendChild(a);
 	}
 	return wrapper;
+};
+
+var createActionButton = function(msg, title, icon, action) {
+	var button = document.createElement('button');
+	button.className = 'button';
+	button.title = title;
+	button.addEventListener('click', function(event) {
+		event.preventDefault();
+		event.stopPropagation();
+		action(msg);
+	});
+	button.appendChild(createIcon(icon));
+	return button;
 };
 
 var createMessageHeader = function(glodaMsg) {
@@ -121,15 +140,19 @@ var createMessageHeader = function(glodaMsg) {
 	date.textContent = d.toLocaleDateString();  // FIXME something like moment.js
 	header.appendChild(date);
 
-	var _reply = document.createElement('button');
-	_reply.className = 'action';
-	_reply.textContent = 'reply';
-	_reply.addEventListener('click', function(event) {
-		event.preventDefault();
-		event.stopPropagation();
-		replyToSender(msg);
-	});
-	header.appendChild(_reply);
+	header.appendChild(createActionButton(msg, 'reply', 'reply', replyToSender));
+	if (parseContacts(msg.recipients).length + parseContacts(msg.ccList).length + parseContacts(msg.bccList).length > 1) {
+		header.appendChild(createActionButton(msg, 'reply all', 'reply_all', replyAll));
+	}
+	if (glodaMsg.mailingLists) {
+		header.appendChild(createActionButton(msg, 'reply to list', 'list', replyToList));
+	}
+	header.appendChild(createActionButton(msg, 'forward', 'forward', forward));
+	header.appendChild(createActionButton(msg, 'edit as new', 'edit', editAsNew));
+	header.appendChild(createActionButton(msg, 'view in classic reader', 'open_in_new', viewClassic));
+	header.appendChild(createActionButton(msg, 'view source', 'code', viewSource));
+	header.appendChild(createActionButton(msg, 'junk', 'whatshot', toggleJunk));
+	header.appendChild(createActionButton(msg, 'delete', 'delete', deleteMsg));
 
 	return header;
 };
