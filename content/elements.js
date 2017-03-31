@@ -90,17 +90,7 @@ var createMessageHeader = function(glodaMsg) {
 	return header;
 };
 
-var createMessageElement = function(glodaMsg) {
-	var e = document.createElement('article');
-	e.className = 'message is-collapsed';
-
-	var header = createMessageHeader(glodaMsg);
-	header.addEventListener('click', function(event) {
-		event.preventDefault();
-		e.classList.toggle('is-collapsed');
-	});
-	e.appendChild(header);
-
+var createIframe = function(glodaMsg) {
 	var iframe = document.createElementNS('http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul', 'iframe');
 	iframe.setAttribute('type', 'content');
 	iframe.className = 'message__body';
@@ -122,8 +112,20 @@ var createMessageElement = function(glodaMsg) {
 	};
 
 	iframe.addEventListener('load', onLoad, true);
+	return iframe;
+};
 
-	e.appendChild(iframe);
+var createMessageElement = function(glodaMsg) {
+	var e = document.createElement('article');
+	e.className = 'message is-collapsed';
 
+	var header = createMessageHeader(glodaMsg);
+	header.addEventListener('click', function(event) {
+		event.preventDefault();
+		e.classList.toggle('is-collapsed');
+	});
+	e.appendChild(header);
+
+	e.appendChild(createIframe(glodaMsg));
 	return e;
 };
