@@ -18,6 +18,11 @@ body {
 	margin: 0 auto;
 }
 
+.conversation__subject {
+	font-size: inherit;
+	margin: 0;
+}
+
 .message {
 	background-color: -moz-default-background-color;
 	color: -moz-default-color;

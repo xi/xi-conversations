@@ -33,6 +33,10 @@ var initialUrls = (getParams().urls || '').split(',');
 var initialMsgs = initialUrls.map(uri2msg);
 
 getConversation(initialMsgs, function(conversation) {
+	var subject = conversation[0].folderMessage.mime2DecodedSubject || '(no subject)';
+	document.querySelector('.conversation__subject').textContent = subject;
+	document.title = subject;
+
 	var container = document.querySelector('.conversation__main');
 	var anyExpanded = false;
 
