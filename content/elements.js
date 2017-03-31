@@ -117,6 +117,7 @@ var createMessageElement = function(glodaMsg) {
 		var uri = msg2uri(glodaMsg.folderMessage);
 		var messageService = Messenger.messageServiceFromURI(uri2url(uri));
 		var mainWindow = window.frameElement.ownerDocument.defaultView;
+		iframe.docShell.contentViewer.forceCharacterSet = 'UTF-8';
 		messageService.DisplayMessage(uri, iframe.docShell, mainWindow.msgWindow, {}, charset, {});
 	};
 
