@@ -1,11 +1,11 @@
-Components.utils.import("resource:///modules/mailServices.js");
+Components.utils.import('resource:///modules/mailServices.js');
 
 var getTags = function(msg) {
 	var keywords = msg.getStringProperty('keywords');
 	var keywordList = keywords.split(' ');
 	var allTags = MailServices.tags.getAllTags({});
 	return allTags.filter(tag => keywordList.indexOf(tag.key) !== -1);
-}
+};
 
 var createIcon = function(key) {
 	var wrapper = document.createElement('div');
