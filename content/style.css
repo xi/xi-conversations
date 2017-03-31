@@ -21,15 +21,46 @@
 	box-shadow: 0 0 0.3em ThreeDShadow;
 }
 
-.message__header {
-	padding: 0.5em;
-}
-
 .message__body {
 	border: 0;
 	width: 100%;
 }
 
-.message.is-collapsed .message__body {
+.message__header {
+	padding: 0.5em;
+	display: flex;
+	flex-direction: row;
+}
+
+.message__header > * {
+	flex: 0 0 auto;
+}
+
+.message__header > .summary,
+.message__header > .recipients {
+	flex: 1 1 auto;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+}
+
+.summary,
+.message.is-collapsed .message__body,
+.message.is-collapsed .recipients {
 	display: none;
+}
+
+.message.is-collapsed .summary {
+	display: block;
+}
+
+.icon {
+	display: inline-block;
+	fill: currentColor;
+	height: 1.5em;
+	vertical-align: -.4em;
+}
+
+.icon.is-active {
+	color: #fcb040;
 }
