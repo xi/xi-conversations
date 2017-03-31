@@ -34,3 +34,10 @@ var walkDOM = function(root, test, fn) {
 		}
 	}
 };
+
+var createIcon = function(key) {
+	var wrapper = document.createElement('div');
+	wrapper.innerHTML = '<svg class="icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><use xlink:href="chrome://xi-conversations/content/material-icons.svg#' + key + '"></use></svg>';
+	return wrapper.children[0];
+};
+
