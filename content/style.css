@@ -10,7 +10,7 @@ body {
 	padding: 1em;
 	background-color: Menu;
 	box-shadow: 0 0 1em ThreeDShadow;
-	z-index: 1;
+	z-index: 2;
 }
 
 .conversation__main {
@@ -125,25 +125,40 @@ body {
 	position: absolute;
 	top: 2em;
 	right: 0;
+	z-index: 1;
 	background-color: -moz-Field;
 	color: -moz-FieldText;
 	min-width: 15em;
-	border-radius: 0.5em;
+	border-radius: 0.4em;
 	box-shadow: 0 0 1em ThreeDShadow;
+	overflow: hidden;
 }
 
 .dropdown.is-expanded {
 	display: block;
 }
 
-.dropdown li:hover,
-.dropdown li:nth-child(2n):hover,
-.dropdown li:focus,
-.dropdown li:nth-child(2n):focus {
-  background-color: -moz-CellHighlight;
-  color: -moz-CellHighlightText;
+.dropdown-item {
+	border: 0;
+	background: none;
+	display: block;
+	min-width: 100%;
+	text-align: left;
+	padding: 0.2em 0.3em;
+	white-space: nowrap;
+	cursor: pointer;
 }
 
-.dropdown li:nth-child(2n) {
+.dropdown-item .icon {
+	margin-right: 0.2em;
+}
+
+.dropdown-item:nth-child(2n) {
   background-color: -moz-OddTreeRow;
+}
+
+.dropdown-item:hover,
+.dropdown-item:focus {
+  background-color: -moz-CellHighlight;
+  color: -moz-CellHighlightText;
 }
