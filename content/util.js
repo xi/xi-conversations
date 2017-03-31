@@ -41,3 +41,10 @@ var createIcon = function(key) {
 	return wrapper.children[0];
 };
 
+var prependChild = function(parent, child) {
+	if (parent.childNodes.length === 0) {
+		parent.appendChild(child);
+	} else {
+		parent.insertBefore(child, parent.childNodes[0]);
+	}
+};

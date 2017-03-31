@@ -34,6 +34,7 @@ body {
 	padding: 0.5em;
 	display: flex;
 	flex-direction: row;
+	align-items: center;
 }
 
 .message__header > * {
@@ -56,6 +57,14 @@ body {
 
 .message.is-collapsed .summary {
 	display: block;
+}
+
+.summary {
+	opacity: 0.5;
+}
+
+.author {
+	margin-right: 0.5em;
 }
 
 .icon {

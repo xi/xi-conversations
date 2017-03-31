@@ -7,6 +7,35 @@ var getTags = function(msg) {
 	return allTags.filter(tag => keywordList.indexOf(tag.key) !== -1);
 };
 
+var formatContacts = function(raw) {
+	var emails = {};
+	var names = {};
+	var fullNames = {};
+	var n = MailServices.headerParser.parseHeadersWithArray(raw, emails, names, fullNames);
+
+	var contacts = [];
+	for (let i = 0; i < n; i++) {
+		var email = emails.value[i];
+		var name = names.value[i] || email;
+		var fullName = fullNames.value[i] || name;
+
+		contacts.push({
+			fullName: fullName,
+			name: name,
+			email: email,
+		});
+	}
+
+	var wrapper = document.createElement('span');
+	for (let i = 0; i < contacts.length; i++) {
+		let a = document.createElement('a');
+		a.href = 'mailto:' + contacts[i].email;
+		a.textContent = contacts[i].name;
+		wrapper.appendChild(a);
+	}
+	return wrapper;
+};
+
 var createMessageHeader = function(glodaMsg) {
 	var msg = glodaMsg.folderMessage;
 
@@ -45,14 +74,13 @@ var createMessageHeader = function(glodaMsg) {
 	});
 	header.appendChild(star);
 
-	var author = document.createElement('span');
+	var author = formatContacts(msg.author);
 	author.className = 'author';
-	author.textContent = msg.author;
 	header.appendChild(author);
 
-	var recipients = document.createElement('span');
+	var recipients = formatContacts(msg.recipients);
+	prependChild(recipients, document.createTextNode(' to '));
 	recipients.className = 'recipients';
-	recipients.textContent = ' to ' + msg.recipients;
 	header.appendChild(recipients);
 
 	var summary = document.createElement('span');
