@@ -115,3 +115,35 @@ body {
 	background-color: transparent;
 	box-shadow: 0 0 0.5em ThreeDShadow inset;
 }
+
+.actions {
+	position: relative;
+}
+
+.dropdown {
+	display: none;
+	position: absolute;
+	top: 2em;
+	right: 0;
+	background-color: -moz-Field;
+	color: -moz-FieldText;
+	min-width: 15em;
+	border-radius: 0.5em;
+	box-shadow: 0 0 1em ThreeDShadow;
+}
+
+.dropdown.is-expanded {
+	display: block;
+}
+
+.dropdown li:hover,
+.dropdown li:nth-child(2n):hover,
+.dropdown li:focus,
+.dropdown li:nth-child(2n):focus {
+  background-color: -moz-CellHighlight;
+  color: -moz-CellHighlightText;
+}
+
+.dropdown li:nth-child(2n) {
+  background-color: -moz-OddTreeRow;
+}
