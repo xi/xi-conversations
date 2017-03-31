@@ -136,20 +136,6 @@ var createActions = function(glodaMsg) {
 var createMessageHeader = function(glodaMsg) {
 	var msg = glodaMsg.folderMessage;
 
-	// var author       = msg.author;
-	// var date         = msg.date;
-	// var to           = msg.recipients;
-	// var cc           = msg.ccList;
-	// var bcc          = msg.bccList;
-	// var subject      = msg.mime2DecodedSubject;
-	// var isRead       = msg.isRead;
-	// var isFlagged    = msg.isFlagged;  // markFlagged(true)
-	// var attachments  = glodaMsg.attachmentInfos;
-	// var isEncrypted  = glodaMsg.isEncrypted;
-	// var mailingLists = glodaMsg.mailingLists;
-	// var summary      = glodaMsg._indexedBodyText.substring(0, 100);
-	// var tags         = getTags(glodaMsg.folderMessage);
-
 	var header = document.createElement('header');
 	header.className = 'message__header';
 
