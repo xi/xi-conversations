@@ -34,7 +34,19 @@ var initialMsgs = initialUrls.map(uri2msg);
 
 getConversation(initialMsgs, function(conversation) {
 	var container = document.querySelector('.conversation__main');
-	for (let glodaMsg of conversation) {
-		container.appendChild(createMessageElement(glodaMsg));
+	var anyExpanded = false;
+
+	for (let i = 0; i < conversation.length; i++) {
+		let glodaMsg = conversation[i];
+
+		let only = initialMsgs.length === 1 && initialMsgs[0] === glodaMsg.folderMessage;
+		let expanded = only || !glodaMsg.folderMessage.isRead;
+
+		anyExpanded = anyExpanded || expanded;
+		if (!anyExpanded && i === conversation.length - 1) {
+			expanded = true;
+		}
+
+		container.appendChild(createMessageElement(glodaMsg, expanded));
 	}
 });

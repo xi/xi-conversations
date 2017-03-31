@@ -168,9 +168,13 @@ var createIframe = function(glodaMsg) {
 	return iframe;
 };
 
-var createMessageElement = function(glodaMsg) {
+var createMessageElement = function(glodaMsg, expanded) {
 	var e = document.createElement('article');
-	e.className = 'message is-collapsed';
+	e.className = 'message';
+
+	if (!expanded) {
+		e.classList.add('is-collapsed');
+	}
 
 	var header = createMessageHeader(glodaMsg);
 	header.addEventListener('click', function(event) {
