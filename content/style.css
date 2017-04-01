@@ -176,3 +176,13 @@ body {
 .attachments li {
 	display: block;
 }
+
+.attachment {
+	padding: 0.1em;
+	border-radius: 2px;
+}
+
+.attachment:focus {
+	background-color: -moz-CellHighlight;
+	color: -moz-CellHighlightText;
+}
