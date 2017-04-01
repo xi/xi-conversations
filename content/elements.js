@@ -21,6 +21,14 @@ var autoMarkAsRead = function(e, glodaMsg) {
 	}, 100);
 };
 
+var createAlert = function(text, icon, level) {
+	var e = document.createElement('div');
+	e.className = 'alert alert--' + level;
+	e.textContent = text;
+	prependChild(e, createIcon(icon));
+	return e;
+};
+
 var createMessageElement = function(glodaMsg, expanded) {
 	var e = document.createElement('article');
 	e.className = 'message';
@@ -40,6 +48,10 @@ var createMessageElement = function(glodaMsg, expanded) {
 		lazyLoadIframe();
 	});
 	e.appendChild(header);
+
+	if (glodaMsg.folderMessage.getStringProperty('junkscore') == Components.interfaces.nsIJunkMailPlugin.IS_SPAM_SCORE) {
+		e.appendChild(createAlert('This is junk', 'junk', 'warning'));
+	}
 
 	var footer = createMessageFooter(glodaMsg);
 	e.appendChild(footer);

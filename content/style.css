@@ -186,3 +186,25 @@ body {
 	background-color: -moz-CellHighlight;
 	color: -moz-CellHighlightText;
 }
+
+.alert {
+	background-color: #d9edf7;
+	padding: 0.5em;
+}
+
+.alert--success {
+	background-color: #dff0d8;
+}
+
+.alert--warning {
+	background-color: #fcf8e3;
+}
+
+.alert--error {
+	background-color: #f2dede;
+}
+
+.alert .icon {
+	font-size: 200%;
+	vertical-align: middle;
+}
