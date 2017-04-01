@@ -36,8 +36,12 @@ body {
 	width: 100%;
 }
 
-.message__header {
+.message__header,
+.message__footer {
 	padding: 0.5em;
+}
+
+.message__header {
 	display: flex;
 	flex-direction: row;
 	align-items: center;
@@ -57,6 +61,7 @@ body {
 
 .summary,
 .message.is-collapsed .message__body,
+.message.is-collapsed .message__footer,
 .message.is-collapsed .recipients {
 	display: none;
 }
@@ -161,4 +166,13 @@ body {
 .dropdown-item:focus {
 	background-color: -moz-CellHighlight;
 	color: -moz-CellHighlightText;
+}
+
+.attachments {
+	margin: 0;
+	padding: 0;
+}
+
+.attachments li {
+	display: block;
 }

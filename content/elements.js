@@ -7,14 +7,6 @@ var createMessageElement = function(glodaMsg, expanded) {
 		e.classList.add('is-collapsed');
 	}
 
-	var iframeLoaded = false;
-	var lazyLoadIframe = function() {
-		if (!iframeLoaded && !e.classList.contains('is-collapsed')) {
-			e.appendChild(createIframe(glodaMsg));
-			iframeLoaded = true;
-		}
-	};
-
 	var header = createMessageHeader(glodaMsg);
 	header.addEventListener('click', function(event) {
 		event.preventDefault();
@@ -23,6 +15,16 @@ var createMessageElement = function(glodaMsg, expanded) {
 	});
 	e.appendChild(header);
 
+	var footer = createMessageFooter(glodaMsg);
+	e.appendChild(footer);
+
+	var iframeLoaded = false;
+	var lazyLoadIframe = function() {
+		if (!iframeLoaded && !e.classList.contains('is-collapsed')) {
+			e.insertBefore(createIframe(glodaMsg), footer);
+			iframeLoaded = true;
+		}
+	};
 	lazyLoadIframe();
 
 	return e;
