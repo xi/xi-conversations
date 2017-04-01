@@ -16,14 +16,24 @@ var getConversation = function(msgs, cb) {
 	};
 
 	var listener = {
-		onItemsAdded: function(items) {
-			if (items.length >= 1) {
-				items[0].conversation.getMessagesCollection(conversationListener, true);
-			}
-		},
+		onItemsAdded: function() {},
 		onItemsModified: function() {},
 		onItemsRemoved: function() {},
-		onQueryCompleted: function() {}
+		onQueryCompleted: function(collection) {
+			if (collection.items.length) {
+				var conversation = collection.items[0].conversation;
+				conversation.getMessagesCollection(conversationListener, true);
+			} else {
+				cb(msgs.map(function(msg) {
+					return {
+						folderMessage: msg,
+						attachmentInfos: [],
+						mailingLists: null,
+						_indexedBodyText: null
+					};
+				}));
+			}
+		}
 	};
 
 	Gloda.getMessageCollectionForHeaders(msgs, listener, null);
