@@ -154,11 +154,11 @@ body {
 }
 
 .dropdown-item:nth-child(2n) {
-  background-color: -moz-OddTreeRow;
+	background-color: -moz-OddTreeRow;
 }
 
 .dropdown-item:hover,
 .dropdown-item:focus {
-  background-color: -moz-CellHighlight;
-  color: -moz-CellHighlightText;
+	background-color: -moz-CellHighlight;
+	color: -moz-CellHighlightText;
 }
