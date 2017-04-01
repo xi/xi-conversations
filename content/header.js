@@ -186,8 +186,14 @@ var createMessageHeader = function(glodaMsg) {
 
 	var date = document.createElement('time');
 	var d = new Date(msg.date / 1000);
+	var now = new Date();
 	date.className = 'date';
-	date.textContent = d.toLocaleDateString();  // FIXME something like moment.js
+	if (d.toDateString() === now.toDateString()) {
+		date.textContent = d.toLocaleTimeString();
+	} else {
+		date.textContent = d.toLocaleDateString();
+	}
+	date.title = d.toLocaleString();
 	header.appendChild(date);
 
 	header.appendChild(createActions(glodaMsg));
