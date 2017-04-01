@@ -91,9 +91,9 @@ var createActions = function(glodaMsg) {
 	actions.className = 'actions';
 
 	if (canReplyToList) {
-		actions.appendChild(createActionButton(msg, 'reply to list', 'list', replyToList));
+		actions.appendChild(createActionButton(msg, 'reply to list', 'replylist', replyToList));
 	} else if (canReplyAll) {
-		actions.appendChild(createActionButton(msg, 'reply all', 'reply_all', replyAll));
+		actions.appendChild(createActionButton(msg, 'reply all', 'replyall', replyAll));
 	} else {
 		actions.appendChild(createActionButton(msg, 'reply', 'reply', replyToSender));
 	}
@@ -103,21 +103,21 @@ var createActions = function(glodaMsg) {
 
 	dropdown.appendChild(createActionItem(msg, 'reply', 'reply', replyToSender));
 	if (canReplyAll) {
-		dropdown.appendChild(createActionItem(msg, 'reply all', 'reply_all', replyAll));
+		dropdown.appendChild(createActionItem(msg, 'reply all', 'replyall', replyAll));
 	}
 	if (canReplyToList) {
-		dropdown.appendChild(createActionItem(msg, 'reply to list', 'list', replyToList));
+		dropdown.appendChild(createActionItem(msg, 'reply to list', 'replylist', replyToList));
 	}
 	dropdown.appendChild(createActionItem(msg, 'forward', 'forward', forward));
-	dropdown.appendChild(createActionItem(msg, 'edit as new', 'edit', editAsNew));
-	dropdown.appendChild(createActionItem(msg, 'view in classic reader', 'open_in_new', viewClassic));
-	dropdown.appendChild(createActionItem(msg, 'view source', 'code', viewSource));
-	dropdown.appendChild(createActionItem(msg, 'junk', 'whatshot', toggleJunk));
+	dropdown.appendChild(createActionItem(msg, 'edit as new', 'newmsg', editAsNew));
+	dropdown.appendChild(createActionItem(msg, 'view in classic reader', 'x-open_in_new', viewClassic));
+	dropdown.appendChild(createActionItem(msg, 'view source', 'x-code', viewSource));
+	dropdown.appendChild(createActionItem(msg, 'junk', 'junk', toggleJunk));
 	dropdown.appendChild(createActionItem(msg, 'delete', 'delete', deleteMsg));
 
 	var dropdownToggle = document.createElement('button');
 	dropdownToggle.className = 'button';
-	dropdownToggle.appendChild(createIcon('more_vert'));
+	dropdownToggle.appendChild(createIcon('appButton'));
 	dropdownToggle.title = 'more';
 	dropdownToggle.addEventListener('click', function(event) {
 		event.preventDefault();
@@ -139,7 +139,7 @@ var createMessageHeader = function(glodaMsg) {
 	var header = document.createElement('header');
 	header.className = 'message__header';
 
-	var star = createIcon('star');
+	var star = createIcon('x-star');
 	if (msg.isFlagged) {
 		star.classList.add('is-active');
 	}
@@ -180,7 +180,7 @@ var createMessageHeader = function(glodaMsg) {
 	header.appendChild(tags);
 
 	if (glodaMsg.attachmentInfos.length) {
-		var attachments = createIcon('attachment');
+		var attachments = createIcon('x-attachment');
 		header.appendChild(attachments);
 	}
 
