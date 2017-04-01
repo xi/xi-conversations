@@ -29,6 +29,9 @@ var getConversation = function(msgs, cb) {
 	Gloda.getMessageCollectionForHeaders(msgs, listener, null);
 };
 
+window.frameElement.setAttribute('tooltip', 'aHTMLTooltip');
+window.frameElement.setAttribute('context', 'mailContext');
+
 var initialUrls = (getParams().urls || '').split(',');
 var initialMsgs = initialUrls.map(uri2msg);
 
