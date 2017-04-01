@@ -15,7 +15,7 @@ var autoMarkAsRead = function(e, glodaMsg) {
 			}
 			if (topWasInView && bottomWasInView) {
 				markAsRead(glodaMsg.folderMessage, true);
-				window.removeInterval(intervalId);
+				window.clearInterval(intervalId);
 			}
 		}
 	}, 100);
