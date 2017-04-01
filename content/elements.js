@@ -25,6 +25,7 @@ var createMessageElement = function(glodaMsg, expanded) {
 	var e = document.createElement('article');
 	e.className = 'message';
 	e.id = msg2uri(glodaMsg.folderMessage);
+	e.tabIndex = -1;
 
 	if (!expanded) {
 		e.classList.add('is-collapsed');

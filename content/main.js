@@ -49,11 +49,18 @@ getConversation(initialMsgs, function(conversation) {
 		let only = initialMsgs.length === 1 && initialMsgs[0] === glodaMsg.folderMessage;
 		let expanded = only || !glodaMsg.folderMessage.isRead;
 
-		anyExpanded = anyExpanded || expanded;
 		if (!anyExpanded && i === conversation.length - 1) {
 			expanded = true;
 		}
 
-		container.appendChild(createMessageElement(glodaMsg, expanded));
+		let message = createMessageElement(glodaMsg, expanded);
+		container.appendChild(message);
+
+		if (!anyExpanded && expanded) {
+			message.focus();
+			window.scrollY = message.offsetTop - 50;
+		}
+
+		anyExpanded = anyExpanded || expanded;
 	}
 });
