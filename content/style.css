@@ -113,7 +113,7 @@ body {
 .button:focus {
 	border-color: ThreeDShadow;
 	background-color: ButtonHighlight;
-	transition: background-color 0.5s, border-color 0.5s;
+	transition: background-color 0.3s, border-color 0.3s;
 }
 
 .button:active {
