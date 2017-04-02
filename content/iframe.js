@@ -1,11 +1,8 @@
 var adjustHeight = function(iframe) {
-	var scrollX = window.scrollX;
-	var scrollY = window.scrollY;
-	iframe.style.display = 'block';
+	iframe.parentElement.style.height = iframe.parentElement.getBoundingClientRect().height + 'px';
 	iframe.style.height = 'auto';
 	iframe.style.height = iframe.contentDocument.body.scrollHeight + 'px';
-	iframe.style.display = null;
-	window.scrollTo(scrollX, scrollY);
+	iframe.parentElement.style.height = null;
 };
 
 var hideBlocks = function(iframe, test, hideText, showText, color) {
