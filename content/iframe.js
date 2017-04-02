@@ -44,12 +44,29 @@ var hideBlocks = function(iframe, test, hideText, showText, color) {
 };
 
 var createIframe = function(glodaMsg) {
+	var uri = msg2uri(glodaMsg.folderMessage);
+
 	var iframe = document.createElementNS('http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul', 'iframe');
 	iframe.setAttribute('type', 'content');
 	iframe.className = 'message__body';
 
 	var onLoad = function(event, charset) {
 		iframe.removeEventListener('load', onLoad, true);
+
+		var mainWindow = window.frameElement.ownerDocument.defaultView;
+
+		var unregister = mainWindow.xiEnigmail.on(uri2url(uri), function(result) {
+			var parsed = parseStatusFlags(result.statusFlags);
+			var msg = result.errorMsg.split('\n')[0];
+
+			if (msg) {
+				iframe.parentNode.insertBefore(createAlert(msg, 'x-lock', parsed.signed), iframe);
+			} else if (parsed.encrypted) {
+				iframe.parentNode.insertBefore(createAlert('encrypted message', 'x-lock', 'info'), iframe);
+			}
+
+			unregister();
+		}, window);
 
 		iframe.addEventListener('DOMContentLoaded', function() {
 			adjustHeight(iframe);
@@ -65,7 +82,6 @@ var createIframe = function(glodaMsg) {
 			}, '-- hide signature --', '-- show signature --', 'rgb(56, 117, 215)');
 		});
 
-		var uri = msg2uri(glodaMsg.folderMessage);
 		var messageService = Messenger.messageServiceFromURI(uri2url(uri));
 		var mainWindow = window.frameElement.ownerDocument.defaultView;
 		iframe.docShell.contentViewer.forceCharacterSet = 'UTF-8';
