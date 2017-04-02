@@ -58,3 +58,45 @@ var contrastColor = function(color) {
 	let l = 0.2126 * Math.pow(r, 2.4) + 0.7152 * Math.pow(g, 2.4) + 0.0722 * Math.pow(b, 2.4);
 	return l > 0.3 ? 'black' : 'white';
 };
+
+function EventService() {
+	this._id = 0;
+	this._listeners = {};
+};
+
+EventService.prototype.on = function(key, fn, win) {
+	var id = this._id++;
+	this._listeners[key] = this._listeners[key] || {};
+	this._listeners[key][id] = [fn, win];
+	this._cleanup();
+
+	var self = this;
+	return function() {
+		delete self._listeners[key][id];
+	};
+};
+
+EventService.prototype.trigger = function(key, data) {
+	this._cleanup();
+	for (let id in this._listeners[key]) {
+		if (this._listeners[key].hasOwnProperty(id)) {
+			let fn = this._listeners[key][id][0];
+			fn(data);
+		}
+	}
+};
+
+EventService.prototype._cleanup = function() {
+	for (let key of Object.keys(this._listeners)) {
+		let a = this._listeners[key];
+
+		for (let id of Object.keys(a)) {
+			if (a[id][1].closed) {
+				delete a[id];
+			}
+		}
+		if (Object.keys(a).length === 0) {
+			delete this._listeners[key];
+		}
+	}
+};
