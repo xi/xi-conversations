@@ -49,17 +49,21 @@ var createMessageElement = function(glodaMsg, expanded) {
 	});
 	e.appendChild(header);
 
+	var details = document.createElement('div');
+	details.className = 'message__details';
+	e.appendChild(details);
+
 	if (glodaMsg.folderMessage.getStringProperty('junkscore') == Components.interfaces.nsIJunkMailPlugin.IS_SPAM_SCORE) {
-		e.appendChild(createAlert('This is junk', 'junk', 'warning'));
+		details.appendChild(createAlert('This is junk', 'junk', 'warning'));
 	}
 
 	var footer = createMessageFooter(glodaMsg);
-	e.appendChild(footer);
+	details.appendChild(footer);
 
 	var iframeLoaded = false;
 	var lazyLoadIframe = function() {
 		if (!iframeLoaded && !e.classList.contains('is-collapsed')) {
-			e.insertBefore(createIframe(glodaMsg), footer);
+			details.insertBefore(createIframe(glodaMsg), footer);
 			iframeLoaded = true;
 		}
 	};

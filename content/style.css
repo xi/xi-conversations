@@ -60,8 +60,7 @@ body {
 }
 
 .summary,
-.message.is-collapsed .message__body,
-.message.is-collapsed .message__footer,
+.message.is-collapsed .message__details,
 .message.is-collapsed .recipients {
 	display: none;
 }
