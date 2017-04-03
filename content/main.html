@@ -5,6 +5,63 @@
 		<link rel="stylesheet" href="chrome://xi-conversations/content/style.css" />
 	</head>
 	<body>
+		<script id="message-template" type="text/template">
+			<article class="message {{^isExpanded}}is-collapsed{{/isExpanded}}" id="{{ uri }}" tabindex="-1">
+				<header class="message__header">
+					<button class="star {{#isFlagged}}is-active{{/isFlagged}}" data-action="toggleFlagged">{{#icon}}x-star{{/icon}}</button>
+					{{#author}}<a class="author" href="mailto:{{ email }}">{{ name }}</a>{{/author}}
+					<span class="recipients">
+						to
+						{{#recipients}}
+							<a href="mailto:{{ email }}">{{ name }}</a>
+						{{/recipients}}
+					</span>
+					<span class="summary">{{ summary }}</span>
+
+					<span class="tags">
+						{{#tags}}<span class="tag" style="background-color: {{ bgColor }}; color: {{ fgColor }}">{{ name }}</span>{{/tags}}
+					</span>
+					{{#hasAttachments}}{{#icon}}x-attachment{{/icon}}{{/hasAttachments}}
+					{{#dateFilter}}{{ date }}{{/dateFilter}}
+
+					<span class="actions">
+						{{#canReplyToList}}<button class="button" title="reply to list" data-action="replyToList">{{#icon}}replylist{{/icon}}</button{{/canReplyToList}}
+						{{^canReplyToList}}
+							{{#canReplyAll}}<button class="button" title="reply all" data-action="replyAll">{{#icon}}replyall{{/icon}}</button{{/canReplyAll}}
+							{{^canReplyAll}}<button class="button" title="reply" data-action="replyToSender">{{#icon}}reply{{/icon}}</button{{/canReplyAll}}
+						{{/canReplyToList}}
+
+						><button class="button dropdownToggle" title="{{ more }}">{{#icon}}appButton{{/icon}}</button>
+						<div class="dropdown">
+							<button class="dropdown-item" data-action="replyToSender">{{#icon}}reply{{/icon}} reply</button>
+							{{#canReplyAll}}<button class="dropdown-item" data-action="replyAll">{{#icon}}replyall{{/icon}} reply all</button>{{/canReplyAll}}
+							{{#canReplyToList}}<button class="dropdown-item" data-action="replyToList">{{#icon}}replylist{{/icon}} reply to list</button>{{/canReplyToList}}
+							<button class="dropdown-item" data-action="forward">{{#icon}}forward{{/icon}} forward</button>
+							<button class="dropdown-item" data-action="editAsNew">{{#icon}}newmsg{{/icon}} edit as new</button>
+							<button class="dropdown-item" data-action="viewClassic">{{#icon}}x-open_in_new{{/icon}} view in classic reader</button>
+							<button class="dropdown-item" data-action="viewSource">{{#icon}}x-code{{/icon}} view source</button>
+							<button class="dropdown-item" data-action="toggleJunk">{{#icon}}junk{{/icon}} junk</button>
+							<button class="dropdown-item" data-action="deleteMsg">{{#icon}}delete{{/icon}} delete</button>
+						</div>
+					</span>
+				</header>
+
+				<div class="message__details">
+					{{#isJunk}}
+						<div class="alert alert--warning">{{#icon}}junk{{/icon}} This is junk</div>
+					{{/isJunk}}
+
+					<footer class="message__footer">
+						<ul class="attachments">
+							{{#attachments}}
+								<li><a class="attachment" href="{{ url }}">{{#icon}}x-attachment{{/icon}} {{ name }}</a></li>
+							{{/attachments}}
+						</ul>
+					</footer>
+				</div>
+			<article>
+		</script>
+
 		<header class="conversation__header">
 			<h1 class="conversation__subject">Loading…</h1>
 		</header>

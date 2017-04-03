@@ -89,7 +89,13 @@ body {
 	vertical-align: -.4em;
 }
 
-.icon.is-active {
+.star {
+	border: 0;
+	background: none;
+	padding: 0;
+}
+
+.star.is-active {
 	color: #fcb040;
 }
 
@@ -151,10 +157,6 @@ body {
 	padding: 0.2em 0.3em;
 	white-space: nowrap;
 	cursor: pointer;
-}
-
-.dropdown-item .icon {
-	margin-right: 0.2em;
 }
 
 .dropdown-item:nth-child(2n) {

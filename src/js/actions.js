@@ -45,6 +45,16 @@ var markAsRead = function(msg, read) {
 	msg.folder.markMessagesRead(tmp, read);
 };
 
+var toggleFlagged = function(msg, star) {
+	if (msg.isFlagged) {
+		star.classList.remove('is-active');
+		msg.markFlagged(false);
+	} else {
+		star.classList.add('is-active');
+		msg.markFlagged(true);
+	}
+};
+
 module.exports = {
 	replyToSender: compose(Components.interfaces.nsIMsgCompType.ReplyToSender),
 	replyAll: compose(Components.interfaces.nsIMsgCompType.ReplyAll),
@@ -56,5 +66,6 @@ module.exports = {
 	viewSource: viewSource,
 	toggleJunk: toggleJunk,
 	deleteMsg: deleteMsg,
-	markAsRead: markAsRead
+	markAsRead: markAsRead,
+	toggleFlagged: toggleFlagged
 };

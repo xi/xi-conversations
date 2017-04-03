@@ -1,5 +1,7 @@
 var Messenger = Components.classes['@mozilla.org/messenger;1'].createInstance(Components.interfaces.nsIMessenger);
 
+Components.utils.import('resource:///modules/mailServices.js');
+
 var getParams = function() {
 	let params = {};
 	for (let part of location.search.substr(1).split('&')) {
@@ -45,6 +47,19 @@ var createIcon = function(key) {
 	return wrapper.children[0];
 };
 
+var createDate = function(date) {
+	var now = new Date();
+	var e = document.createElement('time');
+	e.className = 'date';
+	if (date.toDateString() === now.toDateString()) {
+		e.textContent = date.toLocaleTimeString();
+	} else {
+		e.textContent = date.toLocaleDateString();
+	}
+	e.title = date.toLocaleString();
+	return e;
+};
+
 var prependChild = function(parent, child) {
 	if (parent.childNodes.length === 0) {
 		parent.appendChild(child);
@@ -57,6 +72,44 @@ var contrastColor = function(color) {
 	var [, r, g, b] = color.match(/(..)(..)(..)/).map(x => parseInt(x, 16) / 255);
 	let l = 0.2126 * Math.pow(r, 2.4) + 0.7152 * Math.pow(g, 2.4) + 0.0722 * Math.pow(b, 2.4);
 	return l > 0.3 ? 'black' : 'white';
+};
+
+var parseContacts = function(raw) {
+	var emails = {};
+	var names = {};
+	var fullNames = {};
+	var n = MailServices.headerParser.parseHeadersWithArray(raw, emails, names, fullNames);
+
+	var contacts = [];
+	for (let i = 0; i < n; i++) {
+		var email = emails.value[i];
+		var name = names.value[i] || email;
+		var fullName = fullNames.value[i] || name;
+
+		contacts.push({
+			fullName: fullName,
+			name: name,
+			email: email,
+		});
+	}
+
+	return contacts;
+};
+
+var getTags = function(msg) {
+	var keywords = msg.getStringProperty('keywords');
+	var keywordList = keywords.split(' ');
+	var allTags = MailServices.tags.getAllTags({});
+	return allTags
+		.filter(tag => keywordList.indexOf(tag.key) !== -1)
+		.map(tag => {
+			var color = MailServices.tags.getColorForKey(tag.key).substr(1) || 'fff';
+			return {
+				bgColor: '#' + color,
+				fgColor: util.contrastColor(color),
+				name: tag.tag,
+			};
+		});
 };
 
 function EventService() {
@@ -108,7 +161,10 @@ module.exports = {
 	msg2uri: msg2uri,
 	walkDOM: walkDOM,
 	createIcon: createIcon,
+	createDate: createDate,
 	prependChild: prependChild,
 	contrastColor: contrastColor,
+	parseContacts: parseContacts,
+	getTags: getTags,
 	EventService: EventService
 };

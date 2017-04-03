@@ -1,8 +1,7 @@
+var Mustache = require('mustache');
+
 var actions = require('./actions.js');
-var createAlert = require('./alert.js');
 var createIframe = require('./iframe.js');
-var createMessageFooter = require('./footer.js');
-var createMessageHeader = require('./header.js');
 var util = require('./util.js');
 
 var autoMarkAsRead = function(e, glodaMsg) {
@@ -28,37 +27,83 @@ var autoMarkAsRead = function(e, glodaMsg) {
 	}, 100);
 };
 
-module.exports = createMessageElement = function(glodaMsg, expanded) {
-	var e = document.createElement('article');
-	e.className = 'message';
-	e.id = util.msg2uri(glodaMsg.folderMessage);
-	e.tabIndex = -1;
+var iconFilter = function() {
+	return function(text, render) {
+		var key = render(text);
+		return util.createIcon(key).outerHTML;
+	};
+};
 
-	if (!expanded) {
-		e.classList.add('is-collapsed');
+var dateFilter = function() {
+	return function(text, render) {
+		var nanosecs = parseInt(render(text), 10);
+		var date = new Date(nanosecs / 1000);
+		return util.createDate(date).outerHTML;
 	}
+};
+
+module.exports = function(glodaMsg, expanded) {
+	var msg = glodaMsg.folderMessage;
+
+	var tpl = document.getElementById('message-template').innerHTML;
+	var wrapper = document.createElement('div');
+	wrapper.innerHTML = Mustache.render(tpl, {
+		icon: iconFilter,
+		dateFilter: dateFilter,
+
+		isExpanded: expanded,
+		isFlagged: msg.isFlagged,
+		isJunk: glodaMsg.folderMessage.getStringProperty('junkscore') == Components.interfaces.nsIJunkMailPlugin.IS_SPAM_SCORE,
+		uri: util.msg2uri(msg),
+		author: util.parseContacts(msg.author),
+		recipients: util.parseContacts(msg.recipients),
+		summary: (glodaMsg._indexedBodyText || '').substring(0, 150),
+		tags: util.getTags(msg),
+		attachments: glodaMsg.attachmentInfos,
+		hasAttachments: glodaMsg.attachmentInfos.length,
+		date: msg.date,
+		canReplyToList: glodaMsg.mailingLists,
+		canReplyAll: (util.parseContacts(msg.recipients).length + util.parseContacts(msg.ccList).length + util.parseContacts(msg.bccList).length) > 1,
+	});
+	var e = wrapper.children[0];
 
 	autoMarkAsRead(e, glodaMsg);
 
-	var header = createMessageHeader(glodaMsg);
+	// header events
+	var header = e.querySelector('.message__header');
 	header.addEventListener('click', function(event) {
 		event.preventDefault();
 		e.classList.toggle('is-collapsed');
 		lazyLoadIframe();
 	});
-	e.appendChild(header);
 
-	var details = document.createElement('div');
-	details.className = 'message__details';
-	e.appendChild(details);
+	// dropdown events
+	var dropdownToggle = e.querySelector('.dropdownToggle');
+	var dropdown = e.querySelector('.dropdown');
+	dropdownToggle.addEventListener('click', function(event) {
+		event.preventDefault();
+		event.stopPropagation();
+		dropdown.classList.toggle('is-expanded');
+	});
+	document.addEventListener('click', function() {
+		dropdown.classList.remove('is-expanded');
+	});
 
-	if (glodaMsg.folderMessage.getStringProperty('junkscore') == Components.interfaces.nsIJunkMailPlugin.IS_SPAM_SCORE) {
-		details.appendChild(createAlert('This is junk', 'junk', 'warning'));
+	// action events
+	var buttons = e.querySelectorAll('[data-action]');
+	for (let i = 0; i < buttons.length; i++) {
+		let button = buttons[i];
+		let fn = actions[button.dataset.action];
+		button.addEventListener('click', function(event) {
+			event.preventDefault();
+			event.stopPropagation();
+			fn(msg, event.currentTarget);
+		});
 	}
 
-	var footer = createMessageFooter(glodaMsg);
-	details.appendChild(footer);
-
+	// iframe
+	var footer = e.querySelector('.message__footer');
+	var details = e.querySelector('.message__details');
 	var iframeLoaded = false;
 	var lazyLoadIframe = function() {
 		if (!iframeLoaded && !e.classList.contains('is-collapsed')) {

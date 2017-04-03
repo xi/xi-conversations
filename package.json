@@ -4,5 +4,8 @@
   "description": "minimal clonse of thunderbird-conversations",
   "main": "bootstrap.js",
   "author": "Tobias Bengfort",
-  "license": "GPL-2.0+"
+  "license": "GPL-2.0+",
+  "devDependencies": {
+    "mustache": "^2.3.0"
+  }
 }
