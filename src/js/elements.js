@@ -12,7 +12,7 @@ var autoMarkAsRead = function(e, glodaMsg) {
 		var rect = e.getBoundingClientRect();
 		var height = window.innerHeight || document.documentElement.clientHeight;
 
-		if (!e.classList.contains('is-collapsed')) {
+		if (e.classList.contains('is-expanded')) {
 			if (rect.top >= 0 && rect.top < height) {
 				topWasInView = true;
 			}
@@ -73,7 +73,7 @@ module.exports = function(glodaMsg, expanded) {
 	var header = e.querySelector('.message__header');
 	header.addEventListener('click', function(event) {
 		event.preventDefault();
-		e.classList.toggle('is-collapsed');
+		e.classList.toggle('is-expanded');
 		lazyLoadIframe();
 	});
 
@@ -106,7 +106,7 @@ module.exports = function(glodaMsg, expanded) {
 	var details = e.querySelector('.message__details');
 	var iframeLoaded = false;
 	var lazyLoadIframe = function() {
-		if (!iframeLoaded && !e.classList.contains('is-collapsed')) {
+		if (!iframeLoaded && e.classList.contains('is-expanded')) {
 			details.insertBefore(createIframe(glodaMsg), footer);
 			iframeLoaded = true;
 		}

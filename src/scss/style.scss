@@ -29,6 +29,22 @@ body {
 	color: -moz-default-color;
 	margin-bottom: 2px;
 	box-shadow: 0 0 0.3em ThreeDShadow;
+
+	.message__details,
+	.recipients {
+		display: none;
+	}
+
+	&.is-expanded {
+		.message__details,
+		.recipients {
+			display: block;
+		}
+
+		.summary {
+			display: none;
+		}
+	}
 }
 
 .message__body {
@@ -45,28 +61,18 @@ body {
 	display: flex;
 	flex-direction: row;
 	align-items: center;
-}
 
-.message__header > * {
-	flex: 0 0 auto;
-}
+	> * {
+		flex: 0 0 auto;
+	}
 
-.message__header > .summary,
-.message__header > .recipients {
-	flex: 1 1 auto;
-	white-space: nowrap;
-	text-overflow: ellipsis;
-	overflow: hidden;
-}
-
-.summary,
-.message.is-collapsed .message__details,
-.message.is-collapsed .recipients {
-	display: none;
-}
-
-.message.is-collapsed .summary {
-	display: block;
+	> .summary,
+	> .recipients {
+		flex: 1 1 auto;
+		white-space: nowrap;
+		text-overflow: ellipsis;
+		overflow: hidden;
+	}
 }
 
 .summary {
@@ -77,9 +83,11 @@ body {
 	margin-right: 0.5em;
 }
 
-.author a:not(:last-child)::after,
-.recipients a:not(:last-child)::after {
-	content: ", ";
+.author,
+.recipients {
+	a:not(:last-child)::after {
+		content: ", ";
+	}
 }
 
 .icon {
@@ -112,18 +120,18 @@ body {
 	cursor: pointer;
 	border-radius: 2px;
 	padding: 0.2em;
-}
 
-.button:hover,
-.button:focus {
-	border-color: ThreeDShadow;
-	background-color: ButtonHighlight;
-	transition: background-color 0.3s, border-color 0.3s;
-}
+	&:hover,
+	&:focus {
+		border-color: ThreeDShadow;
+		background-color: ButtonHighlight;
+		transition: background-color 0.3s, border-color 0.3s;
+	}
 
-.button:active {
-	background-color: transparent;
-	box-shadow: 0 0 0.5em ThreeDShadow inset;
+	&:active {
+		background-color: transparent;
+		box-shadow: 0 0 0.5em ThreeDShadow inset;
+	}
 }
 
 .actions {
@@ -142,10 +150,10 @@ body {
 	border-radius: 0.4em;
 	box-shadow: 0 0 1em ThreeDShadow;
 	overflow: hidden;
-}
 
-.dropdown.is-expanded {
-	display: block;
+	&.is-expanded {
+		display: block;
+	}
 }
 
 .dropdown-item {
@@ -157,40 +165,45 @@ body {
 	padding: 0.2em 0.3em;
 	white-space: nowrap;
 	cursor: pointer;
-}
 
-.dropdown-item:nth-child(2n) {
-	background-color: -moz-OddTreeRow;
-}
+	&:nth-child(2n) {
+		background-color: -moz-OddTreeRow;
+	}
 
-.dropdown-item:hover,
-.dropdown-item:focus {
-	background-color: -moz-CellHighlight;
-	color: -moz-CellHighlightText;
+	&:hover,
+	&:focus {
+		background-color: -moz-CellHighlight;
+		color: -moz-CellHighlightText;
+	}
 }
 
 .attachments {
 	margin: 0;
 	padding: 0;
-}
 
-.attachments li {
-	display: block;
+	li {
+		display: block;
+	}
 }
 
 .attachment {
 	padding: 0.1em;
 	border-radius: 2px;
-}
 
-.attachment:focus {
-	background-color: -moz-CellHighlight;
-	color: -moz-CellHighlightText;
+	&:focus {
+		background-color: -moz-CellHighlight;
+		color: -moz-CellHighlightText;
+	}
 }
 
 .alert {
 	background-color: #d9edf7;
 	padding: 0.5em;
+
+	.icon {
+		font-size: 200%;
+		vertical-align: middle;
+	}
 }
 
 .alert--success {
@@ -203,9 +216,4 @@ body {
 
 .alert--error {
 	background-color: #f2dede;
-}
-
-.alert .icon {
-	font-size: 200%;
-	vertical-align: middle;
 }
