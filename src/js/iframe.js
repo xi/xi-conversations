@@ -1,3 +1,7 @@
+var createAlert = require('./alert.js');
+var crypto = require('./crypto.js');
+var util = require('./util.js');
+
 var adjustHeight = function(iframe) {
 	iframe.parentElement.style.height = iframe.parentElement.getBoundingClientRect().height + 'px';
 	iframe.style.height = 'auto';
@@ -8,7 +12,7 @@ var adjustHeight = function(iframe) {
 var hideBlocks = function(iframe, test, hideText, showText, color) {
 	var doc = iframe.contentDocument;
 
-	walkDOM(doc, test, function(node) {
+	util.walkDOM(doc, test, function(node) {
 		var hidden = true;
 
 		var update = function() {
@@ -40,8 +44,8 @@ var hideBlocks = function(iframe, test, hideText, showText, color) {
 	});
 };
 
-var createIframe = function(glodaMsg) {
-	var uri = msg2uri(glodaMsg.folderMessage);
+module.exports = function(glodaMsg) {
+	var uri = util.msg2uri(glodaMsg.folderMessage);
 
 	var iframe = document.createElementNS('http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul', 'iframe');
 	iframe.setAttribute('type', 'content');
@@ -52,8 +56,8 @@ var createIframe = function(glodaMsg) {
 
 		var mainWindow = window.frameElement.ownerDocument.defaultView;
 
-		var unregister = mainWindow.xiEnigmail.on(uri2url(uri), function(result) {
-			var parsed = parseStatusFlags(result.statusFlags);
+		var unregister = mainWindow.xiEnigmail.on(util.uri2url(uri), function(result) {
+			var parsed = crypto.parseStatusFlags(result.statusFlags);
 			var msg = result.errorMsg.split('\n')[0];
 
 			if (msg) {
@@ -79,7 +83,8 @@ var createIframe = function(glodaMsg) {
 			}, '-- hide signature --', '-- show signature --', 'rgb(56, 117, 215)');
 		});
 
-		var messageService = Messenger.messageServiceFromURI(uri2url(uri));
+		var Messenger = Components.classes['@mozilla.org/messenger;1'].createInstance(Components.interfaces.nsIMessenger);
+		var messageService = Messenger.messageServiceFromURI(util.uri2url(uri));
 		var mainWindow = window.frameElement.ownerDocument.defaultView;
 		iframe.docShell.contentViewer.forceCharacterSet = 'UTF-8';
 		messageService.DisplayMessage(uri, iframe.docShell, mainWindow.msgWindow, {}, charset, {});

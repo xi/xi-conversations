@@ -1,3 +1,6 @@
+var actions = require('./actions.js');
+var util = require('./util.js');
+
 Components.utils.import('resource:///modules/mailServices.js');
 
 var getTags = function(msg) {
@@ -17,7 +20,7 @@ var createTag = function(tag) {
 	e.className = 'tag';
 	e.textContent = tag.name;
 	e.style.backgroundColor = '#' + tag.color;
-	e.style.color = contrastColor(tag.color);
+	e.style.color = util.contrastColor(tag.color);
 	return e;
 };
 
@@ -41,7 +44,7 @@ var parseContacts = function(raw) {
 	}
 
 	return contacts;
-}
+};
 
 var formatContacts = function(raw) {
 	var contacts = parseContacts(raw);
@@ -65,7 +68,7 @@ var createActionButton = function(msg, title, icon, action) {
 		event.stopPropagation();
 		action(msg);
 	});
-	button.appendChild(createIcon(icon));
+	button.appendChild(util.createIcon(icon));
 	return button;
 };
 
@@ -78,7 +81,7 @@ var createActionItem = function(msg, title, icon, action) {
 		event.stopPropagation();
 		action(msg);
 	});
-	prependChild(button, createIcon(icon));
+	util.prependChild(button, util.createIcon(icon));
 	return button;
 };
 
@@ -87,37 +90,37 @@ var createActions = function(glodaMsg) {
 	var canReplyAll = (parseContacts(msg.recipients).length + parseContacts(msg.ccList).length + parseContacts(msg.bccList).length) > 1;
 	var canReplyToList = glodaMsg.mailingLists;
 
-	var actions = document.createElement('span');
-	actions.className = 'actions';
+	var actionWrapper = document.createElement('span');
+	actionWrapper.className = 'actions';
 
 	if (canReplyToList) {
-		actions.appendChild(createActionButton(msg, 'reply to list', 'replylist', replyToList));
+		actionWrapper.appendChild(createActionButton(msg, 'reply to list', 'replylist', actions.replyToList));
 	} else if (canReplyAll) {
-		actions.appendChild(createActionButton(msg, 'reply all', 'replyall', replyAll));
+		actionWrapper.appendChild(createActionButton(msg, 'reply all', 'replyall', actions.replyAll));
 	} else {
-		actions.appendChild(createActionButton(msg, 'reply', 'reply', replyToSender));
+		actionWrapper.appendChild(createActionButton(msg, 'reply', 'reply', actions.replyToSender));
 	}
 
 	var dropdown = document.createElement('div');
 	dropdown.className = 'dropdown';
 
-	dropdown.appendChild(createActionItem(msg, 'reply', 'reply', replyToSender));
+	dropdown.appendChild(createActionItem(msg, 'reply', 'reply', actions.replyToSender));
 	if (canReplyAll) {
-		dropdown.appendChild(createActionItem(msg, 'reply all', 'replyall', replyAll));
+		dropdown.appendChild(createActionItem(msg, 'reply all', 'replyall', actions.replyAll));
 	}
 	if (canReplyToList) {
-		dropdown.appendChild(createActionItem(msg, 'reply to list', 'replylist', replyToList));
+		dropdown.appendChild(createActionItem(msg, 'reply to list', 'replylist', actions.replyToList));
 	}
-	dropdown.appendChild(createActionItem(msg, 'forward', 'forward', forward));
-	dropdown.appendChild(createActionItem(msg, 'edit as new', 'newmsg', editAsNew));
-	dropdown.appendChild(createActionItem(msg, 'view in classic reader', 'x-open_in_new', viewClassic));
-	dropdown.appendChild(createActionItem(msg, 'view source', 'x-code', viewSource));
-	dropdown.appendChild(createActionItem(msg, 'junk', 'junk', toggleJunk));
-	dropdown.appendChild(createActionItem(msg, 'delete', 'delete', deleteMsg));
+	dropdown.appendChild(createActionItem(msg, 'forward', 'forward', actions.forward));
+	dropdown.appendChild(createActionItem(msg, 'edit as new', 'newmsg', actions.editAsNew));
+	dropdown.appendChild(createActionItem(msg, 'view in classic reader', 'x-open_in_new', actions.viewClassic));
+	dropdown.appendChild(createActionItem(msg, 'view source', 'x-code', actions.viewSource));
+	dropdown.appendChild(createActionItem(msg, 'junk', 'junk', actions.toggleJunk));
+	dropdown.appendChild(createActionItem(msg, 'delete', 'delete', actions.deleteMsg));
 
 	var dropdownToggle = document.createElement('button');
 	dropdownToggle.className = 'button';
-	dropdownToggle.appendChild(createIcon('appButton'));
+	dropdownToggle.appendChild(util.createIcon('appButton'));
 	dropdownToggle.title = 'more';
 	dropdownToggle.addEventListener('click', function(event) {
 		event.preventDefault();
@@ -127,19 +130,19 @@ var createActions = function(glodaMsg) {
 	document.addEventListener('click', function() {
 		dropdown.classList.remove('is-expanded');
 	});
-	actions.appendChild(dropdownToggle);
-	actions.appendChild(dropdown);
+	actionWrapper.appendChild(dropdownToggle);
+	actionWrapper.appendChild(dropdown);
 
-	return actions;
+	return actionWrapper;
 };
 
-var createMessageHeader = function(glodaMsg) {
+module.exports = function(glodaMsg) {
 	var msg = glodaMsg.folderMessage;
 
 	var header = document.createElement('header');
 	header.className = 'message__header';
 
-	var star = createIcon('x-star');
+	var star = util.createIcon('x-star');
 	if (msg.isFlagged) {
 		star.classList.add('is-active');
 	}
@@ -162,7 +165,7 @@ var createMessageHeader = function(glodaMsg) {
 	header.appendChild(author);
 
 	var recipients = formatContacts(msg.recipients);
-	prependChild(recipients, document.createTextNode(' to '));
+	util.prependChild(recipients, document.createTextNode(' to '));
 	recipients.className = 'recipients';
 	header.appendChild(recipients);
 
@@ -180,7 +183,7 @@ var createMessageHeader = function(glodaMsg) {
 	header.appendChild(tags);
 
 	if (glodaMsg.attachmentInfos.length) {
-		var attachments = createIcon('x-attachment');
+		var attachments = util.createIcon('x-attachment');
 		header.appendChild(attachments);
 	}
 

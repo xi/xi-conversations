@@ -1,4 +1,6 @@
-var createMessageFooter = function(glodaMsg) {
+var util = require('./util.js');
+
+module.exports = function(glodaMsg) {
 	var mainWindow = window.frameElement.ownerDocument.defaultView;
 	var msg = glodaMsg.folderMessage;
 
@@ -15,7 +17,7 @@ var createMessageFooter = function(glodaMsg) {
 		a.className = 'attachment';
 		a.textContent = att.name;
 		a.href = att.url;
-		prependChild(a, createIcon('x-attachment'));
+		util.prependChild(a, util.createIcon('x-attachment'));
 		li.appendChild(a);
 	}
 	footer.appendChild(attachments);

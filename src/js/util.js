@@ -100,3 +100,15 @@ EventService.prototype._cleanup = function() {
 		}
 	}
 };
+
+module.exports = {
+	getParams: getParams,
+	uri2url: uri2url,
+	uri2msg: uri2msg,
+	msg2uri: msg2uri,
+	walkDOM: walkDOM,
+	createIcon: createIcon,
+	prependChild: prependChild,
+	contrastColor: contrastColor,
+	EventService: EventService
+};

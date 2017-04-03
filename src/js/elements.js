@@ -1,3 +1,10 @@
+var actions = require('./actions.js');
+var createAlert = require('./alert.js');
+var createIframe = require('./iframe.js');
+var createMessageFooter = require('./footer.js');
+var createMessageHeader = require('./header.js');
+var util = require('./util.js');
+
 var autoMarkAsRead = function(e, glodaMsg) {
 	var topWasInView = false;
 	var bottomWasInView = false;
@@ -14,25 +21,17 @@ var autoMarkAsRead = function(e, glodaMsg) {
 				bottomWasInView = true;
 			}
 			if (topWasInView && bottomWasInView) {
-				markAsRead(glodaMsg.folderMessage, true);
+				actions.markAsRead(glodaMsg.folderMessage, true);
 				window.clearInterval(intervalId);
 			}
 		}
 	}, 100);
 };
 
-var createAlert = function(text, icon, level) {
-	var e = document.createElement('div');
-	e.className = 'alert alert--' + level;
-	e.textContent = text;
-	prependChild(e, createIcon(icon));
-	return e;
-};
-
-var createMessageElement = function(glodaMsg, expanded) {
+module.exports = createMessageElement = function(glodaMsg, expanded) {
 	var e = document.createElement('article');
 	e.className = 'message';
-	e.id = msg2uri(glodaMsg.folderMessage);
+	e.id = util.msg2uri(glodaMsg.folderMessage);
 	e.tabIndex = -1;
 
 	if (!expanded) {

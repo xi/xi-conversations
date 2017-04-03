@@ -1,3 +1,6 @@
+var createMessageElement = require('./elements');
+var util = require('./util.js');
+
 Components.utils.import("resource:///modules/gloda/gloda.js");
 
 var getConversation = function(msgs, cb) {
@@ -42,8 +45,8 @@ var getConversation = function(msgs, cb) {
 window.frameElement.setAttribute('tooltip', 'aHTMLTooltip');
 window.frameElement.setAttribute('context', 'mailContext');
 
-var initialUrls = (getParams().urls || '').split(',');
-var initialMsgs = initialUrls.map(uri2msg);
+var initialUrls = (util.getParams().urls || '').split(',');
+var initialMsgs = initialUrls.map(util.uri2msg);
 
 getConversation(initialMsgs, function(conversation) {
 	var subject = conversation[0].folderMessage.mime2DecodedSubject || '(no subject)';

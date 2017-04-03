@@ -1,3 +1,5 @@
+var util = require('./util.js');
+
 var parseStatusFlags = function(statusFlags) {
 	var nsIEnigmail = Components.interfaces.nsIEnigmail;
 
@@ -51,7 +53,7 @@ var monkeyPatchCrypto = function() {
 	var mainWindow = window.frameElement.ownerDocument.defaultView;
 
 	if (!mainWindow.xiEnigmail) {
-		mainWindow.xiEnigmail = new EventService();
+		mainWindow.xiEnigmail = new util.EventService();
 		patchSecurityInfo();
 
 		var original = mainWindow.messageHeaderSink.enigmailPrepSecurityInfo;
@@ -60,6 +62,10 @@ var monkeyPatchCrypto = function() {
 			patchSecurityInfo();
 		}
 	}
+};
+
+module.exports = {
+	parseStatusFlags: parseStatusFlags
 };
 
 monkeyPatchCrypto();
