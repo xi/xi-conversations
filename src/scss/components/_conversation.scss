@@ -1,0 +1,21 @@
+.conversation__header {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	padding: 1em;
+	background-color: Menu;
+	box-shadow: 0 0 1em ThreeDShadow;
+	z-index: 2;
+}
+
+.conversation__main {
+	max-width: 70em;
+	padding: 3em 0.5em 0.5em;
+	margin: 0 auto;
+}
+
+.conversation__subject {
+	font-size: inherit;
+	margin: 0;
+}

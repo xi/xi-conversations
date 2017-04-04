@@ -1,0 +1,38 @@
+.dropdown {
+	display: none;
+	position: absolute;
+	top: 2em;
+	right: 0;
+	z-index: 1;
+	background-color: -moz-Field;
+	color: -moz-FieldText;
+	min-width: 15em;
+	border-radius: 0.4em;
+	box-shadow: 0 0 1em ThreeDShadow;
+	overflow: hidden;
+
+	&.is-expanded {
+		display: block;
+	}
+}
+
+.dropdown-item {
+	border: 0;
+	background: none;
+	display: block;
+	min-width: 100%;
+	text-align: left;
+	padding: 0.2em 0.3em;
+	white-space: nowrap;
+	cursor: pointer;
+
+	&:nth-child(2n) {
+		background-color: -moz-OddTreeRow;
+	}
+
+	&:hover,
+	&:focus {
+		background-color: -moz-CellHighlight;
+		color: -moz-CellHighlightText;
+	}
+}

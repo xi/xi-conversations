@@ -9,22 +9,22 @@
 			<article class="message {{#isExpanded}}is-expanded{{/isExpanded}}" id="{{ uri }}" tabindex="-1">
 				<header class="message__header">
 					<button class="star {{#isFlagged}}is-active{{/isFlagged}}" data-action="toggleFlagged">{{#icon}}x-star{{/icon}}</button>
-					{{#author}}<a class="author" href="mailto:{{ email }}">{{ name }}</a>{{/author}}
-					<span class="recipients">
+					{{#author}}<a class="message__author" href="mailto:{{ email }}">{{ name }}</a>{{/author}}
+					<span class="message__recipients">
 						to
 						{{#recipients}}
 							<a href="mailto:{{ email }}">{{ name }}</a>
 						{{/recipients}}
 					</span>
-					<span class="summary">{{ summary }}</span>
+					<span class="message__summary">{{ summary }}</span>
 
-					<span class="tags">
+					<span class="message__tags">
 						{{#tags}}<span class="tag" style="background-color: {{ bgColor }}; color: {{ fgColor }}">{{ name }}</span>{{/tags}}
 					</span>
 					{{#hasAttachments}}{{#icon}}x-attachment{{/icon}}{{/hasAttachments}}
 					{{#dateFilter}}{{ date }}{{/dateFilter}}
 
-					<span class="actions">
+					<span class="message__actions">
 						{{#canReplyToList}}<button class="button" title="reply to list" data-action="replyToList">{{#icon}}replylist{{/icon}}</button{{/canReplyToList}}
 						{{^canReplyToList}}
 							{{#canReplyAll}}<button class="button" title="reply all" data-action="replyAll">{{#icon}}replyall{{/icon}}</button{{/canReplyAll}}
