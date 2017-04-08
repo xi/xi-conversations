@@ -54,6 +54,7 @@ var anyExpanded = false;
 getConversation(initialMsgs, function(conversation, isInitial) {
 	// ignore any message without a folderMessage
 	conversation = conversation.filter(x => x.folderMessage);
+	conversation = util.unique(conversation, x => x.headerMessageID);
 
 	if (isInitial) {
 		var subject = conversation[0].folderMessage.mime2DecodedSubject || '(no subject)';

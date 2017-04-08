@@ -37,6 +37,17 @@ var walkDOM = function(root, test, fn) {
 	}
 };
 
+var unique = function(l, keyFn) {
+	var keys = [];
+	return l.filter(function(item) {
+		var key = keyFn(item);
+		if (keys.indexOf(key) === -1) {
+			keys.push(key);
+			return true;
+		}
+	});
+};
+
 var createIcon = function(key) {
 	var wrapper = document.createElement('div');
 	if (key.substring(0, 2) === 'x-') {
@@ -168,6 +179,7 @@ module.exports = {
 	uri2msg: uri2msg,
 	msg2uri: msg2uri,
 	walkDOM: walkDOM,
+	unique: unique,
 	createIcon: createIcon,
 	createDate: createDate,
 	createAlert: createAlert,
