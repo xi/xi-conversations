@@ -52,6 +52,9 @@ var container = document.querySelector('.conversation__main');
 var anyExpanded = false;
 
 getConversation(initialMsgs, function(conversation, isInitial) {
+	// ignore any message without a folderMessage
+	conversation = conversation.filter(x => x.folderMessage);
+
 	if (isInitial) {
 		var subject = conversation[0].folderMessage.mime2DecodedSubject || '(no subject)';
 		document.querySelector('.conversation__subject').textContent = subject;
