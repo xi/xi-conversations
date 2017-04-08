@@ -1,4 +1,4 @@
-var createMessageElement = require('./elements');
+var createMessageElement = require('./message');
 var util = require('./util.js');
 
 Components.utils.import("resource:///modules/gloda/gloda.js");
