@@ -72,9 +72,11 @@ module.exports = function(glodaMsg, expanded) {
 	// header events
 	var header = e.querySelector('.message__header');
 	header.addEventListener('click', function(event) {
-		event.preventDefault();
-		e.classList.toggle('is-expanded');
-		lazyLoadIframe();
+		if (!event.defaultPrevented) {
+			event.preventDefault();
+			e.classList.toggle('is-expanded');
+			lazyLoadIframe();
+		}
 	});
 
 	// dropdown events
@@ -82,8 +84,12 @@ module.exports = function(glodaMsg, expanded) {
 	var dropdown = e.querySelector('.dropdown');
 	dropdownToggle.addEventListener('click', function(event) {
 		event.preventDefault();
-		event.stopPropagation();
-		dropdown.classList.toggle('is-expanded');
+		if (!dropdownToggle.classList.contains('is-expanded')) {
+			// trigger after the remove handler
+			setTimeout(function() {
+				dropdown.classList.add('is-expanded');
+			});
+		}
 	});
 	document.addEventListener('click', function() {
 		dropdown.classList.remove('is-expanded');
@@ -96,7 +102,6 @@ module.exports = function(glodaMsg, expanded) {
 		let fn = actions[button.dataset.action];
 		button.addEventListener('click', function(event) {
 			event.preventDefault();
-			event.stopPropagation();
 			fn(msg, event.currentTarget);
 		});
 	}
