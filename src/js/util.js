@@ -60,6 +60,14 @@ var createDate = function(date) {
 	return e;
 };
 
+var createAlert = function(text, icon, level) {
+	var e = document.createElement('div');
+	e.className = 'alert alert--' + level;
+	e.textContent = text;
+	prependChild(e, createIcon(icon));
+	return e;
+};
+
 var prependChild = function(parent, child) {
 	if (parent.childNodes.length === 0) {
 		parent.appendChild(child);
@@ -162,6 +170,7 @@ module.exports = {
 	walkDOM: walkDOM,
 	createIcon: createIcon,
 	createDate: createDate,
+	createAlert: createAlert,
 	prependChild: prependChild,
 	contrastColor: contrastColor,
 	parseContacts: parseContacts,

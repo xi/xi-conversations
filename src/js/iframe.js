@@ -1,4 +1,3 @@
-var createAlert = require('./alert.js');
 var crypto = require('./crypto.js');
 var util = require('./util.js');
 
@@ -61,9 +60,9 @@ module.exports = function(glodaMsg) {
 			var msg = result.errorMsg.split('\n')[0];
 
 			if (msg) {
-				iframe.parentNode.insertBefore(createAlert(msg, 'x-lock', parsed.signed), iframe);
+				iframe.parentNode.insertBefore(util.createAlert(msg, 'x-lock', parsed.signed), iframe);
 			} else if (parsed.encrypted) {
-				iframe.parentNode.insertBefore(createAlert('encrypted message', 'x-lock', 'info'), iframe);
+				iframe.parentNode.insertBefore(util.createAlert('encrypted message', 'x-lock', 'info'), iframe);
 			}
 
 			unregister();
