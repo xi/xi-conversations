@@ -48,6 +48,12 @@ var authorColorFilter = function() {
 	};
 };
 
+var stringFilter = function() {
+	return function(text, render) {
+		return util.strings.get(render(text));
+	};
+};
+
 module.exports = function(glodaMsg, expanded) {
 	var msg = glodaMsg.folderMessage;
 
@@ -57,6 +63,7 @@ module.exports = function(glodaMsg, expanded) {
 		icon: iconFilter,
 		dateFilter: dateFilter,
 		authorColor: authorColorFilter,
+		str: stringFilter,
 
 		isExpanded: expanded,
 		isFlagged: msg.isFlagged,

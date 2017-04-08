@@ -62,7 +62,7 @@ module.exports = function(glodaMsg) {
 			if (msg) {
 				iframe.parentNode.insertBefore(util.createAlert(msg, 'x-lock', parsed.signed), iframe);
 			} else if (parsed.encrypted) {
-				iframe.parentNode.insertBefore(util.createAlert('encrypted message', 'x-lock', 'info'), iframe);
+				iframe.parentNode.insertBefore(util.createAlert(util.strings.get('encrypted'), 'x-lock', 'info'), iframe);
 			}
 
 			unregister();
@@ -75,11 +75,11 @@ module.exports = function(glodaMsg) {
 				if (node.tagName && node.tagName.toLowerCase() === 'blockquote') {
 					return node.textContent.length > 200;
 				}
-			}, '-- hide quote --', '-- show quote --', 'orange');
+			}, util.strings.get('hideQuote'), util.strings.get('showQuote'), 'orange');
 
 			hideBlocks(iframe, function(node) {
 				return node.classList && node.classList.contains('moz-txt-sig');
-			}, '-- hide signature --', '-- show signature --', 'rgb(56, 117, 215)');
+			}, util.strings.get('hideSig'), util.strings.get('showSig'), 'rgb(56, 117, 215)');
 		});
 
 		var Messenger = Components.classes['@mozilla.org/messenger;1'].createInstance(Components.interfaces.nsIMessenger);

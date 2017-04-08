@@ -1,6 +1,7 @@
 var Messenger = Components.classes['@mozilla.org/messenger;1'].createInstance(Components.interfaces.nsIMessenger);
 
 Components.utils.import('resource:///modules/mailServices.js');
+Components.utils.import("resource:///modules/StringBundle.js");
 
 var getParams = function() {
 	let params = {};
@@ -194,6 +195,7 @@ EventService.prototype._cleanup = function() {
 };
 
 module.exports = {
+	strings: new StringBundle('chrome://xi-conversations/locale/message.properties'),
 	getParams: getParams,
 	uri2url: uri2url,
 	uri2msg: uri2msg,
