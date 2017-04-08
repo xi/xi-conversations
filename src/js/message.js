@@ -42,6 +42,12 @@ var dateFilter = function() {
 	}
 };
 
+var authorColorFilter = function() {
+	return function(text, render) {
+		return util.pseudoRandomColor(render(text));
+	};
+};
+
 module.exports = function(glodaMsg, expanded) {
 	var msg = glodaMsg.folderMessage;
 
@@ -50,6 +56,7 @@ module.exports = function(glodaMsg, expanded) {
 	wrapper.innerHTML = Mustache.render(tpl, {
 		icon: iconFilter,
 		dateFilter: dateFilter,
+		authorColor: authorColorFilter,
 
 		isExpanded: expanded,
 		isFlagged: msg.isFlagged,

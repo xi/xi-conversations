@@ -93,6 +93,25 @@ var contrastColor = function(color) {
 	return l > 0.3 ? 'black' : 'white';
 };
 
+var pseudoRandomColor = function(s) {
+	var hash = 0;
+	for (let i = 0; i < s.length; i++) {
+		let chr = s.charCodeAt(i);
+		hash = ((hash << 5) - hash) + chr;
+		hash &= 0xffff;
+	}
+	var hue = Math.floor(360 * hash / 0xffff);
+
+	// try to provide a consistent lightness across hues
+	var lightnessStops = [48, 25, 28, 27, 62, 42];
+	var j = Math.floor(hue / 60);
+	var l1 = lightnessStops[j];
+	var l2 = lightnessStops[(j + 1) % 6];
+	var lightness = Math.floor((hue / 60 - j) * (l2 - l1) + l1);
+
+	return "hsl(" + hue + ", 70%, " + Math.floor(lightness) + "%)";
+};
+
 var parseContacts = function(raw) {
 	var emails = {};
 	var names = {};
@@ -101,6 +120,7 @@ var parseContacts = function(raw) {
 
 	var contacts = [];
 	for (let i = 0; i < n; i++) {
+
 		var email = emails.value[i];
 		var name = names.value[i] || email;
 		var fullName = fullNames.value[i] || name;
@@ -185,6 +205,7 @@ module.exports = {
 	createAlert: createAlert,
 	prependChild: prependChild,
 	contrastColor: contrastColor,
+	pseudoRandomColor: pseudoRandomColor,
 	parseContacts: parseContacts,
 	getTags: getTags,
 	EventService: EventService
