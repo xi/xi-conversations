@@ -114,7 +114,7 @@ var getTags = function(msg) {
 			var color = MailServices.tags.getColorForKey(tag.key).substr(1) || 'fff';
 			return {
 				bgColor: '#' + color,
-				fgColor: util.contrastColor(color),
+				fgColor: contrastColor(color),
 				name: tag.tag,
 			};
 		});
