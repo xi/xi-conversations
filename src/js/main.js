@@ -13,7 +13,7 @@ var getConversation = function(msgs, cb) {
 		onQueryCompleted: function(collection) {
 			if (!done) {
 				done = true;
-				cb(collection.items);
+				cb(collection.items, true);
 			}
 		}
 	};
@@ -48,13 +48,15 @@ window.frameElement.setAttribute('context', 'mailContext');
 var initialUrls = (util.getParams().urls || '').split(',');
 var initialMsgs = initialUrls.map(util.uri2msg);
 
-getConversation(initialMsgs, function(conversation) {
-	var subject = conversation[0].folderMessage.mime2DecodedSubject || '(no subject)';
-	document.querySelector('.conversation__subject').textContent = subject;
-	document.title = subject;
+var container = document.querySelector('.conversation__main');
+var anyExpanded = false;
 
-	var container = document.querySelector('.conversation__main');
-	var anyExpanded = false;
+getConversation(initialMsgs, function(conversation, isInitial) {
+	if (isInitial) {
+		var subject = conversation[0].folderMessage.mime2DecodedSubject || '(no subject)';
+		document.querySelector('.conversation__subject').textContent = subject;
+		document.title = subject;
+	}
 
 	for (let i = 0; i < conversation.length; i++) {
 		let glodaMsg = conversation[i];
@@ -69,7 +71,7 @@ getConversation(initialMsgs, function(conversation) {
 		let message = createMessageElement(glodaMsg, expanded);
 		container.appendChild(message);
 
-		if (!anyExpanded && expanded) {
+		if (isInitial && !anyExpanded && expanded) {
 			message.focus();
 			window.scrollY = message.offsetTop - 50;
 		}
