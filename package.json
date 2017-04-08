@@ -1,7 +1,7 @@
 {
   "name": "xi-conversations",
   "version": "1.0.0",
-  "description": "minimal clonse of thunderbird-conversations",
+  "description": "minimal clone of thunderbird-conversations",
   "main": "bootstrap.js",
   "author": "Tobias Bengfort",
   "license": "GPL-2.0+",

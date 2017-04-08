@@ -1,1 +1,1 @@
--	minimal clonse of thunderbird-conversations focusing on the most important stuff
+-	minimal clone of thunderbird-conversations focusing on the most important stuff
