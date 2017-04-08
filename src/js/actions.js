@@ -17,13 +17,6 @@ var viewSource = function(msg) {
 	mainWindow.ViewPageSource([util.msg2uri(msg)]);
 };
 
-// FIXME broken
-var toggleJunk = function(msg) {
-	var mainWindow = window.frameElement.ownerDocument.defaultView;
-	var isJunk = msg.getStringProperty('junkscore') === Components.interfaces.nsIJunkMailPlugin.IS_SPAM_SCORE;
-	mainWindow.JunkSelectedMessages(!isJunk);
-};
-
 var deleteMsg = function(msg) {
 	var mainWindow = window.frameElement.ownerDocument.defaultView;
 	var e = document.getElementById(util.msg2uri(msg));
@@ -64,7 +57,6 @@ module.exports = {
 	forward: compose(Components.interfaces.nsIMsgCompType.ForwardInline),
 	viewClassic: viewClassic,
 	viewSource: viewSource,
-	toggleJunk: toggleJunk,
 	deleteMsg: deleteMsg,
 	markAsRead: markAsRead,
 	toggleFlagged: toggleFlagged
