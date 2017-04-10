@@ -17,16 +17,18 @@ is not to say that it would not work. But I do not recommend it.
 
 -	Many thunderbird APIs have next to no documentation. But reading the code is
 	not that bad and it is easily searchable with [DXR][2].
+-	The extensions relies havily on [Gloda][5].
 -	thunderbird-conversations is a [bootstrapped extension][3] This is deprecated
 	and will be replaced by [web extensions][4] in the long run, at least in
 	firefox.
 -	Plugging into enigmail is hard.
 -	protz did an amazing job handling all those edge cases and making it work for
-	humans..
+	humans.
 
 # Install
 
-If you feel adventurous and actually want to try this out, you will need to do the following steps:
+If you feel adventurous and actually want to try this out, you will need to do
+the following steps:
 
 -	Install node with npm, node-sass and browserify.
 -	Run `make`.
@@ -37,3 +39,4 @@ If you feel adventurous and actually want to try this out, you will need to do t
 [2]: https://dxr.mozilla.org/comm-central
 [3]: https://developer.mozilla.org/en-US/Add-ons/Bootstrapped_extensions
 [4]: https://developer.mozilla.org/en-US/Add-ons/WebExtensions
+[5]: https://developer.mozilla.org/en-US/docs/Mozilla/Thunderbird/Creating_a_Gloda_message_query
