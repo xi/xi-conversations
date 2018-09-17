@@ -38,6 +38,14 @@ var walkDOM = function(root, test, fn) {
 	}
 };
 
+var html2element = function(html) {
+	// thunderbird 60 will remove some elements when directly assigning to
+	// innerHTML
+	var parser = new DOMParser();
+	var doc = parser.parseFromString(html, "text/html");
+	return doc.body.children[0];
+};
+
 var unique = function(l, keyFn) {
 	var keys = [];
 	return l.filter(function(item) {
@@ -51,12 +59,13 @@ var unique = function(l, keyFn) {
 
 var createIcon = function(key) {
 	var wrapper = document.createElement('div');
+	var html;
 	if (key.substring(0, 2) === 'x-') {
-		wrapper.innerHTML = '<svg class="icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><use xlink:href="chrome://xi-conversations/content/material-icons.svg#' + key.substring(2) + '"></use></svg>';
+		html = '<svg class="icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><use xlink:href="chrome://xi-conversations/content/material-icons.svg#' + key.substring(2) + '"></use></svg>';
 	} else {
-		wrapper.innerHTML = '<svg class="icon" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><use xlink:href="chrome://messenger/skin/icons/mail-toolbar.svg#' + key + '"></use></svg>';
+		html = '<svg class="icon" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><use xlink:href="chrome://messenger/skin/icons/mail-toolbar.svg#' + key + '"></use></svg>';
 	}
-	return wrapper.children[0];
+	return html2element(html);
 };
 
 var createDate = function(date) {
@@ -205,6 +214,7 @@ module.exports = {
 	uri2msg: uri2msg,
 	msg2uri: msg2uri,
 	walkDOM: walkDOM,
+	html2element: html2element,
 	unique: unique,
 	createIcon: createIcon,
 	createDate: createDate,

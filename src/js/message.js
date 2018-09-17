@@ -58,8 +58,7 @@ module.exports = function(glodaMsg, expanded) {
 	var msg = glodaMsg.folderMessage;
 
 	var tpl = document.getElementById('message-template').innerHTML;
-	var wrapper = document.createElement('div');
-	wrapper.innerHTML = Mustache.render(tpl, {
+	var html = Mustache.render(tpl, {
 		icon: iconFilter,
 		dateFilter: dateFilter,
 		authorColor: authorColorFilter,
@@ -79,7 +78,7 @@ module.exports = function(glodaMsg, expanded) {
 		canReplyToList: glodaMsg.mailingLists,
 		canReplyAll: (util.parseContacts(msg.recipients).length + util.parseContacts(msg.ccList).length + util.parseContacts(msg.bccList).length) > 1,
 	});
-	var e = wrapper.children[0];
+	var e = util.html2element(html);
 
 	autoMarkAsRead(e, glodaMsg);
 
