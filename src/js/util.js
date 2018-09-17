@@ -184,7 +184,11 @@ EventService.prototype._cleanup = function() {
 		let a = this._listeners[key];
 
 		for (let id of Object.keys(a)) {
-			if (a[id][1].closed) {
+			let closed = true;
+			try {
+				closed = a[id][1].closed;
+			} catch (err) {}
+			if (closed) {
 				delete a[id];
 			}
 		}
