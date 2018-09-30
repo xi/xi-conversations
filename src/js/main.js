@@ -1,7 +1,7 @@
 var createMessageElement = require('./message');
 var util = require('./util.js');
 
-Components.utils.import("resource:///modules/gloda/gloda.js");
+ChromeUtils.import("resource:///modules/gloda/gloda.js");
 
 var getConversation = function(msgs, cb) {
 	var done = false;

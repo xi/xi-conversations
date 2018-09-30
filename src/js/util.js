@@ -1,7 +1,7 @@
 var Messenger = Components.classes['@mozilla.org/messenger;1'].createInstance(Components.interfaces.nsIMessenger);
 
-Components.utils.import('resource:///modules/mailServices.js');
-Components.utils.import("resource:///modules/StringBundle.js");
+ChromeUtils.import('resource:///modules/mailServices.js');
+ChromeUtils.import("resource:///modules/StringBundle.js");
 
 var getParams = function() {
 	let params = {};
