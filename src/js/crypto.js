@@ -5,16 +5,16 @@ var parseStatusFlags = function(statusFlags) {
 
 	var signed = '';
 	if (statusFlags & nsIEnigmail.PGP_MIME_SIGNED) {
-		var signed = 'info';
+		signed = 'info';
 		if ((statusFlags & nsIEnigmail.BAD_SIGNATURE) && !(statusFlags & nsIEnigmail.GOOD_SIGNATURE)) {
 			signed = 'danger';
 		} else if (statusFlags & (nsIEnigmail.REVOKED_KEY | nsIEnigmail.EXPIRED_KEY_SIGNATURE | nsIEnigmail.EXPIRED_SIGNATURE)) {
-			signed = 'warning'
+			signed = 'warning';
 		} else if (statusFlags & nsIEnigmail.GOOD_SIGNATURE) {
 			if (!(statusFlags & nsIEnigmail.TRUSTED_IDENTITY)) {
-				signed = 'warning'
+				signed = 'warning';
 			} else {
-				signed = 'success'
+				signed = 'success';
 			}
 		}
 	}
