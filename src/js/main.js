@@ -15,7 +15,7 @@ var getConversation = function(msgs, cb) {
 				done = true;
 				cb(collection.items, true);
 			}
-		}
+		},
 	};
 
 	var listener = {
@@ -32,11 +32,11 @@ var getConversation = function(msgs, cb) {
 						folderMessage: msg,
 						attachmentInfos: [],
 						mailingLists: null,
-						_indexedBodyText: null
+						_indexedBodyText: null,
 					};
 				}));
 			}
-		}
+		},
 	};
 
 	Gloda.getMessageCollectionForHeaders(msgs, listener, null);
@@ -63,16 +63,16 @@ getConversation(initialMsgs, function(conversation, isInitial) {
 	}
 
 	for (let i = 0; i < conversation.length; i++) {
-		let glodaMsg = conversation[i];
+		const glodaMsg = conversation[i];
 
-		let only = initialMsgs.length === 1 && initialMsgs[0] === glodaMsg.folderMessage;
+		const only = initialMsgs.length === 1 && initialMsgs[0] === glodaMsg.folderMessage;
 		let expanded = only || !glodaMsg.folderMessage.isRead;
 
 		if (!anyExpanded && i === conversation.length - 1) {
 			expanded = true;
 		}
 
-		let message = createMessageElement(glodaMsg, expanded);
+		const message = createMessageElement(glodaMsg, expanded);
 		container.appendChild(message);
 
 		if (isInitial && !anyExpanded && expanded) {

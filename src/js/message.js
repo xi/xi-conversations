@@ -39,7 +39,7 @@ var dateFilter = function() {
 		var nanosecs = parseInt(render(text), 10);
 		var date = new Date(nanosecs / 1000);
 		return util.createDate(date).outerHTML;
-	}
+	};
 };
 
 var authorColorFilter = function() {
@@ -66,7 +66,7 @@ module.exports = function(glodaMsg, expanded) {
 
 		isExpanded: expanded,
 		isFlagged: msg.isFlagged,
-		isJunk: glodaMsg.folderMessage.getStringProperty('junkscore') == Components.interfaces.nsIJunkMailPlugin.IS_SPAM_SCORE,
+		isJunk: glodaMsg.folderMessage.getStringProperty('junkscore') === Components.interfaces.nsIJunkMailPlugin.IS_SPAM_SCORE,
 		uri: util.msg2uri(msg),
 		author: util.parseContacts(msg.author),
 		recipients: util.parseContacts(msg.recipients),
@@ -111,8 +111,8 @@ module.exports = function(glodaMsg, expanded) {
 	// action events
 	var buttons = e.querySelectorAll('[data-action]');
 	for (let i = 0; i < buttons.length; i++) {
-		let button = buttons[i];
-		let fn = actions[button.dataset.action];
+		const button = buttons[i];
+		const fn = actions[button.dataset.action];
 		button.addEventListener('click', function(event) {
 			event.preventDefault();
 			fn(msg, event.currentTarget);

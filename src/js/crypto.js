@@ -21,7 +21,7 @@ var parseStatusFlags = function(statusFlags) {
 
 	return {
 		signed: signed,
-		encrypted: !!(statusFlags & nsIEnigmail.PGP_MIME_ENCRYPTED)
+		encrypted: !!(statusFlags & nsIEnigmail.PGP_MIME_ENCRYPTED),
 	};
 };
 
@@ -42,7 +42,7 @@ var patchSecurityInfo = function() {
 			errorMsg: errorMsg,
 			blockSeparation: blockSeparation,
 			msgUrl: msgUrl,
-			encToDetails: encToDetails
+			encToDetails: encToDetails,
 		});
 
 		original.apply(this, arguments);
@@ -60,12 +60,12 @@ var monkeyPatchCrypto = function() {
 		mainWindow.messageHeaderSink.enigmailPrepSecurityInfo = function() {
 			original.apply(this, arguments);
 			patchSecurityInfo();
-		}
+		};
 	}
 };
 
 module.exports = {
-	parseStatusFlags: parseStatusFlags
+	parseStatusFlags: parseStatusFlags,
 };
 
 monkeyPatchCrypto();

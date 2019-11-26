@@ -4,9 +4,9 @@ ChromeUtils.import('resource:///modules/mailServices.js');
 ChromeUtils.import("resource:///modules/StringBundle.js");
 
 var getParams = function() {
-	let params = {};
+	const params = {};
 	for (let part of location.search.substr(1).split('&')) {
-		var [key, raw] = part.split('=');
+		let [key, raw] = part.split('=');
 		params[key] = decodeURIComponent(raw);
 	}
 	return params;
@@ -42,7 +42,7 @@ var html2element = function(html) {
 	// thunderbird 60 will remove some elements when directly assigning to
 	// innerHTML
 	var parser = new DOMParser();
-	var doc = parser.parseFromString(html, "text/html");
+	var doc = parser.parseFromString(html, 'text/html');
 	return doc.body.children[0];
 };
 
@@ -58,7 +58,6 @@ var unique = function(l, keyFn) {
 };
 
 var createIcon = function(key) {
-	var wrapper = document.createElement('div');
 	var html;
 	if (key.substring(0, 2) === 'x-') {
 		html = '<svg class="icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><use xlink:href="chrome://xi-conversations/content/material-icons.svg#' + key.substring(2) + '"></use></svg>';
@@ -99,15 +98,15 @@ var prependChild = function(parent, child) {
 };
 
 var contrastColor = function(color) {
-	var [, r, g, b] = color.match(/(..)(..)(..)/).map(x => parseInt(x, 16) / 255);
-	let l = 0.2126 * Math.pow(r, 2.4) + 0.7152 * Math.pow(g, 2.4) + 0.0722 * Math.pow(b, 2.4);
+	const [, r, g, b] = color.match(/(..)(..)(..)/).map(x => parseInt(x, 16) / 255);
+	const l = 0.2126 * Math.pow(r, 2.4) + 0.7152 * Math.pow(g, 2.4) + 0.0722 * Math.pow(b, 2.4);
 	return l > 0.3 ? 'black' : 'white';
 };
 
 var pseudoRandomColor = function(s) {
-	var hash = 0;
+	let hash = 0;
 	for (let i = 0; i < s.length; i++) {
-		let chr = s.charCodeAt(i);
+		const chr = s.charCodeAt(i);
 		hash = ((hash << 5) - hash) + chr;
 		hash &= 0xffff;
 	}
@@ -120,7 +119,7 @@ var pseudoRandomColor = function(s) {
 	var l2 = lightnessStops[(j + 1) % 6];
 	var lightness = Math.floor((hue / 60 - j) * (l2 - l1) + l1);
 
-	return "hsl(" + hue + ", 70%, " + Math.floor(lightness) + "%)";
+	return 'hsl(' + hue + ', 70%, ' + Math.floor(lightness) + '%)';
 };
 
 var parseContacts = function(raw) {
@@ -131,7 +130,6 @@ var parseContacts = function(raw) {
 
 	var contacts = [];
 	for (let i = 0; i < n; i++) {
-
 		var email = emails.value[i];
 		var name = names.value[i] || email;
 		var fullName = fullNames.value[i] || name;
@@ -165,7 +163,7 @@ var getTags = function(msg) {
 function EventService() {
 	this._id = 0;
 	this._listeners = {};
-};
+}
 
 EventService.prototype.on = function(key, fn, win) {
 	var id = this._id++;
@@ -183,7 +181,7 @@ EventService.prototype.trigger = function(key, data) {
 	this._cleanup();
 	for (let id in this._listeners[key]) {
 		if (this._listeners[key].hasOwnProperty(id)) {
-			let fn = this._listeners[key][id][0];
+			const fn = this._listeners[key][id][0];
 			fn(data);
 		}
 	}
@@ -191,7 +189,7 @@ EventService.prototype.trigger = function(key, data) {
 
 EventService.prototype._cleanup = function() {
 	for (let key of Object.keys(this._listeners)) {
-		let a = this._listeners[key];
+		const a = this._listeners[key];
 
 		for (let id of Object.keys(a)) {
 			let closed = true;
@@ -225,5 +223,5 @@ module.exports = {
 	pseudoRandomColor: pseudoRandomColor,
 	parseContacts: parseContacts,
 	getTags: getTags,
-	EventService: EventService
+	EventService: EventService,
 };

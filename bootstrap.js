@@ -1,8 +1,7 @@
 ChromeUtils.import('resource://gre/modules/Services.jsm');
 
 var monkeyPatchWindow = function(win) {
-	var oldThreadPaneDoubleClick = win.ThreadPaneDoubleClick;
-	win.ThreadPaneDoubleClick = function () {
+	win.ThreadPaneDoubleClick = function() {
 		var tabmail = win.document.getElementById('tabmail');
 
 		var msgs = win.gFolderDisplay.selectedMessages;
@@ -10,7 +9,7 @@ var monkeyPatchWindow = function(win) {
 		var queryString = '?urls=' + win.encodeURIComponent(urls);
 
 		tabmail.openTab('chromeTab', {
-			chromePage: 'chrome://xi-conversations/content/main.html' + queryString
+			chromePage: 'chrome://xi-conversations/content/main.html' + queryString,
 		});
 	};
 };

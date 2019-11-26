@@ -59,5 +59,5 @@ module.exports = {
 	viewSource: viewSource,
 	deleteMsg: deleteMsg,
 	markAsRead: markAsRead,
-	toggleFlagged: toggleFlagged
+	toggleFlagged: toggleFlagged,
 };

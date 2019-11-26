@@ -84,7 +84,6 @@ module.exports = function(glodaMsg) {
 
 		var Messenger = Components.classes['@mozilla.org/messenger;1'].createInstance(Components.interfaces.nsIMessenger);
 		var messageService = Messenger.messageServiceFromURI(util.uri2url(uri));
-		var mainWindow = window.frameElement.ownerDocument.defaultView;
 		iframe.docShell.contentViewer.forceCharacterSet = 'UTF-8';
 		messageService.DisplayMessage(uri, iframe.docShell, mainWindow.msgWindow, {}, charset, {});
 	};
