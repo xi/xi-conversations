@@ -2,10 +2,12 @@ var crypto = require('./crypto.js');
 var util = require('./util.js');
 
 var adjustHeight = function(iframe) {
-	iframe.parentElement.style.height = iframe.parentElement.getBoundingClientRect().height + 'px';
+	// offsetHeight does not contain margins
+	// scrollHeight does not shrink
+
 	iframe.style.height = 'auto';
+	iframe.getBoundingClientRect();  // force reflow
 	iframe.style.height = iframe.contentDocument.body.scrollHeight + 'px';
-	iframe.parentElement.style.height = null;
 };
 
 var hideBlocks = function(iframe, test, hideText, showText, color) {
