@@ -1,0 +1,19 @@
+{
+  "manifest_version": 2,
+  "applications": {
+    "gecko": {
+      "id": "conversations@xi",
+      "strict_min_version": "68.0"
+    }
+  },
+  "name": "Xi Conversations",
+  "description": "Minimal clone of thunderbird conversations",
+  "version": "0.0.0",
+  "author": "Tobias Bengfort",
+  "icons": {
+    "32": "content/icon32x32.png"
+  },
+  "legacy": {
+    "type" : "bootstrap"
+  }
+}

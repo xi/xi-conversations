@@ -55,7 +55,7 @@ module.exports = function(glodaMsg) {
 
 		var mainWindow = window.frameElement.ownerDocument.defaultView;
 
-		var unregister = mainWindow.xiEnigmail.on(util.uri2url(uri), function(result) {
+		var unregister = mainWindow.xiEnigmail.on(uri, function(result) {
 			var parsed = crypto.parseStatusFlags(result.statusFlags);
 			var msg = result.errorMsg.split('\n')[0];
 
