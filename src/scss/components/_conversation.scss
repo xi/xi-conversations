@@ -11,6 +11,7 @@ body {
 	background-color: Menu;
 	box-shadow: 0 0 1em ThreeDShadow;
 	flex-grow: 0;
+	z-index: 1;
 }
 
 .conversation__main {
