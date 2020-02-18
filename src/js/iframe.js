@@ -5,11 +5,9 @@ var adjustHeight = function(iframe) {
 	// offsetHeight does not contain margins
 	// scrollHeight does not shrink
 
-	var body = iframe.contentDocument.body;
-	var style = getComputedStyle(body);
-	var marginTop = parseInt(style.marginTop, 10);
-	var marginBottom = parseInt(style.marginBottom, 10);
-	iframe.style.height = (marginTop + body.offsetHeight + marginBottom)+ 'px';
+	iframe.style.height = 'auto';
+	iframe.getBoundingClientRect();  // force reflow
+	iframe.style.height = iframe.contentDocument.body.scrollHeight + 'px';
 };
 
 var hideBlocks = function(iframe, test, hideText, showText, color) {
