@@ -1,4 +1,3 @@
-var crypto = require('./crypto.js');
 var util = require('./util.js');
 
 var adjustHeight = function(iframe) {
@@ -56,19 +55,6 @@ module.exports = function(glodaMsg) {
 		iframe.removeEventListener('load', onLoad, true);
 
 		var mainWindow = window.frameElement.ownerDocument.defaultView;
-
-		var unregister = mainWindow.xiEnigmail.on(uri, function(result) {
-			var parsed = crypto.parseStatusFlags(result.statusFlags);
-			var msg = result.errorMsg.split('\n')[0];
-
-			if (msg) {
-				iframe.parentNode.insertBefore(util.createAlert(msg, 'x-lock', parsed.signed), iframe);
-			} else if (parsed.encrypted) {
-				iframe.parentNode.insertBefore(util.createAlert(util.strings.get('encrypted'), 'x-lock', 'info'), iframe);
-			}
-
-			unregister();
-		}, window);
 
 		iframe.addEventListener('DOMContentLoaded', function() {
 			adjustHeight(iframe);

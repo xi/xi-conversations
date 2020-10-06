@@ -160,52 +160,6 @@ var getTags = function(msg) {
 		});
 };
 
-function EventService() {
-	this._id = 0;
-	this._listeners = {};
-}
-
-EventService.prototype.on = function(key, fn, win) {
-	var id = this._id++;
-	this._listeners[key] = this._listeners[key] || {};
-	this._listeners[key][id] = [fn, win];
-	this._cleanup();
-
-	var self = this;
-	return function() {
-		delete self._listeners[key][id];
-	};
-};
-
-EventService.prototype.trigger = function(key, data) {
-	this._cleanup();
-	for (let id in this._listeners[key]) {
-		if (this._listeners[key].hasOwnProperty(id)) {
-			const fn = this._listeners[key][id][0];
-			fn(data);
-		}
-	}
-};
-
-EventService.prototype._cleanup = function() {
-	for (let key of Object.keys(this._listeners)) {
-		const a = this._listeners[key];
-
-		for (let id of Object.keys(a)) {
-			let closed = true;
-			try {
-				closed = a[id][1].closed;
-			} catch (err) {}
-			if (closed) {
-				delete a[id];
-			}
-		}
-		if (Object.keys(a).length === 0) {
-			delete this._listeners[key];
-		}
-	}
-};
-
 module.exports = {
 	strings: new StringBundle('chrome://xi-conversations/locale/message.properties'),
 	getParams: getParams,
@@ -223,5 +177,4 @@ module.exports = {
 	pseudoRandomColor: pseudoRandomColor,
 	parseContacts: parseContacts,
 	getTags: getTags,
-	EventService: EventService,
 };

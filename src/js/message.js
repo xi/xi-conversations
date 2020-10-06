@@ -67,6 +67,7 @@ module.exports = function(glodaMsg, expanded) {
 		isExpanded: expanded,
 		isFlagged: msg.isFlagged,
 		isJunk: glodaMsg.folderMessage.getStringProperty('junkscore') === Components.interfaces.nsIJunkMailPlugin.IS_SPAM_SCORE,
+		isEncrypted: null,
 		uri: util.msg2uri(msg),
 		author: util.parseContacts(msg.author),
 		recipients: util.parseContacts(msg.recipients),
