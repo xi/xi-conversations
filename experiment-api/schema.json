@@ -1,0 +1,8 @@
+[{
+	"namespace": "xi",
+	"functions": [{
+		"name": "setup",
+		"type": "function",
+		"parameters": []
+	}]
+}]
