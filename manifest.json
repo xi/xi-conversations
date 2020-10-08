@@ -13,6 +13,10 @@
   "background": {
     "page": "background.html"
   },
+  "permissions": [
+    "messagesRead",
+    "messagesMove"
+  ],
   "experiment_apis": {
     "xi": {
       "schema": "experiment-api/schema.json",

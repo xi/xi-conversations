@@ -1,35 +1,26 @@
+/* global browser */
+
 var createMessageElement = require('./message');
 var util = require('./util.js');
 
-window.frameElement.setAttribute('tooltip', 'aHTMLTooltip');
-window.frameElement.setAttribute('context', 'mailContext');
-
-var initialUrls = (util.getParams().urls || '').split(',');
-var initialMsgs = initialUrls.map(util.uri2msg);
+var initialUris = (util.getParams().uris || '').split(',');
 
 var container = document.querySelector('.conversation__main');
 var anyExpanded = false;
 
-getConversation(initialMsgs, function(conversation) {
-	// ignore any message without a folderMessage
-	conversation = conversation.filter(x => x.folderMessage);
-	conversation = util.unique(conversation, x => x.headerMessageID);
+browser.xi.getConversation(initialUris).then(async function(ids) {
+	ids = util.unique(ids, i => i);
+	var conversation = await Promise.all(ids.map(id => browser.messages.get(id)));
 
-	var subject = conversation[0].folderMessage.mime2DecodedSubject || '(no subject)';
+	var subject = conversation[0].subject || '(no subject)';
 	document.querySelector('.conversation__subject').textContent = subject;
 	document.title = subject;
 
 	for (let i = 0; i < conversation.length; i++) {
-		const glodaMsg = conversation[i];
+		const msg = conversation[i];
+		const expanded = conversation.length === 1 || !msg.read || (!anyExpanded && i === conversation.length - 1);
 
-		const only = initialMsgs.length === 1 && initialMsgs[0] === glodaMsg.folderMessage;
-		let expanded = only || !glodaMsg.folderMessage.isRead;
-
-		if (!anyExpanded && i === conversation.length - 1) {
-			expanded = true;
-		}
-
-		const message = createMessageElement(glodaMsg, expanded);
+		const message = createMessageElement(msg, expanded);
 		container.appendChild(message);
 
 		if (!anyExpanded && expanded) {

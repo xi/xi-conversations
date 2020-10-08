@@ -1,8 +1,3 @@
-var Messenger = Components.classes['@mozilla.org/messenger;1'].createInstance(Components.interfaces.nsIMessenger);
-
-var {MailServices} = ChromeUtils.import('resource:///modules/MailServices.jsm');
-var {StringBundle} = ChromeUtils.import("resource:///modules/StringBundle.js");
-
 var getParams = function() {
 	const params = {};
 	for (let part of location.search.substr(1).split('&')) {
@@ -10,22 +5,6 @@ var getParams = function() {
 		params[key] = decodeURIComponent(raw);
 	}
 	return params;
-};
-
-var uri2url = function(uri) {
-	var messageService = Messenger.messageServiceFromURI(uri);
-	var _output = {};
-	messageService.GetUrlForUri(uri, _output, null);
-	return _output.value.spec;
-};
-
-var uri2msg = function(uri) {
-	var messageService = Messenger.messageServiceFromURI(uri);
-	return messageService.messageURIToMsgHdr(uri);
-};
-
-var msg2uri = function(msg) {
-	return msg.folder.getUriForMsg(msg);
 };
 
 var walkDOM = function(root, test, fn) {
@@ -60,7 +39,7 @@ var unique = function(l, keyFn) {
 var createIcon = function(key) {
 	var html;
 	if (key.substring(0, 2) === 'x-') {
-		html = '<svg class="icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><use xlink:href="chrome://xi-conversations/content/material-icons.svg#' + key.substring(2) + '"></use></svg>';
+		html = '<svg class="icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><use xlink:href="/content/material-icons.svg#' + key.substring(2) + '"></use></svg>';
 	} else {
 		// File no longer exists. Is there a new one?
 		html = '<svg class="icon" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><use xlink:href="chrome://messenger/skin/icons/mail-toolbar.svg#' + key + '"></use></svg>';
@@ -115,49 +94,36 @@ var pseudoRandomColor = function(s) {
 };
 
 var parseContacts = function(raw) {
-	var emails = {};
-	var names = {};
-	var fullNames = {};
-	var n = MailServices.headerParser.parseHeadersWithArray(raw, emails, names, fullNames);
-
 	var contacts = [];
-	for (let i = 0; i < n; i++) {
-		var email = emails.value[i];
-		var name = names.value[i] || email;
-		var fullName = fullNames.value[i] || name;
-
+	for (let i = 0; i < raw.length; i++) {
 		contacts.push({
-			fullName: fullName,
-			name: name,
-			email: email,
+			name: null,
+			email: raw[i],
 		});
 	}
-
 	return contacts;
 };
 
 var getTags = function(msg) {
-	var keywords = msg.getStringProperty('keywords');
-	var keywordList = keywords.split(' ');
-	var allTags = MailServices.tags.getAllTags({});
-	return allTags
-		.filter(tag => keywordList.indexOf(tag.key) !== -1)
-		.map(tag => {
-			var color = MailServices.tags.getColorForKey(tag.key).substr(1) || 'fff';
-			return {
-				bgColor: '#' + color,
-				fgColor: contrastColor(color),
-				name: tag.tag,
-			};
-		});
+	// var keywords = msg.getStringProperty('keywords');
+	// var keywordList = keywords.split(' ');
+	// var allTags = MailServices.tags.getAllTags({});
+	// return allTags
+	// 	.filter(tag => keywordList.indexOf(tag.key) !== -1)
+	// 	.map(tag => {
+	// 		var color = MailServices.tags.getColorForKey(tag.key).substr(1) || 'fff';
+	// 		return {
+	// 			bgColor: '#' + color,
+	// 			fgColor: contrastColor(color),
+	// 			name: tag.tag,
+	// 		};
+	// 	});
+	return [];
 };
 
 module.exports = {
-	strings: new StringBundle('chrome://xi-conversations/locale/message.properties'),
+	strings: {get: s => s},
 	getParams: getParams,
-	uri2url: uri2url,
-	uri2msg: uri2msg,
-	msg2uri: msg2uri,
 	walkDOM: walkDOM,
 	html2element: html2element,
 	unique: unique,

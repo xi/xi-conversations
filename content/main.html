@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html>
 	<head>
+		<meta charset="UTF-8">
 		<title>Conversation</title>
-		<link rel="stylesheet" href="chrome://xi-conversations/content/style.css" />
+		<link rel="stylesheet" href="style.css" />
 	</head>
 	<body>
 		<script id="message-template" type="text/template">
-			<article class="message {{#isExpanded}}is-expanded{{/isExpanded}}" id="{{ uri }}" tabindex="-1">
+			<article class="message {{#isExpanded}}is-expanded{{/isExpanded}}" id="msg-{{ id }}" tabindex="-1">
 				<style>
 					{{#author}}
 						.message__author[href="mailto:{{ email }}"] { color: {{#authorColor}}{{ email }}{{/authorColor}} }
@@ -70,6 +71,6 @@
 			<h1 class="conversation__subject">Loading…</h1>
 		</header>
 		<main class="conversation__main"></main>
-		<script src="chrome://xi-conversations/content/main.js"></script>
+		<script src="main.js"></script>
 	</body>
 </html>
