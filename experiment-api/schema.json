@@ -4,6 +4,17 @@
 		"name": "setup",
 		"type": "function",
 		"parameters": []
+	}, {
+		"name": "getConversation",
+		"type": "function",
+		"async": true,
+		"parameters": [{
+			"name": "uris",
+			"type": "array",
+			"items": {
+				"type": "string"
+			}
+		}]
 	}],
 	"events": [{
 		"name": "onOpenTab",

@@ -1,42 +1,6 @@
 var createMessageElement = require('./message');
 var util = require('./util.js');
 
-var {Gloda} = ChromeUtils.import('resource:///modules/gloda/gloda.js');
-
-var getConversation = function(msgs, cb) {
-	var conversationListener = {
-		onItemsAdded: function() {},
-		onItemsModified: function() {},
-		onItemsRemoved: function() {},
-		onQueryCompleted: function(collection) {
-			cb(collection.items);
-		},
-	};
-
-	var listener = {
-		onItemsAdded: function() {},
-		onItemsModified: function() {},
-		onItemsRemoved: function() {},
-		onQueryCompleted: function(collection) {
-			if (collection.items.length) {
-				var conversation = collection.items[0].conversation;
-				conversation.getMessagesCollection(conversationListener, true);
-			} else {
-				cb(msgs.map(function(msg) {
-					return {
-						folderMessage: msg,
-						attachmentInfos: [],
-						mailingLists: null,
-						_indexedBodyText: null,
-					};
-				}));
-			}
-		},
-	};
-
-	Gloda.getMessageCollectionForHeaders(msgs, listener, null);
-};
-
 window.frameElement.setAttribute('tooltip', 'aHTMLTooltip');
 window.frameElement.setAttribute('context', 'mailContext');
 
