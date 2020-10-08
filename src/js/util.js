@@ -95,11 +95,19 @@ var pseudoRandomColor = function(s) {
 
 var parseContacts = function(raw) {
 	var contacts = [];
-	for (let i = 0; i < raw.length; i++) {
-		contacts.push({
-			name: null,
-			email: raw[i],
-		});
+	for (var r of raw) {
+		var match = /(.*) <(.*)>/.exec(r);
+		if (match) {
+			contacts.push({
+				name: match[1],
+				email: match[2],
+			});
+		} else {
+			contacts.push({
+				name: r,
+				email: r,
+			});
+		}
 	}
 	return contacts;
 };
