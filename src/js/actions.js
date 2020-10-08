@@ -22,13 +22,10 @@ var markAsRead = function(msg, read) {
 };
 
 var toggleFlagged = function(msg, star) {
-	// if (msg.isFlagged) {
-	// 	star.classList.remove('is-active');
-	// 	msg.markFlagged(false);
-	// } else {
-	// 	star.classList.add('is-active');
-	// 	msg.markFlagged(true);
-	// }
+	msg.flagged = !msg.flagged;
+	browser.messages.update(msg.id, {flagged: msg.flagged}).then(() => {
+		star.classList.toggle('is-active', msg.flagged);
+	});
 };
 
 module.exports = {
