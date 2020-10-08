@@ -57,10 +57,14 @@
 
 .message__author {
 	margin-right: 0.5em;
+	text-decoration: none;
 }
 
-.message__author,
 .message__recipients {
+	a {
+		color: inherit;
+		text-decoration: none;
+	}
 	a:not(:last-child)::after {
 		content: ", ";
 	}
