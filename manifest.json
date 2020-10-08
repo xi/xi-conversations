@@ -10,9 +10,6 @@
   "description": "Minimal clone of thunderbird conversations",
   "version": "0.0.0",
   "author": "Tobias Bengfort",
-  "icons": {
-    "32": "content/icon32x32.png"
-  },
   "legacy": {
     "type" : "bootstrap"
   }
