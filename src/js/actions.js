@@ -15,21 +15,6 @@ var viewSource = function(msg) {
 	// mainWindow.ViewPageSource([util.msg2uri(msg)]);
 };
 
-var deleteMsg = function(msg) {
-	// var mainWindow = window.frameElement.ownerDocument.defaultView;
-	// var e = document.getElementById(util.msg2uri(msg));
-	// e.remove();
-
-	// var tmp = Components.classes['@mozilla.org/array;1'].createInstance(Components.interfaces.nsIMutableArray);
-	// tmp.appendElement(msg, false);
-	// msg.folder.deleteMessages(tmp, mainWindow.msgWindow, false, false, null, true);
-
-	// if (document.querySelectorAll('.message').length === 0) {
-	// 	// FIXME: does nothing?
-	// 	window.closeTab();
-	// }
-};
-
 var markAsRead = function(msg, read) {
 	// var tmp = Components.classes['@mozilla.org/array;1'].createInstance(Components.interfaces.nsIMutableArray);
 	// tmp.appendElement(msg, false);
@@ -54,7 +39,6 @@ module.exports = {
 	forward: compose('ForwardInline'),
 	viewClassic: viewClassic,
 	viewSource: viewSource,
-	deleteMsg: deleteMsg,
 	markAsRead: markAsRead,
 	toggleFlagged: toggleFlagged,
 };
