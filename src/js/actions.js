@@ -16,9 +16,7 @@ var viewSource = function(msg) {
 };
 
 var markAsRead = function(msg, read) {
-	// var tmp = Components.classes['@mozilla.org/array;1'].createInstance(Components.interfaces.nsIMutableArray);
-	// tmp.appendElement(msg, false);
-	// msg.folder.markMessagesRead(tmp, read);
+	browser.messages.update(msg.id, {read: read});
 };
 
 var toggleFlagged = function(msg, star) {
