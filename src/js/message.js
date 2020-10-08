@@ -36,8 +36,7 @@ var iconFilter = function() {
 
 var dateFilter = function() {
 	return function(text, render) {
-		var nanosecs = parseInt(render(text), 10);
-		var date = new Date(nanosecs / 1000);
+		var date = new Date(render(text));
 		return util.createDate(date).outerHTML;
 	};
 };
