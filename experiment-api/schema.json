@@ -4,5 +4,16 @@
 		"name": "setup",
 		"type": "function",
 		"parameters": []
+	}],
+	"events": [{
+		"name": "onOpenTab",
+		"type": "function",
+		"parameters": [{
+			"name": "uris",
+			"type": "array",
+			"items": {
+				"type": "string"
+			}
+		}]
 	}]
 }]
