@@ -32,17 +32,6 @@ var html2element = function(html) {
 	return doc.body.children[0];
 };
 
-var unique = function(l, keyFn) {
-	var keys = [];
-	return l.filter(function(item) {
-		var key = keyFn(item);
-		if (keys.indexOf(key) === -1) {
-			keys.push(key);
-			return true;
-		}
-	});
-};
-
 var createIcon = function(key) {
 	var html;
 	if (key.substring(0, 2) === 'x-') {
@@ -117,7 +106,6 @@ module.exports = {
 	getParams: getParams,
 	getBody: getBody,
 	html2element: html2element,
-	unique: unique,
 	createIcon: createIcon,
 	createDate: createDate,
 	createAlert: createAlert,

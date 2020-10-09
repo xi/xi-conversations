@@ -8,10 +8,7 @@ var initialUris = (util.getParams().uris || '').split(',');
 var container = document.querySelector('.conversation__main');
 var anyExpanded = false;
 
-browser.xi.getConversation(initialUris).then(async function(ids) {
-	ids = util.unique(ids, i => i);
-	var conversation = await Promise.all(ids.map(id => browser.messages.get(id)));
-
+browser.xi.getConversation(initialUris).then(function(conversation) {
 	var subject = conversation[0].subject || '(no subject)';
 	document.querySelector('.conversation__subject').textContent = subject;
 	document.title = subject;
