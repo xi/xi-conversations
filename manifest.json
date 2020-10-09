@@ -10,6 +10,7 @@
   "description": "Minimal clone of thunderbird conversations",
   "version": "0.0.0",
   "author": "Tobias Bengfort",
+  "default_locale": "en",
   "background": {
     "page": "background.html"
   },

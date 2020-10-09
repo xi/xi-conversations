@@ -107,7 +107,6 @@ var parseContacts = function(raw) {
 };
 
 module.exports = {
-	strings: {get: s => s},
 	getParams: getParams,
 	walkDOM: walkDOM,
 	html2element: html2element,

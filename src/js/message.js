@@ -49,7 +49,7 @@ var authorColorFilter = function() {
 
 var stringFilter = function() {
 	return function(text, render) {
-		return util.strings.get(render(text));
+		return browser.i18n.getMessage(render(text));
 	};
 };
 
