@@ -1,8 +1,7 @@
 /* global browser */
 
 var viewSource = function(msg) {
-	// var mainWindow = window.frameElement.ownerDocument.defaultView;
-	// mainWindow.ViewPageSource([util.msg2uri(msg)]);
+	browser.tabs.create({url: '/content/source.html?id=' + msg.id});
 };
 
 var markAsRead = function(msg, read) {
