@@ -68,12 +68,6 @@ var createAlert = function(text, icon, level) {
 	return e;
 };
 
-var contrastColor = function(color) {
-	const [, r, g, b] = color.match(/(..)(..)(..)/).map(x => parseInt(x, 16) / 255);
-	const l = 0.2126 * Math.pow(r, 2.4) + 0.7152 * Math.pow(g, 2.4) + 0.0722 * Math.pow(b, 2.4);
-	return l > 0.3 ? 'black' : 'white';
-};
-
 var pseudoRandomColor = function(s) {
 	let hash = 0;
 	for (let i = 0; i < s.length; i++) {
@@ -112,23 +106,6 @@ var parseContacts = function(raw) {
 	return contacts;
 };
 
-var getTags = function(msg) {
-	// var keywords = msg.getStringProperty('keywords');
-	// var keywordList = keywords.split(' ');
-	// var allTags = MailServices.tags.getAllTags({});
-	// return allTags
-	// 	.filter(tag => keywordList.indexOf(tag.key) !== -1)
-	// 	.map(tag => {
-	// 		var color = MailServices.tags.getColorForKey(tag.key).substr(1) || 'fff';
-	// 		return {
-	// 			bgColor: '#' + color,
-	// 			fgColor: contrastColor(color),
-	// 			name: tag.tag,
-	// 		};
-	// 	});
-	return [];
-};
-
 module.exports = {
 	strings: {get: s => s},
 	getParams: getParams,
@@ -138,8 +115,6 @@ module.exports = {
 	createIcon: createIcon,
 	createDate: createDate,
 	createAlert: createAlert,
-	contrastColor: contrastColor,
 	pseudoRandomColor: pseudoRandomColor,
 	parseContacts: parseContacts,
-	getTags: getTags,
 };

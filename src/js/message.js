@@ -70,7 +70,6 @@ module.exports = function(msg, expanded) {
 		author: util.parseContacts([msg.author]),
 		recipients: util.parseContacts(msg.recipients),
 		summary: (msg.body || '').substring(0, 150),
-		tags: util.getTags(msg),
 		attachments: msg.attachmentInfos,
 		hasAttachments: (msg.attachmentInfos || []).length,
 		date: msg.date,

@@ -24,9 +24,6 @@
 					</span>
 					<span class="message__summary">{{ summary }}</span>
 
-					<span class="message__tags">
-						{{#tags}}<span class="tag" style="background-color: {{ bgColor }}; color: {{ fgColor }}">{{ name }}</span>{{/tags}}
-					</span>
 					{{#hasAttachments}}{{#icon}}x-attachment{{/icon}}{{/hasAttachments}}
 					{{#dateFilter}}{{ date }}{{/dateFilter}}
 
