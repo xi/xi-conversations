@@ -6,6 +6,7 @@ var Messenger = Components.classes['@mozilla.org/messenger;1'].createInstance(Co
 var {ExtensionCommon} = ChromeUtils.import('resource://gre/modules/ExtensionCommon.jsm');
 var {Gloda} = ChromeUtils.import('resource:///modules/gloda/GlodaPublic.jsm');
 var {Services} = ChromeUtils.import('resource://gre/modules/Services.jsm');
+var {MsgHdrToMimeMessage} = ChromeUtils.import('resource:///modules/gloda/MimeMessage.jsm');
 
 var uri2msg = function(uri) {
 	var messageService = Messenger.messageServiceFromURI(uri);
@@ -99,6 +100,16 @@ var xi = class extends ExtensionCommon.ExtensionAPI {
 						getConversation(uris.map(uri2msg), results => {
 							resolve(unique(results, glodaMsg => glodaMsg.headerMessageID).map(glodaMsg2msg));
 						});
+					});
+				},
+				getFull(id) {
+					// the original getFull() is restricted to these fields:
+					// body, contentType, headers, name partName, size
+					var msgHdr = context.extension.messageManager.get(id);
+					return new Promise(resolve => {
+						MsgHdrToMimeMessage(msgHdr, null, (aMsgHdr, aMimeMsg) => {
+							resolve(aMimeMsg);
+						}, false, {examineEncryptedParts: true});
 					});
 				},
 				viewClassic(id) {

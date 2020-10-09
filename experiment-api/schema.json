@@ -16,6 +16,14 @@
 			}
 		}]
 	}, {
+		"name": "getFull",
+		"type": "function",
+		"async": true,
+		"parameters": [{
+			"name": "id",
+			"type": "integer"
+		}]
+	}, {
 		"name": "viewClassic",
 		"type": "function",
 		"parameters": [{
