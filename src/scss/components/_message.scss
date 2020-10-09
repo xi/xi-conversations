@@ -29,6 +29,34 @@
 	line-height: 1.4;
 	white-space: pre-wrap;
 	overflow: auto;
+
+	summary {
+		font-size: 80%;
+		cursor: pointer;
+	}
+
+	blockquote {
+		margin: 0;
+		padding: 0.4ex 1ex;
+		border-inline-start: 2px solid rgb(114, 159, 207); /* Sky Blue 1 */
+
+		blockquote {
+			border-inline-start-color: rgb(173, 127, 168); /* Plum 1 */
+		}
+		blockquote blockquote {
+			border-inline-start-color: rgb(138, 226, 52); /* Chameleon 1 */
+		}
+		blockquote blockquote blockquote {
+			border-inline-start-color: rgb(252, 175, 62); /* Orange 1 */
+		}
+		blockquote blockquote blockquote blockquote {
+			border-inline-start-color: rgb(233, 185, 110); /* Chocolate 1 */
+		}
+	}
+
+	.moz-signature {
+		opacity: 0.6;
+	}
 }
 
 .message__header,
