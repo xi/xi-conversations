@@ -24,8 +24,11 @@
 }
 
 .message__body {
-	border: 0;
-	width: 100%;
+	padding: 0.5em;
+	margin: 0;
+	line-height: 1.4;
+	white-space: pre-wrap;
+	overflow: auto;
 }
 
 .message__header,

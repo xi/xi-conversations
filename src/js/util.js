@@ -7,13 +7,20 @@ var getParams = function() {
 	return params;
 };
 
-var walkDOM = function(root, test, fn) {
-	if (test(root)) {
-		fn(root);
-	} else {
-		for (var i = root.childNodes.length - 1; i >= 0; --i) {
-			walkDOM(root.childNodes[i], test, fn);
+var getBody = function(msgPart) {
+	if (msgPart.body && msgPart.contentType.startsWith('text/plain')) {
+		return msgPart.body;
+	} else if (msgPart.parts) {
+		var bodies = [];
+		for (var part of msgPart.parts) {
+			var body = getBody(part);
+			if (body) {
+				bodies.push(body);
+			}
 		}
+		return bodies.join('\n\n');
+	} else {
+		return '';
 	}
 };
 
@@ -108,7 +115,7 @@ var parseContacts = function(raw) {
 
 module.exports = {
 	getParams: getParams,
-	walkDOM: walkDOM,
+	getBody: getBody,
 	html2element: html2element,
 	unique: unique,
 	createIcon: createIcon,

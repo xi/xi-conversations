@@ -1,7 +1,7 @@
 var Mustache = require('mustache');
 
 var actions = require('./actions.js');
-// var createIframe = require('./iframe.js');
+var createBody = require('./body.js');
 var util = require('./util.js');
 
 var autoMarkAsRead = function(e, msg) {
@@ -85,7 +85,7 @@ module.exports = function(msg, expanded) {
 		if (!event.defaultPrevented) {
 			event.preventDefault();
 			e.classList.toggle('is-expanded');
-			lazyLoadIframe();
+			lazyLoadBody();
 		}
 	});
 
@@ -116,17 +116,17 @@ module.exports = function(msg, expanded) {
 		});
 	}
 
-	// iframe
+	// body
 	var footer = e.querySelector('.message__footer');
 	var details = e.querySelector('.message__details');
-	var iframeLoaded = false;
-	var lazyLoadIframe = function() {
-		if (!iframeLoaded && e.classList.contains('is-expanded')) {
-			// details.insertBefore(createIframe(msg), footer);
-			iframeLoaded = true;
+	var bodyLoaded = false;
+	var lazyLoadBody = function() {
+		if (!bodyLoaded && e.classList.contains('is-expanded')) {
+			details.insertBefore(createBody(msg), footer);
+			bodyLoaded = true;
 		}
 	};
-	lazyLoadIframe();
+	lazyLoadBody();
 
 	return e;
 };
