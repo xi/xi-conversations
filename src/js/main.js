@@ -25,7 +25,6 @@ browser.xi.getConversation(initialUris).then(async function(ids) {
 
 		if (!anyExpanded && expanded) {
 			message.focus();
-			window.scrollY = message.offsetTop - 50;
 		}
 
 		anyExpanded = anyExpanded || expanded;
