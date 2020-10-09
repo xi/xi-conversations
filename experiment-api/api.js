@@ -74,6 +74,12 @@ var xi = class extends ExtensionCommon.ExtensionAPI {
 					var mainWindow = Services.wm.getMostRecentWindow('mail:3pane');
 					mainWindow.openTab('message', {msgHdr: msgHdr, background: false});
 				},
+				async openAttachment(id, url) {
+					var msgHdr = context.extension.messageManager.get(id);
+					var win = Services.wm.getMostRecentWindow('mail:3pane');
+					var attInfo = new win.AttachmentInfo(null, url, null, msg2uri(msgHdr));
+					attInfo.open();
+				},
 				onOpenTab: new ExtensionCommon.EventManager({
 					context,
 					name: 'xi.onOpenTab',
