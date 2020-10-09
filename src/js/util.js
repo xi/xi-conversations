@@ -85,16 +85,8 @@ var createAlert = function(text, icon, level) {
 	var e = document.createElement('div');
 	e.className = 'alert alert--' + level;
 	e.textContent = text;
-	prependChild(e, createIcon(icon));
+	e.prepend(createIcon(icon));
 	return e;
-};
-
-var prependChild = function(parent, child) {
-	if (parent.childNodes.length === 0) {
-		parent.appendChild(child);
-	} else {
-		parent.insertBefore(child, parent.childNodes[0]);
-	}
 };
 
 var contrastColor = function(color) {
@@ -172,7 +164,6 @@ module.exports = {
 	createIcon: createIcon,
 	createDate: createDate,
 	createAlert: createAlert,
-	prependChild: prependChild,
 	contrastColor: contrastColor,
 	pseudoRandomColor: pseudoRandomColor,
 	parseContacts: parseContacts,
