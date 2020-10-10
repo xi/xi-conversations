@@ -1,0 +1,17 @@
+{
+	"replyList": {"message": "reply to list"},
+	"replyAll": {"message": "reply all"},
+	"reply": {"message": "reply"},
+	"more": {"message": "more"},
+	"forward": {"message": "forward"},
+	"edit": {"message": "edit as new"},
+	"viewClassic": {"message": "view in classic reader"},
+	"viewSource": {"message": "view source"},
+	"junk": {"message": "This is junk"},
+	"to": {"message": "to"},
+	"toggleQuote": {"message": "-- toggle quote --"},
+	"toggleSig": {"message": "-- toggle signature --"},
+	"encrypted": {"message": "encrypted message"},
+	"emptyBody": {"message": "(empty)"},
+	"encryptedBody": {"message": "(encrypted)"}
+}

@@ -1,0 +1,64 @@
+[{
+	"namespace": "xi",
+	"functions": [{
+		"name": "setup",
+		"type": "function",
+		"parameters": []
+	}, {
+		"name": "getConversation",
+		"type": "function",
+		"async": true,
+		"parameters": [{
+			"name": "uris",
+			"type": "array",
+			"items": {
+				"type": "string"
+			}
+		}]
+	}, {
+		"name": "getFull",
+		"type": "function",
+		"async": true,
+		"parameters": [{
+			"name": "id",
+			"type": "integer"
+		}]
+	}, {
+		"name": "viewClassic",
+		"type": "function",
+		"parameters": [{
+			"name": "id",
+			"type": "integer"
+		}]
+	}, {
+		"name": "openAttachment",
+		"type": "function",
+		"async": true,
+		"parameters": [{
+			"name": "id",
+			"type": "integer"
+		}, {
+			"name": "url",
+			"type": "string"
+		}]
+	}, {
+		"name": "beginEdit",
+		"type": "function",
+		"async": true,
+		"parameters": [{
+			"name": "id",
+			"type": "integer"
+		}]
+	}],
+	"events": [{
+		"name": "onOpenTab",
+		"type": "function",
+		"parameters": [{
+			"name": "uris",
+			"type": "array",
+			"items": {
+				"type": "string"
+			}
+		}]
+	}]
+}]

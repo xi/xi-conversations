@@ -1,63 +1,28 @@
-var util = require('./util.js');
-
-var compose = function(compType) {
-	return function(msg) {
-		var mainWindow = window.frameElement.ownerDocument.defaultView;
-		mainWindow.ComposeMessage(compType, Components.interfaces.nsIMsgCompFormat.Default, msg, [util.msg2uri(msg)]);
-	};
-};
-
-var viewClassic = function(msg) {
-	var tabmail = window.frameElement.ownerDocument.getElementById('tabmail');
-	tabmail.openTab('message', {msgHdr: msg, background: false});
-};
+/* global browser */
 
 var viewSource = function(msg) {
-	var mainWindow = window.frameElement.ownerDocument.defaultView;
-	mainWindow.ViewPageSource([util.msg2uri(msg)]);
-};
-
-var deleteMsg = function(msg) {
-	var mainWindow = window.frameElement.ownerDocument.defaultView;
-	var e = document.getElementById(util.msg2uri(msg));
-	e.remove();
-
-	var tmp = Components.classes['@mozilla.org/array;1'].createInstance(Components.interfaces.nsIMutableArray);
-	tmp.appendElement(msg, false);
-	msg.folder.deleteMessages(tmp, mainWindow.msgWindow, false, false, null, true);
-
-	if (document.querySelectorAll('.message').length === 0) {
-		// FIXME: does nothing?
-		window.closeTab();
-	}
+	browser.tabs.create({url: '/content/source.html?id=' + msg.id});
 };
 
 var markAsRead = function(msg, read) {
-	var tmp = Components.classes['@mozilla.org/array;1'].createInstance(Components.interfaces.nsIMutableArray);
-	tmp.appendElement(msg, false);
-	msg.folder.markMessagesRead(tmp, read);
+	browser.messages.update(msg.id, {read: read});
 };
 
 var toggleFlagged = function(msg, star) {
-	if (msg.isFlagged) {
-		star.classList.remove('is-active');
-		msg.markFlagged(false);
-	} else {
-		star.classList.add('is-active');
-		msg.markFlagged(true);
-	}
+	msg.flagged = !msg.flagged;
+	browser.messages.update(msg.id, {flagged: msg.flagged}).then(() => {
+		star.classList.toggle('is-active', msg.flagged);
+	});
 };
 
 module.exports = {
-	replyToSender: compose(Components.interfaces.nsIMsgCompType.ReplyToSender),
-	replyAll: compose(Components.interfaces.nsIMsgCompType.ReplyAll),
-	replyToList: compose(Components.interfaces.nsIMsgCompType.ReplyToList),
-	editAsNew: compose(Components.interfaces.nsIMsgCompType.Template),
-	editDraft: compose(Components.interfaces.nsIMsgCompType.Draft),
-	forward: compose(Components.interfaces.nsIMsgCompType.ForwardInline),
-	viewClassic: viewClassic,
+	replyToSender: msg => browser.compose.beginReply(msg.id),
+	replyAll: msg => browser.compose.beginReply(msg.id, 'replyToAll'),
+	replyToList: msg => browser.compose.beginReply(msg.id, 'replyToList'),
+	editAsNew: msg => browser.xi.beginEdit(msg.id),
+	forward: msg => browser.compose.beginForward(msg.id),
+	viewClassic: msg => browser.xi.viewClassic(msg.id),
 	viewSource: viewSource,
-	deleteMsg: deleteMsg,
 	markAsRead: markAsRead,
 	toggleFlagged: toggleFlagged,
 };

@@ -1,10 +1,10 @@
 var Mustache = require('mustache');
 
 var actions = require('./actions.js');
-var createIframe = require('./iframe.js');
+var createBody = require('./body.js');
 var util = require('./util.js');
 
-var autoMarkAsRead = function(e, glodaMsg) {
+var autoMarkAsRead = function(e, msg) {
 	var topWasInView = false;
 	var bottomWasInView = false;
 
@@ -20,7 +20,7 @@ var autoMarkAsRead = function(e, glodaMsg) {
 				bottomWasInView = true;
 			}
 			if (topWasInView && bottomWasInView) {
-				actions.markAsRead(glodaMsg.folderMessage, true);
+				actions.markAsRead(msg, true);
 				window.clearInterval(intervalId);
 			}
 		}
@@ -36,8 +36,7 @@ var iconFilter = function() {
 
 var dateFilter = function() {
 	return function(text, render) {
-		var nanosecs = parseInt(render(text), 10);
-		var date = new Date(nanosecs / 1000);
+		var date = new Date(render(text));
 		return util.createDate(date).outerHTML;
 	};
 };
@@ -50,13 +49,11 @@ var authorColorFilter = function() {
 
 var stringFilter = function() {
 	return function(text, render) {
-		return util.strings.get(render(text));
+		return browser.i18n.getMessage(render(text));
 	};
 };
 
-module.exports = function(glodaMsg, expanded) {
-	var msg = glodaMsg.folderMessage;
-
+module.exports = function(msg, expanded) {
 	var tpl = document.getElementById('message-template').innerHTML;
 	var html = Mustache.render(tpl, {
 		icon: iconFilter,
@@ -64,23 +61,23 @@ module.exports = function(glodaMsg, expanded) {
 		authorColor: authorColorFilter,
 		str: stringFilter,
 
+		id: msg.id,
 		isExpanded: expanded,
-		isFlagged: msg.isFlagged,
-		isJunk: glodaMsg.folderMessage.getStringProperty('junkscore') === Components.interfaces.nsIJunkMailPlugin.IS_SPAM_SCORE,
-		uri: util.msg2uri(msg),
-		author: util.parseContacts(msg.author),
+		isFlagged: msg.flagged,
+		isJunk: msg.junk,
+		isEncrypted: msg.isEncrypted,
+		author: util.parseContacts([msg.author]),
 		recipients: util.parseContacts(msg.recipients),
-		summary: (glodaMsg._indexedBodyText || '').substring(0, 150),
-		tags: util.getTags(msg),
-		attachments: glodaMsg.attachmentInfos,
-		hasAttachments: glodaMsg.attachmentInfos.length,
+		summary: (msg.body || '').substring(0, 150),
+		attachments: msg.attachmentInfos,
+		hasAttachments: (msg.attachmentInfos || []).length,
 		date: msg.date,
-		canReplyToList: glodaMsg.mailingLists,
+		canReplyToList: msg.canReplyToList,
 		canReplyAll: (util.parseContacts(msg.recipients).length + util.parseContacts(msg.ccList).length + util.parseContacts(msg.bccList).length) > 1,
 	});
 	var e = util.html2element(html);
 
-	autoMarkAsRead(e, glodaMsg);
+	autoMarkAsRead(e, msg);
 
 	// header events
 	var header = e.querySelector('.message__header');
@@ -88,7 +85,7 @@ module.exports = function(glodaMsg, expanded) {
 		if (!event.defaultPrevented) {
 			event.preventDefault();
 			e.classList.toggle('is-expanded');
-			lazyLoadIframe();
+			lazyLoadBody();
 		}
 	});
 
@@ -119,17 +116,17 @@ module.exports = function(glodaMsg, expanded) {
 		});
 	}
 
-	// iframe
+	// body
 	var footer = e.querySelector('.message__footer');
 	var details = e.querySelector('.message__details');
-	var iframeLoaded = false;
-	var lazyLoadIframe = function() {
-		if (!iframeLoaded && e.classList.contains('is-expanded')) {
-			details.insertBefore(createIframe(glodaMsg), footer);
-			iframeLoaded = true;
+	var bodyLoaded = false;
+	var lazyLoadBody = function() {
+		if (!bodyLoaded && e.classList.contains('is-expanded')) {
+			details.insertBefore(createBody(msg), footer);
+			bodyLoaded = true;
 		}
 	};
-	lazyLoadIframe();
+	lazyLoadBody();
 
 	return e;
 };

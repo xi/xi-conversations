@@ -1,78 +1,37 @@
+/* global browser */
+
 var createMessageElement = require('./message');
 var util = require('./util.js');
 
-var {Gloda} = ChromeUtils.import('resource:///modules/gloda/gloda.js');
-
-var getConversation = function(msgs, cb) {
-	var conversationListener = {
-		onItemsAdded: function() {},
-		onItemsModified: function() {},
-		onItemsRemoved: function() {},
-		onQueryCompleted: function(collection) {
-			cb(collection.items);
-		},
-	};
-
-	var listener = {
-		onItemsAdded: function() {},
-		onItemsModified: function() {},
-		onItemsRemoved: function() {},
-		onQueryCompleted: function(collection) {
-			if (collection.items.length) {
-				var conversation = collection.items[0].conversation;
-				conversation.getMessagesCollection(conversationListener, true);
-			} else {
-				cb(msgs.map(function(msg) {
-					return {
-						folderMessage: msg,
-						attachmentInfos: [],
-						mailingLists: null,
-						_indexedBodyText: null,
-					};
-				}));
-			}
-		},
-	};
-
-	Gloda.getMessageCollectionForHeaders(msgs, listener, null);
-};
-
-window.frameElement.setAttribute('tooltip', 'aHTMLTooltip');
-window.frameElement.setAttribute('context', 'mailContext');
-
-var initialUrls = (util.getParams().urls || '').split(',');
-var initialMsgs = initialUrls.map(util.uri2msg);
+var initialUris = (util.getParams().uris || '').split(',');
 
 var container = document.querySelector('.conversation__main');
 var anyExpanded = false;
 
-getConversation(initialMsgs, function(conversation) {
-	// ignore any message without a folderMessage
-	conversation = conversation.filter(x => x.folderMessage);
-	conversation = util.unique(conversation, x => x.headerMessageID);
-
-	var subject = conversation[0].folderMessage.mime2DecodedSubject || '(no subject)';
+browser.xi.getConversation(initialUris).then(function(conversation) {
+	var subject = conversation[0].subject || '(no subject)';
 	document.querySelector('.conversation__subject').textContent = subject;
 	document.title = subject;
 
 	for (let i = 0; i < conversation.length; i++) {
-		const glodaMsg = conversation[i];
+		const msg = conversation[i];
+		const expanded = conversation.length === 1 || !msg.read || (!anyExpanded && i === conversation.length - 1);
 
-		const only = initialMsgs.length === 1 && initialMsgs[0] === glodaMsg.folderMessage;
-		let expanded = only || !glodaMsg.folderMessage.isRead;
-
-		if (!anyExpanded && i === conversation.length - 1) {
-			expanded = true;
-		}
-
-		const message = createMessageElement(glodaMsg, expanded);
+		const message = createMessageElement(msg, expanded);
 		container.appendChild(message);
 
 		if (!anyExpanded && expanded) {
 			message.focus();
-			window.scrollY = message.offsetTop - 50;
 		}
 
 		anyExpanded = anyExpanded || expanded;
+	}
+});
+
+document.addEventListener('click', function(event) {
+	if (event.target.matches('a.attachment')) {
+		event.preventDefault();
+		var id = parseInt(event.target.closest('[id^="msg-"]').id.substr(4), 10);
+		browser.xi.openAttachment(id, event.target.href);
 	}
 });

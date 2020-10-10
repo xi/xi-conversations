@@ -3,17 +3,29 @@
   "applications": {
     "gecko": {
       "id": "conversations@xi",
-      "strict_min_version": "68.0"
+      "strict_min_version": "78.0"
     }
   },
   "name": "Xi Conversations",
   "description": "Minimal clone of thunderbird conversations",
   "version": "0.0.0",
   "author": "Tobias Bengfort",
-  "icons": {
-    "32": "content/icon32x32.png"
+  "default_locale": "en",
+  "background": {
+    "page": "background.html"
   },
-  "legacy": {
-    "type" : "bootstrap"
+  "permissions": [
+    "messagesRead",
+    "messagesMove"
+  ],
+  "experiment_apis": {
+    "xi": {
+      "schema": "experiment-api/schema.json",
+      "parent": {
+        "scopes": ["addon_parent"],
+        "paths": [["xi"]],
+        "script": "experiment-api/api.js"
+      }
+    }
   }
 }
