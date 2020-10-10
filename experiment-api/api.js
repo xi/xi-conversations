@@ -123,6 +123,16 @@ var xi = class extends ExtensionCommon.ExtensionAPI {
 					var attInfo = new win.AttachmentInfo(null, url, null, msg2uri(msgHdr));
 					attInfo.open();
 				},
+				async beginEdit(id) {
+					var msgHdr = context.extension.messageManager.get(id);
+					var mainWindow = Services.wm.getMostRecentWindow('mail:3pane');
+					mainWindow.ComposeMessage(
+						Components.interfaces.nsIMsgCompType.EditAsNew,
+						Components.interfaces.nsIMsgCompFormat.Default,
+						msgHdr.folder,
+						[msg2uri(msgHdr)],
+					);
+				},
 				onOpenTab: new ExtensionCommon.EventManager({
 					context,
 					name: 'xi.onOpenTab',
