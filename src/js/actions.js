@@ -53,7 +53,6 @@ module.exports = {
 	replyAll: compose(Components.interfaces.nsIMsgCompType.ReplyAll),
 	replyToList: compose(Components.interfaces.nsIMsgCompType.ReplyToList),
 	editAsNew: compose(Components.interfaces.nsIMsgCompType.Template),
-	editDraft: compose(Components.interfaces.nsIMsgCompType.Draft),
 	forward: compose(Components.interfaces.nsIMsgCompType.ForwardInline),
 	viewClassic: viewClassic,
 	viewSource: viewSource,
