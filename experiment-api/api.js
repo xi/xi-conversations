@@ -139,7 +139,7 @@ var xi = class extends ExtensionCommon.ExtensionAPI {
 					register(fire) {
 						var observer = (win, topic) => {
 							if (topic === 'domwindowopened' && win.location.href === 'chrome://messenger/content/messenger.xhtml') {
-								win.ThreadPaneDoubleClick = () => {
+								win.MsgOpenSelectedMessages = () => {
 									var msgs = win.gFolderDisplay.selectedMessages;
 									fire.async(msgs.map(msg2uri));
 								};
