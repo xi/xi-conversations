@@ -69,6 +69,11 @@ var xi = class extends ExtensionCommon.ExtensionAPI {
 						});
 					});
 				},
+				viewClassic(id) {
+					var msgHdr = context.extension.messageManager.get(id);
+					var mainWindow = Services.wm.getMostRecentWindow('mail:3pane');
+					mainWindow.openTab('message', {msgHdr: msgHdr, background: false});
+				},
 				onOpenTab: new ExtensionCommon.EventManager({
 					context,
 					name: 'xi.onOpenTab',

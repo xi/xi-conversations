@@ -15,6 +15,13 @@
 				"type": "string"
 			}
 		}]
+	}, {
+		"name": "viewClassic",
+		"type": "function",
+		"parameters": [{
+			"name": "id",
+			"type": "integer"
+		}]
 	}],
 	"events": [{
 		"name": "onOpenTab",

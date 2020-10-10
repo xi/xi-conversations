@@ -1,10 +1,5 @@
 /* global browser */
 
-var viewClassic = function(msg) {
-	// var tabmail = window.frameElement.ownerDocument.getElementById('tabmail');
-	// tabmail.openTab('message', {msgHdr: msg, background: false});
-};
-
 var viewSource = function(msg) {
 	// var mainWindow = window.frameElement.ownerDocument.defaultView;
 	// mainWindow.ViewPageSource([util.msg2uri(msg)]);
@@ -27,7 +22,7 @@ module.exports = {
 	replyToList: msg => browser.compose.beginReply(msg.id, 'replyToList'),
 	editAsNew: msg => browser.compose.beginEdit(msg.id),
 	forward: msg => browser.compose.beginForward(msg.id),
-	viewClassic: viewClassic,
+	viewClassic: msg => browser.xi.viewClassic(msg.id),
 	viewSource: viewSource,
 	markAsRead: markAsRead,
 	toggleFlagged: toggleFlagged,
