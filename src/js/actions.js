@@ -1,9 +1,4 @@
-var compose = function(compType) {
-	// return function(msg) {
-	// 	var mainWindow = window.frameElement.ownerDocument.defaultView;
-	// 	mainWindow.ComposeMessage(compType, Components.interfaces.nsIMsgCompFormat.Default, msg, [util.msg2uri(msg)]);
-	// };
-};
+/* global browser */
 
 var viewClassic = function(msg) {
 	// var tabmail = window.frameElement.ownerDocument.getElementById('tabmail');
@@ -27,11 +22,11 @@ var toggleFlagged = function(msg, star) {
 };
 
 module.exports = {
-	replyToSender: compose('ReplyToSender'),
-	replyAll: compose('ReplyAll'),
-	replyToList: compose('ReplyToList'),
-	editAsNew: compose('Template'),
-	forward: compose('ForwardInline'),
+	replyToSender: msg => browser.compose.beginReply(msg.id),
+	replyAll: msg => browser.compose.beginReply(msg.id, 'replyToAll'),
+	replyToList: msg => browser.compose.beginReply(msg.id, 'replyToList'),
+	editAsNew: msg => browser.compose.beginEdit(msg.id),
+	forward: msg => browser.compose.beginForward(msg.id),
 	viewClassic: viewClassic,
 	viewSource: viewSource,
 	markAsRead: markAsRead,
