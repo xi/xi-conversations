@@ -64,27 +64,13 @@ var getConversation = function(msgs, cb) {
 
 var xi = class extends ExtensionCommon.ExtensionAPI {
 	getAPI(context) {
-		var msgHdr2id = (msg) => context.extension.messageManager.convert(msg).id;
-
 		var glodaMsg2msg = function(glodaMsg) {
-			return {
-				// see https://thunderbird-webextensions.readthedocs.io/en/78/messages.html#messageheader
-				id: msgHdr2id(glodaMsg.folderMessage),
-				author: glodaMsg.folderMessage.mime2DecodedAuthor,
-				recipients: glodaMsg.folderMessage.recipients.split(',').map(x => x.trim()).filter(x => x),
-				ccList: glodaMsg.folderMessage.ccList.split(',').map(x => x.trim()).filter(x => x),
-				bccList: glodaMsg.folderMessage.bccList.split(',').map(x => x.trim()).filter(x => x),
-				flagged: glodaMsg.folderMessage.isFlagged,
-				junk: glodaMsg.folderMessage.getStringProperty('junkscore') === Components.interfaces.nsIJunkMailPlugin.IS_SPAM_SCORE,
-				date: glodaMsg._date,
-				read: glodaMsg.folderMessage.isRead,
-				subject: glodaMsg.folderMessage.mime2DecodedSubject,
-
-				// additional fields
+			var msg = context.extension.messageManager.convert(glodaMsg.folderMessage);
+			return Object.assign({}, msg, {
 				body: glodaMsg._indexedBodyText,
 				canReplyToList: !!glodaMsg.mailingLists,
 				attachmentInfos: glodaMsg.attachmentInfos.map(a => ({name: a.name, url: a.url})),
-			};
+			});
 		};
 
 		return {
