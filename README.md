@@ -16,27 +16,30 @@ is not to say that it would not work. But I do not recommend it.
 # Things I learned while working on this
 
 -	Many thunderbird APIs have next to no documentation. But reading the code is
-	not that bad and it is easily searchable with [DXR][2].
--	The extensions relies havily on [Gloda][5].
--	thunderbird-conversations is a [bootstrapped extension][3] This is deprecated
-	and will be replaced by [web extensions][4] in the long run, at least in
-	firefox.
+	not that bad and it is easily searchable with [DXR][2]. Much of the
+	thunderbird code itself is actually written in JavaScript.
+-	The extensions relies heavily on [Gloda][5].
+-	thunderbird-conversations was a [bootstrapped extension][3]. This has since
+	been replaced by [web extensions][4]. Much of the functionality is not
+	supported via the new APIs so thunderbird-conversations now makes extensive
+	use of [WebExtension Experiments][6].
 -	Plugging into enigmail is hard.
--	protz did an amazing job handling all those edge cases and making it work for
-	humans.
+-	protz and Standard8 did an amazing job handling all those edge cases and
+	making it work for humans.
 
 # Install
 
 If you feel adventurous and actually want to try this out, you will need to do
 the following steps:
 
--	Install node with npm, node-sass and browserify.
+-	Install node with npm and browserify as well as sassc.
 -	Run `make`.
 -	Link the repository to `$PROFILE/extensions/conversations@xi`.
 -	Restart thunderbird.
 
-[1]: https://github.com/protz/thunderbird-conversations
+[1]: https://github.com/thunderbird-conversations/thunderbird-conversations
 [2]: https://dxr.mozilla.org/comm-central
 [3]: https://developer.mozilla.org/en-US/Add-ons/Bootstrapped_extensions
-[4]: https://developer.mozilla.org/en-US/Add-ons/WebExtensions
+[4]: https://thunderbird-webextensions.readthedocs.io/
 [5]: https://developer.mozilla.org/en-US/docs/Mozilla/Thunderbird/Creating_a_Gloda_message_query
+[6]: https://thunderbird-webextensions.readthedocs.io/en/78/how-to/experiments.html
