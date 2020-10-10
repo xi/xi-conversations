@@ -63,11 +63,6 @@ var getConversation = function(msgs, cb) {
 };
 
 var xi = class extends ExtensionCommon.ExtensionAPI {
-	setup() {
-		var manifestURI = Services.io.newURI('manifest.json', null, this.extension.rootURI);
-		aomStartup.registerChrome(manifestURI, [['content', 'xi-conversations', 'content/']]);
-	}
-
 	getAPI(context) {
 		var msgHdr2id = (msg) => context.extension.messageManager.convert(msg).id;
 
@@ -94,7 +89,10 @@ var xi = class extends ExtensionCommon.ExtensionAPI {
 
 		return {
 			xi: {
-				setup: () => this.setup(),
+				setup() {
+					var manifestURI = Services.io.newURI('manifest.json', null, this.extension.rootURI);
+					aomStartup.registerChrome(manifestURI, [['content', 'xi-conversations', 'content/']]);
+				},
 				getConversation(uris) {
 					return new Promise(resolve => {
 						getConversation(uris.map(uri2msg), results => {
