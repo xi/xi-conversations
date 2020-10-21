@@ -42,6 +42,17 @@
 			"type": "string"
 		}]
 	}, {
+		"name": "saveAttachment",
+		"type": "function",
+		"async": true,
+		"parameters": [{
+			"name": "id",
+			"type": "integer"
+		}, {
+			"name": "url",
+			"type": "string"
+		}]
+	}, {
 		"name": "beginEdit",
 		"type": "function",
 		"async": true,

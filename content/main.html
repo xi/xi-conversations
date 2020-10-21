@@ -55,7 +55,10 @@
 					<footer class="message__footer">
 						<ul class="attachments">
 							{{#attachments}}
-								<li><a class="attachment" href="{{ url }}">{{#icon}}x-attachment{{/icon}} {{ name }}</a></li>
+								<li>
+									<a class="attachment" href="{{ url }}">{{#icon}}x-attachment{{/icon}} {{ name }}</a>
+									(<a class="attachment-save" href="{{ url }}">save</a>)
+								</li>
 							{{/attachments}}
 						</ul>
 					</footer>

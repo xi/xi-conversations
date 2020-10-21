@@ -35,3 +35,11 @@ document.addEventListener('click', function(event) {
 		browser.xi.openAttachment(id, event.target.href);
 	}
 });
+
+document.addEventListener('click', function(event) {
+	if (event.target.matches('a.attachment-save')) {
+		event.preventDefault();
+		var id = parseInt(event.target.closest('[id^="msg-"]').id.substr(4), 10);
+		browser.xi.saveAttachment(id, event.target.href);
+	}
+});

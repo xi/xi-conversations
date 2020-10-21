@@ -17,6 +17,15 @@ var msg2uri = function(msg) {
 	return msg.folder.getUriForMsg(msg);
 };
 
+var getParams = function(search) {
+	const params = {};
+	for (let part of search.split('&')) {
+		let [key, raw] = part.split('=');
+		params[key] = decodeURIComponent(raw);
+	}
+	return params;
+};
+
 var unique = function(l, keyFn) {
 	var keys = [];
 	return l.filter(function(item) {
@@ -106,6 +115,13 @@ var xi = class extends ExtensionCommon.ExtensionAPI {
 					var win = Services.wm.getMostRecentWindow('mail:3pane');
 					var attInfo = new win.AttachmentInfo(null, url, null, msg2uri(msgHdr));
 					attInfo.open();
+				},
+				async saveAttachment(id, url) {
+					var msgHdr = context.extension.messageManager.get(id);
+					var win = Services.wm.getMostRecentWindow('mail:3pane');
+					var params = getParams(url.split('?')[1] || '');
+					var attInfo = new win.AttachmentInfo(null, url, params.filename, msg2uri(msgHdr));
+					attInfo.save();
 				},
 				async beginEdit(id) {
 					var msgHdr = context.extension.messageManager.get(id);
