@@ -1,6 +1,7 @@
 body {
 	display: flex;
 	flex-direction: column;
+	background: Window;
 	height: 100vh;
 	margin: 0;
 	padding: 0;
@@ -9,6 +10,7 @@ body {
 .conversation__header {
 	padding: 1em;
 	background-color: Menu;
+	color: MenuText;
 	box-shadow: 0 0 1em ThreeDShadow;
 	flex-grow: 0;
 	z-index: 1;
