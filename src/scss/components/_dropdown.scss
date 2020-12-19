@@ -8,7 +8,7 @@
 	color: -moz-FieldText;
 	min-width: 15em;
 	border-radius: 0.4em;
-	box-shadow: 0 0 1em ThreeDShadow;
+	border: 1px solid ThreeDShadow;
 	overflow: hidden;
 
 	&.is-expanded {
