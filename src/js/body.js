@@ -80,7 +80,7 @@ module.exports = function(msg) {
 		if (isEncrypted){
 			wrapper.prepend(util.createAlert(browser.i18n.getMessage('encrypted'), 'x-lock', 'info'));
 		}
-		renderBody(pre, body || browser.i18n.getMessage('emptyBody'));
+		renderBody(pre, body || msg.body || browser.i18n.getMessage('emptyBody'));
 	});
 
 	return wrapper;
