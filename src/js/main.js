@@ -15,7 +15,12 @@ browser.xi.getConversation(initialUris).then(function(conversation) {
 
 	for (let i = 0; i < conversation.length; i++) {
 		const msg = conversation[i];
-		const expanded = conversation.length === 1 || !msg.read || (!anyExpanded && i === conversation.length - 1);
+		const expanded = (
+			conversation.length === 1
+			|| !msg.read
+			|| (initialUris.length === 1 && initialUris.includes(msg.uri))
+			|| (!anyExpanded && i === conversation.length - 1)
+		);
 
 		const message = createMessageElement(msg, expanded);
 		container.appendChild(message);
