@@ -4,7 +4,7 @@ content/style.css: src/scss/style.scss src/scss/*.scss src/scss/components/*.scs
 	sassc $< $@
 
 content/main.js: src/js/main.js src/js/*.js node_modules
-	browserify $< -o $@
+	npx browserify $< -o $@
 
 content/material-icons.svg: scripts/get-material-icons.sh
 	$< > $@
