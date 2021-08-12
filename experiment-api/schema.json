@@ -52,14 +52,6 @@
 			"name": "url",
 			"type": "string"
 		}]
-	}, {
-		"name": "beginEdit",
-		"type": "function",
-		"async": true,
-		"parameters": [{
-			"name": "id",
-			"type": "integer"
-		}]
 	}],
 	"events": [{
 		"name": "onOpenTab",

@@ -19,7 +19,7 @@ module.exports = {
 	replyToSender: msg => browser.compose.beginReply(msg.id),
 	replyAll: msg => browser.compose.beginReply(msg.id, 'replyToAll'),
 	replyToList: msg => browser.compose.beginReply(msg.id, 'replyToList'),
-	editAsNew: msg => browser.xi.beginEdit(msg.id),
+	editAsNew: msg => browser.compose.beginNew(msg.id),
 	forward: msg => browser.compose.beginForward(msg.id),
 	viewClassic: msg => browser.xi.viewClassic(msg.id),
 	viewSource: viewSource,
