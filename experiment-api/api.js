@@ -43,7 +43,7 @@ var getConversation = function(msgs, cb) {
 		onItemsModified: function() {},
 		onItemsRemoved: function() {},
 		onQueryCompleted: function(collection) {
-			cb(collection.items);
+			cb(collection.items.filter(glodaMsg => glodaMsg.folderMessage));
 		},
 	};
 
