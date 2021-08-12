@@ -37,38 +37,43 @@ var unique = function(l, keyFn) {
 	});
 };
 
-var getConversation = function(msgs, cb) {
-	var conversationListener = {
-		onItemsAdded: function() {},
-		onItemsModified: function() {},
-		onItemsRemoved: function() {},
-		onQueryCompleted: function(collection) {
-			cb(collection.items.filter(glodaMsg => glodaMsg.folderMessage));
-		},
-	};
+var getConversation = function(msgs) {
+	return new Promise(resolve => {
+		var conversationListener = {
+			onItemsAdded: function() {},
+			onItemsModified: function() {},
+			onItemsRemoved: function() {},
+			onQueryCompleted: function(collection) {
+				var results = collection.items;
+				results = results.filter(glodaMsg => glodaMsg.folderMessage);
+				results = unique(results, glodaMsg => glodaMsg.headerMessageID);
+				resolve(results);
+			},
+		};
 
-	var listener = {
-		onItemsAdded: function() {},
-		onItemsModified: function() {},
-		onItemsRemoved: function() {},
-		onQueryCompleted: function(collection) {
-			if (collection.items.length) {
-				var conversation = collection.items[0].conversation;
-				conversation.getMessagesCollection(conversationListener, true);
-			} else {
-				cb(msgs.map(function(msg) {
-					return {
-						folderMessage: msg,
-						attachmentInfos: [],
-						mailingLists: null,
-						_indexedBodyText: null,
-					};
-				}));
-			}
-		},
-	};
+		var listener = {
+			onItemsAdded: function() {},
+			onItemsModified: function() {},
+			onItemsRemoved: function() {},
+			onQueryCompleted: function(collection) {
+				if (collection.items.length) {
+					var conversation = collection.items[0].conversation;
+					conversation.getMessagesCollection(conversationListener, true);
+				} else {
+					resolve(msgs.map(function(msg) {
+						return {
+							folderMessage: msg,
+							attachmentInfos: [],
+							mailingLists: null,
+							_indexedBodyText: null,
+						};
+					}));
+				}
+			},
+		};
 
-	Gloda.getMessageCollectionForHeaders(msgs, listener, null);
+		Gloda.getMessageCollectionForHeaders(msgs, listener, null);
+	});
 };
 
 var xi = class extends ExtensionCommon.ExtensionAPI {
@@ -91,11 +96,7 @@ var xi = class extends ExtensionCommon.ExtensionAPI {
 				},
 				getConversation(uris) {
 					// https://bugzilla.mozilla.org/show_bug.cgi?id=1665676
-					return new Promise(resolve => {
-						getConversation(uris.map(uri2msg), results => {
-							resolve(unique(results, glodaMsg => glodaMsg.headerMessageID).map(glodaMsg2msg));
-						});
-					});
+					return getConversation(uris.map(uri2msg)).then(results => results.map(glodaMsg2msg));
 				},
 				getFull(id) {
 					// the original getFull() is restricted to these fields:
