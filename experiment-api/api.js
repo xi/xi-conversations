@@ -1,17 +1,11 @@
 /* global Components, ChromeUtils */
 
 var aomStartup = Components.classes['@mozilla.org/addons/addon-manager-startup;1'].getService(Components.interfaces.amIAddonManagerStartup);
-var Messenger = Components.classes['@mozilla.org/messenger;1'].createInstance(Components.interfaces.nsIMessenger);
 
 var {ExtensionCommon} = ChromeUtils.import('resource://gre/modules/ExtensionCommon.jsm');
 var {Gloda} = ChromeUtils.import('resource:///modules/gloda/GlodaPublic.jsm');
 var {Services} = ChromeUtils.import('resource://gre/modules/Services.jsm');
 var {MsgHdrToMimeMessage} = ChromeUtils.import('resource:///modules/gloda/MimeMessage.jsm');
-
-var uri2msg = function(uri) {
-	var messageService = Messenger.messageServiceFromURI(uri);
-	return messageService.messageURIToMsgHdr(uri);
-};
 
 var msg2uri = function(msg) {
 	return msg.folder.getUriForMsg(msg);
@@ -37,7 +31,7 @@ var unique = function(l, keyFn) {
 	});
 };
 
-var getConversation = function(msgs) {
+var getConversation = function(ids) {
 	return new Promise(resolve => {
 		var conversationListener = {
 			onItemsAdded: function() {},
@@ -72,7 +66,9 @@ var getConversation = function(msgs) {
 			},
 		};
 
-		Gloda.getMessageCollectionForHeaders(msgs, listener, null);
+		var query = Gloda.newQuery(Gloda.NOUN_MESSAGE);
+		query.headerMessageID.apply(query, ids);
+		query.getCollection(listener, null);
 	});
 };
 
@@ -84,15 +80,17 @@ var xi = class extends ExtensionCommon.ExtensionAPI {
 				body: glodaMsg._indexedBodyText,
 				canReplyToList: !!glodaMsg.mailingLists,
 				attachmentInfos: glodaMsg.attachmentInfos.map(a => ({name: a.name, url: a.url})),
-				uri: msg2uri(glodaMsg.folderMessage),
+
+				// backport from thunderbird 85
+				headerMessageId: glodaMsg.headerMessageID,
 			});
 		};
 
 		return {
 			xi: {
-				getConversation(uris) {
+				getConversation(ids) {
 					// https://bugzilla.mozilla.org/show_bug.cgi?id=1665676
-					return getConversation(uris.map(uri2msg)).then(results => results.map(glodaMsg2msg));
+					return getConversation(ids).then(results => results.map(glodaMsg2msg));
 				},
 				getFull(id) {
 					// the original getFull() is restricted to these fields:
@@ -141,7 +139,7 @@ var xi = class extends ExtensionCommon.ExtensionAPI {
 							if (topic === 'domwindowopened' && win.location.href === 'chrome://messenger/content/messenger.xhtml') {
 								win.MsgOpenSelectedMessages = () => {
 									var msgs = win.gFolderDisplay.selectedMessages;
-									fire.async(msgs.map(msg2uri));
+									fire.async(msgs.map(msgHdr => msgHdr.messageId));
 								};
 							}
 							win.addEventListener('load', () => observer(win, topic));

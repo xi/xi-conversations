@@ -3,12 +3,12 @@
 var createMessageElement = require('./message');
 var util = require('./util.js');
 
-var initialUris = (util.getParams().uris || '').split(',');
+var initialIDs = (util.getParams().ids || '').split(',');
 
 var container = document.querySelector('.conversation__main');
 var anyExpanded = false;
 
-browser.xi.getConversation(initialUris).then(function(conversation) {
+browser.xi.getConversation(initialIDs).then(function(conversation) {
 	var subject = conversation[0].subject || '(no subject)';
 	document.querySelector('.conversation__subject').textContent = subject;
 	document.title = subject;
@@ -18,7 +18,7 @@ browser.xi.getConversation(initialUris).then(function(conversation) {
 		const expanded = (
 			conversation.length === 1
 			|| !msg.read
-			|| (initialUris.length === 1 && initialUris.includes(msg.uri))
+			|| (initialIDs.length === 1 && initialIDs.includes(msg.headerMessageId))
 			|| (!anyExpanded && i === conversation.length - 1)
 		);
 

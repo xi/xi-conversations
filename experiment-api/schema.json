@@ -5,7 +5,7 @@
 		"type": "function",
 		"async": true,
 		"parameters": [{
-			"name": "uris",
+			"name": "ids",
 			"type": "array",
 			"items": {
 				"type": "string"
@@ -61,7 +61,7 @@
 		"name": "onOpenTab",
 		"type": "function",
 		"parameters": [{
-			"name": "uris",
+			"name": "ids",
 			"type": "array",
 			"items": {
 				"type": "string"
