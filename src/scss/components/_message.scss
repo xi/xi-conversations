@@ -76,6 +76,9 @@
 	> .message__summary,
 	> .message__recipients {
 		flex: 1 1 auto;
+	}
+
+	> .message__summary {
 		white-space: nowrap;
 		text-overflow: ellipsis;
 		overflow: hidden;
