@@ -89,6 +89,7 @@ var xi = class extends ExtensionCommon.ExtensionAPI {
 					aomStartup.registerChrome(manifestURI, [['content', 'xi-conversations', 'content/']]);
 				},
 				getConversation(uris) {
+					// https://bugzilla.mozilla.org/show_bug.cgi?id=1665676
 					return new Promise(resolve => {
 						getConversation(uris.map(uri2msg), results => {
 							resolve(unique(results, glodaMsg => glodaMsg.headerMessageID).map(glodaMsg2msg));
@@ -106,11 +107,13 @@ var xi = class extends ExtensionCommon.ExtensionAPI {
 					});
 				},
 				viewClassic(id) {
+					// https://bugzilla.mozilla.org/show_bug.cgi?id=1603489
 					var msgHdr = context.extension.messageManager.get(id);
 					var mainWindow = Services.wm.getMostRecentWindow('mail:3pane');
 					mainWindow.openTab('message', {msgHdr: msgHdr, background: false});
 				},
 				async openAttachment(id, url) {
+					// https://bugzilla.mozilla.org/show_bug.cgi?id=1696777
 					var msgHdr = context.extension.messageManager.get(id);
 					var win = Services.wm.getMostRecentWindow('mail:3pane');
 					var attInfo = new win.AttachmentInfo(null, url, null, msg2uri(msgHdr));
