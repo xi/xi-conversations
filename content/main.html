@@ -21,6 +21,12 @@
 						{{#recipients}}
 							<a href="mailto:{{ email }}">{{ name }}</a>
 						{{/recipients}}
+						{{#cc}}
+							<a class="message__recipients__cc" href="mailto:{{ email }}">{{ name }}</a>
+						{{/cc}}
+						{{#bcc}}
+							<a class="message__recipients__bcc" href="mailto:{{ email }}">{{ name }}</a>
+						{{/bcc}}
 					</span>
 					<span class="message__summary">{{ summary }}</span>
 

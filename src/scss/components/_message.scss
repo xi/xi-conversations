@@ -100,6 +100,16 @@
 		content: ", ";
 	}
 }
+.message__recipients__cc,
+.message__recipients__bcc {
+	opacity: 0.5;
+}
+.message__recipients__cc::before {
+	content: "cc:"
+}
+.message__recipients__bcc::before {
+	content: "bcc:"
+}
 
 .message__actions {
 	position: relative;

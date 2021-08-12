@@ -68,6 +68,8 @@ module.exports = function(msg, expanded) {
 		isEncrypted: msg.isEncrypted,
 		author: util.parseContacts([msg.author]),
 		recipients: util.parseContacts(msg.recipients),
+		cc: util.parseContacts(msg.ccList),
+		bcc: util.parseContacts(msg.bccList),
 		summary: (msg.body || '').substring(0, 150),
 		attachments: msg.attachmentInfos,
 		hasAttachments: (msg.attachmentInfos || []).length,
