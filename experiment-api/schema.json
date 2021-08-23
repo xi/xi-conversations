@@ -1,10 +1,6 @@
 [{
 	"namespace": "xi",
 	"functions": [{
-		"name": "setup",
-		"type": "function",
-		"parameters": []
-	}, {
 		"name": "getConversation",
 		"type": "function",
 		"async": true,

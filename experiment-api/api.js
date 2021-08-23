@@ -90,10 +90,6 @@ var xi = class extends ExtensionCommon.ExtensionAPI {
 
 		return {
 			xi: {
-				setup() {
-					var manifestURI = Services.io.newURI('manifest.json', null, this.extension.rootURI);
-					aomStartup.registerChrome(manifestURI, [['content', 'xi-conversations', 'content/']]);
-				},
 				getConversation(uris) {
 					// https://bugzilla.mozilla.org/show_bug.cgi?id=1665676
 					return getConversation(uris.map(uri2msg)).then(results => results.map(glodaMsg2msg));
