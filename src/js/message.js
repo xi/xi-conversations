@@ -7,6 +7,7 @@ var util = require('./util.js');
 var autoMarkAsRead = function(e, msg) {
 	var topWasInView = false;
 	var bottomWasInView = false;
+	var clear;
 
 	var intervalId = window.setInterval(function() {
 		var rect = e.getBoundingClientRect();
@@ -21,10 +22,23 @@ var autoMarkAsRead = function(e, msg) {
 			}
 			if (topWasInView && bottomWasInView) {
 				actions.markAsRead(msg, true);
-				window.clearInterval(intervalId);
+				clear();
 			}
 		}
 	}, 100);
+
+	var onAction = function(event) {
+		if (event.target.closest('[data-action]')) {
+			actions.markAsRead(msg, true);
+			clear();
+		}
+	}
+	e.addEventListener('click', onAction);
+
+	clear = function() {
+		window.clearInterval(intervalId);
+		e.removeEventListener('click', onAction);
+	};
 };
 
 var iconFilter = function() {
