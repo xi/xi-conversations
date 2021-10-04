@@ -1,6 +1,6 @@
 body {
-	display: flex;
-	flex-direction: column;
+	display: grid;
+	grid-template-rows: min-content 1fr;
 	background: Window;
 	height: 100vh;
 	margin: 0;
@@ -12,12 +12,9 @@ body {
 	background-color: Menu;
 	color: MenuText;
 	border-bottom: 1px solid ThreeDShadow;
-	flex-grow: 0;
-	z-index: 1;
 }
 
 .conversation__main {
-	flex-grow: 1;
 	overflow-y: scroll;
 	padding: 0.5em;
 }
