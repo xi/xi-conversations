@@ -114,7 +114,8 @@ var xi = class extends ExtensionCommon.ExtensionAPI {
 					// https://bugzilla.mozilla.org/show_bug.cgi?id=1696777
 					var msgHdr = context.extension.messageManager.get(id);
 					var win = Services.wm.getMostRecentWindow('mail:3pane');
-					var attInfo = new win.AttachmentInfo(null, url, null, msg2uri(msgHdr));
+					var params = getParams(url.split('?')[1] || '');
+					var attInfo = new win.AttachmentInfo(null, url, params.filename, msg2uri(msgHdr));
 					attInfo.open();
 				},
 				async saveAttachment(id, url) {
