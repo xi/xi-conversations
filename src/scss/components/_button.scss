@@ -7,13 +7,13 @@
 	padding: 0.2em;
 
 	&:hover {
-		border-color: ThreeDShadow;
-		background-color: ButtonHighlight;
+		border-color: var(--border);
+		background-color: var(--button-highlight);
 		transition: background-color 0.3s, border-color 0.3s;
 	}
 
 	&:active {
 		background-color: transparent;
-		box-shadow: 0 0 0.5em ThreeDShadow inset;
+		box-shadow: 0 0 0.5em var(--border) inset;
 	}
 }

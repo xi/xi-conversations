@@ -4,11 +4,11 @@
 	top: 2em;
 	right: 0;
 	z-index: 1;
-	background-color: -moz-Field;
-	color: -moz-FieldText;
+	background-color: var(--dropdown-bg);
+	color: var(--dropdown-fg);
 	min-width: 15em;
 	border-radius: 0.4em;
-	border: 1px solid ThreeDShadow;
+	border: 1px solid var(--border);
 	overflow: hidden;
 
 	&.is-expanded {
@@ -28,11 +28,11 @@
 	cursor: pointer;
 
 	&:nth-child(2n) {
-		background-color: -moz-OddTreeRow;
+		background-color: var(--odd);
 	}
 
 	&:hover {
-		background-color: -moz-CellHighlight;
-		color: -moz-CellHighlightText;
+		background-color: var(--highlight-bg);
+		color: var(--highlight-fg);
 	}
 }

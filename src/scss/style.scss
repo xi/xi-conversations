@@ -1,3 +1,16 @@
+:root {
+	--border: ThreeDShadow;
+	--button-highlight: ButtonHighlight;
+	--bg-tint: Window;
+	--bg: Menu;
+	--fg: MenuText;
+	--dropdown-bg: -moz-Field;
+	--dropdown-fg: -moz-FieldText;
+	--odd: -moz-OddTreeRow;
+	--highlight-bg: -moz-CellHighlight;
+	--highlight-fg: -moz-CellHighlightText;
+}
+
 @import 'components/alert';
 @import 'components/attachments';
 @import 'components/button';

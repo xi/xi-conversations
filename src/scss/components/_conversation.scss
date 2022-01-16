@@ -1,7 +1,7 @@
 body {
 	display: grid;
 	grid-template-rows: min-content 1fr;
-	background: Window;
+	background: var(--bg-tint);
 	height: 100vh;
 	margin: 0;
 	padding: 0;
@@ -9,9 +9,9 @@ body {
 
 .conversation__header {
 	padding: 1em;
-	background-color: Menu;
-	color: MenuText;
-	border-bottom: 1px solid ThreeDShadow;
+	background-color: var(--bg);
+	color: var(--fg);
+	border-bottom: 1px solid var(--border);
 }
 
 .conversation__main {

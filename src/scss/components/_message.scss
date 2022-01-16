@@ -1,10 +1,10 @@
 .message {
 	max-width: 70em;
 	margin: 0 auto 2px;
-	background-color: Menu;
-	color: MenuText;
+	background-color: var(--bg);
+	color: var(--fg);
 	margin-bottom: 0.5em;
-	border: 1px solid ThreeDShadow;
+	border: 1px solid var(--border);
 
 	.message__details,
 	.message__recipients {
