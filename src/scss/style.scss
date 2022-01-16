@@ -8,6 +8,18 @@
 	--highlight-fg: -moz-CellHighlightText;
 }
 
+@media (prefers-color-scheme: dark) {
+	:root {
+		--bg-tint: #000;
+		--bg: #111;
+		--fg: #fff;
+		--border: #222;
+		--odd: #222;
+		--highlight-bg: #555;
+		--highlight-fg: #fff;
+	}
+}
+
 @import 'components/alert';
 @import 'components/attachments';
 @import 'components/button';
