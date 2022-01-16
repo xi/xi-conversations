@@ -125,6 +125,14 @@ var xi = class extends ExtensionCommon.ExtensionAPI {
 					var attInfo = new win.AttachmentInfo(null, url, params.filename, msg2uri(msgHdr));
 					attInfo.save();
 				},
+				createTab(url) {
+					let win = Services.wm.getMostRecentWindow("mail:3pane");
+					let nativeTabInfo = win.openTab("contentTab", {
+						url: context.uri.resolve(url),
+						linkHandler: "single-page",
+						principal: context.extension.principal,
+					});
+				},
 				onOpenTab: new ExtensionCommon.EventManager({
 					context,
 					name: 'xi.onOpenTab',

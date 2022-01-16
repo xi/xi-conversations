@@ -48,6 +48,14 @@
 			"name": "url",
 			"type": "string"
 		}]
+	}, {
+		"name": "createTab",
+		"type": "function",
+		"async": false,
+		"parameters": [{
+			"name": "url",
+			"type": "string"
+		}]
 	}],
 	"events": [{
 		"name": "onOpenTab",
