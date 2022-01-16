@@ -6,8 +6,7 @@
 	border-radius: 2px;
 	padding: 0.2em;
 
-	&:hover,
-	&:focus {
+	&:hover {
 		border-color: ThreeDShadow;
 		background-color: ButtonHighlight;
 		transition: background-color 0.3s, border-color 0.3s;
