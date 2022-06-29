@@ -55,9 +55,9 @@ var createDate = function(date) {
 	var e = document.createElement('time');
 	e.className = 'date';
 	if (date.toDateString() === now.toDateString()) {
-		e.textContent = date.toLocaleTimeString();
+		e.textContent = date.toLocaleTimeString('sv');
 	} else {
-		e.textContent = date.toLocaleDateString();
+		e.textContent = date.toLocaleDateString('sv');
 	}
 	e.title = date.toLocaleString();
 	return e;
