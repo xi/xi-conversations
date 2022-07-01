@@ -50,19 +50,8 @@ var getConversation = function(ids) {
 			onItemsModified: function() {},
 			onItemsRemoved: function() {},
 			onQueryCompleted: function(collection) {
-				if (collection.items.length) {
-					var conversation = collection.items[0].conversation;
-					conversation.getMessagesCollection(conversationListener, true);
-				} else {
-					resolve(msgs.map(function(msg) {
-						return {
-							folderMessage: msg,
-							attachmentInfos: [],
-							mailingLists: null,
-							_indexedBodyText: null,
-						};
-					}));
-				}
+				var conversation = collection.items[0].conversation;
+				conversation.getMessagesCollection(conversationListener, true);
 			},
 		};
 
