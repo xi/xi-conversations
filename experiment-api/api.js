@@ -69,9 +69,6 @@ var xi = class extends ExtensionCommon.ExtensionAPI {
 				body: glodaMsg._indexedBodyText,
 				canReplyToList: !!glodaMsg.mailingLists,
 				attachmentInfos: glodaMsg.attachmentInfos.map(a => ({name: a.name, url: a.url})),
-
-				// backport from thunderbird 85
-				headerMessageId: glodaMsg.headerMessageID,
 			});
 		};
 
