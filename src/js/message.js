@@ -110,15 +110,12 @@ module.exports = function(msg, expanded) {
 	var dropdown = e.querySelector('.dropdown');
 	dropdownToggle.addEventListener('click', function(event) {
 		event.preventDefault();
-		if (!dropdownToggle.classList.contains('is-expanded')) {
-			// trigger after the remove handler
-			setTimeout(function() {
-				dropdown.classList.add('is-expanded');
-			});
-		}
+		dropdown.classList.toggle('is-expanded');
 	});
-	document.addEventListener('click', function() {
-		dropdown.classList.remove('is-expanded');
+	document.addEventListener('focusout', function(event) {
+		if (!event.relatedTarget || !dropdown.contains(event.relatedTarget)) {
+			dropdown.classList.remove('is-expanded');
+		}
 	});
 
 	// action events
