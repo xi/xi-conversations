@@ -34,11 +34,11 @@
 					{{#dateFilter}}{{ date }}{{/dateFilter}}
 
 					<span class="message__actions">
-						{{#canReplyToList}}<button class="button" title="{{#str}}replyList{{/str}}" data-action="replyToList">{{#icon}}x-list{{/icon}}</button{{/canReplyToList}}
-						{{^canReplyToList}}
-							{{#canReplyAll}}<button class="button" title="{{#str}}replyAll{{/str}}" data-action="replyAll">{{#icon}}x-reply_all{{/icon}}</button{{/canReplyAll}}
-							{{^canReplyAll}}<button class="button" title="{{#str}}reply{{/str}}" data-action="replyToSender">{{#icon}}x-reply{{/icon}}</button{{/canReplyAll}}
-						{{/canReplyToList}}
+						{{#canReplyAll}}<button class="button" title="{{#str}}replyAll{{/str}}" data-action="replyAll">{{#icon}}x-reply_all{{/icon}}</button{{/canReplyAll}}
+						{{^canReplyAll}}
+							{{#canReplyToList}}<button class="button" title="{{#str}}replyList{{/str}}" data-action="replyToList">{{#icon}}x-list{{/icon}}</button{{/canReplyToList}}
+							{{^canReplyToList}}<button class="button" title="{{#str}}reply{{/str}}" data-action="replyToSender">{{#icon}}x-reply{{/icon}}</button{{/canReplyToList}}
+						{{/canReplyAll}}
 
 						><button class="button dropdownToggle" title="{{#str}}more{{/str}}">{{#icon}}x-menu{{/icon}}</button>
 						<div class="dropdown">
