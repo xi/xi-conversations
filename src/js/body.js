@@ -77,7 +77,7 @@ module.exports = function(msg) {
 	pre.className = 'message__body';
 	wrapper.append(pre);
 	browser.xi.getFull(msg.id).then(util.getBody).then(([body, isEncrypted]) => {
-		if (isEncrypted){
+		if (isEncrypted) {
 			wrapper.prepend(util.createAlert(browser.i18n.getMessage('encrypted'), 'x-lock', 'info'));
 		}
 		renderBody(pre, body || msg.body || browser.i18n.getMessage('emptyBody'));
