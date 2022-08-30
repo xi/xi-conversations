@@ -17,7 +17,10 @@ var getBody = function(msgPart) {
 		return [msgPart.body, msgPart.isEncrypted];
 	} else if (msgPart.parts) {
 		var bodies = [];
-		var encrypted = msgPart.isEncrypted;
+		var encrypted = (
+			msgPart.isEncrypted
+			&& !msgPart.contentType.startsWith('multipart/signed')
+		);
 		for (var part of msgPart.parts) {
 			var [body, e] = getBody(part);
 			if (body) {
