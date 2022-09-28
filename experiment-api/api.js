@@ -104,13 +104,8 @@ var xi = class extends ExtensionCommon.ExtensionAPI {
 				viewSource(id) {
 					var win = Services.wm.getMostRecentWindow('mail:3pane');
 					var msgHdr = context.extension.messageManager.get(id);
-					var url = msgHdr.folder.folderURL + '?number=' + msgHdr.messageKey;
-					win.openDialog(
-						'chrome://messenger/content/viewSource.xhtml',
-						'_blank',
-						'all,dialog=no',
-						{URL: url},
-					);
+					var uri = msgHdr.folder.getUriForMsg(msgHdr)
+					win.ViewPageSource([uri]);
 				},
 				createTab(url) {
 					var win = Services.wm.getMostRecentWindow('mail:3pane');
