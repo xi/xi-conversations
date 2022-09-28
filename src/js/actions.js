@@ -21,7 +21,7 @@ module.exports = {
 	replyToList: msg => browser.compose.beginReply(msg.id, 'replyToList'),
 	editAsNew: msg => browser.compose.beginNew(msg.id),
 	forward: msg => browser.compose.beginForward(msg.id),
-	viewClassic: msg => browser.xi.viewClassic(msg.id),
+	viewClassic: msg => browser.messageDisplay.open({messageId: msg.id}),
 	viewSource: viewSource,
 	markAsRead: markAsRead,
 	toggleFlagged: toggleFlagged,

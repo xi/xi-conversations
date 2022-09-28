@@ -88,12 +88,6 @@ var xi = class extends ExtensionCommon.ExtensionAPI {
 						}, false, {examineEncryptedParts: true});
 					});
 				},
-				viewClassic(id) {
-					// https://bugzilla.mozilla.org/show_bug.cgi?id=1603489
-					var msgHdr = context.extension.messageManager.get(id);
-					var mainWindow = Services.wm.getMostRecentWindow('mail:3pane');
-					mainWindow.openTab('message', {msgHdr: msgHdr, background: false});
-				},
 				async openAttachment(id, url) {
 					// https://bugzilla.mozilla.org/show_bug.cgi?id=1696777
 					var msgHdr = context.extension.messageManager.get(id);
