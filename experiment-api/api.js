@@ -1,6 +1,4 @@
-/* global Components, ChromeUtils */
-
-var aomStartup = Components.classes['@mozilla.org/addons/addon-manager-startup;1'].getService(Components.interfaces.amIAddonManagerStartup);
+/* global ChromeUtils */
 
 var {ExtensionCommon} = ChromeUtils.import('resource://gre/modules/ExtensionCommon.jsm');
 var {Gloda} = ChromeUtils.import('resource:///modules/gloda/GlodaPublic.jsm');
@@ -115,10 +113,10 @@ var xi = class extends ExtensionCommon.ExtensionAPI {
 					);
 				},
 				createTab(url) {
-					let win = Services.wm.getMostRecentWindow("mail:3pane");
-					let nativeTabInfo = win.openTab("contentTab", {
+					var win = Services.wm.getMostRecentWindow('mail:3pane');
+					win.openTab('contentTab', {
 						url: context.uri.resolve(url),
-						linkHandler: "single-page",
+						linkHandler: 'single-page',
 						principal: context.extension.principal,
 					});
 				},
