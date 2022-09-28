@@ -20,28 +20,6 @@
 			"type": "integer"
 		}]
 	}, {
-		"name": "openAttachment",
-		"type": "function",
-		"async": true,
-		"parameters": [{
-			"name": "id",
-			"type": "integer"
-		}, {
-			"name": "url",
-			"type": "string"
-		}]
-	}, {
-		"name": "saveAttachment",
-		"type": "function",
-		"async": true,
-		"parameters": [{
-			"name": "id",
-			"type": "integer"
-		}, {
-			"name": "url",
-			"type": "string"
-		}]
-	}, {
 		"name": "viewSource",
 		"type": "function",
 		"async": false,
