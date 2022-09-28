@@ -38,7 +38,7 @@ var html2element = function(html) {
 	// thunderbird 60 will remove some elements when directly assigning to
 	// innerHTML
 	var parser = new DOMParser();
-	var doc = parser.parseFromString(html, 'text/html');
+	var doc = parser.parseFromString('<!DOCTYPE html>\n' + html, 'text/html');
 	return doc.body.children[0];
 };
 
