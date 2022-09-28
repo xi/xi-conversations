@@ -42,6 +42,14 @@
 			"type": "string"
 		}]
 	}, {
+		"name": "viewSource",
+		"type": "function",
+		"async": false,
+		"parameters": [{
+			"name": "id",
+			"type": "integer"
+		}]
+	}, {
 		"name": "createTab",
 		"type": "function",
 		"async": false,

@@ -1,7 +1,7 @@
 /* global browser */
 
 var viewSource = function(msg) {
-	browser.tabs.create({url: '/content/source.html?id=' + msg.id});
+	browser.xi.viewSource(msg.id);
 };
 
 var markAsRead = function(msg, read) {

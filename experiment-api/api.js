@@ -103,6 +103,17 @@ var xi = class extends ExtensionCommon.ExtensionAPI {
 					var attInfo = new win.AttachmentInfo(null, url, params.filename, msg2uri(msgHdr));
 					attInfo.save();
 				},
+				viewSource(id) {
+					var win = Services.wm.getMostRecentWindow('mail:3pane');
+					var msgHdr = context.extension.messageManager.get(id);
+					var url = msgHdr.folder.folderURL + '?number=' + msgHdr.messageKey;
+					win.openDialog(
+						'chrome://messenger/content/viewSource.xhtml',
+						'_blank',
+						'all,dialog=no',
+						{URL: url},
+					);
+				},
 				createTab(url) {
 					let win = Services.wm.getMostRecentWindow("mail:3pane");
 					let nativeTabInfo = win.openTab("contentTab", {
