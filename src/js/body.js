@@ -57,6 +57,10 @@ var renderQuotes = function(parent, lines, nested) {
 };
 
 var renderBody = function(parent, text) {
+	// https://www.rfc-editor.org/rfc/rfc3676
+	// https://en.wikipedia.org/wiki/Posting_style
+	// http://www.asciiribbon.org/
+
 	var [body, ...sig] = text.split('\n-- \n');
 	renderQuotes(parent, body.split('\n'));
 
