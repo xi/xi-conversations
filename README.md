@@ -38,8 +38,8 @@ the following steps:
 -	Restart thunderbird.
 
 [1]: https://github.com/thunderbird-conversations/thunderbird-conversations
-[2]: https://dxr.mozilla.org/comm-central
+[2]: https://searchfox.org/comm-central/source
 [3]: https://developer.mozilla.org/en-US/Add-ons/Bootstrapped_extensions
-[4]: https://thunderbird-webextensions.readthedocs.io/
-[5]: https://developer.mozilla.org/en-US/docs/Mozilla/Thunderbird/Creating_a_Gloda_message_query
-[6]: https://thunderbird-webextensions.readthedocs.io/en/78/how-to/experiments.html
+[4]: https://webextension-api.thunderbird.net/
+[5]: https://web.archive.org/web/20210601133829/https://developer.mozilla.org/en-US/docs/Mozilla/Thunderbird/Creating_a_Gloda_message_query
+[6]: https://webextension-api.thunderbird.net/en/stable/how-to/experiments.html
