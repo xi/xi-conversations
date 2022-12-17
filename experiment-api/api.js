@@ -5,19 +5,6 @@ var {Gloda} = ChromeUtils.import('resource:///modules/gloda/GlodaPublic.jsm');
 var {Services} = ChromeUtils.import('resource://gre/modules/Services.jsm');
 var {MsgHdrToMimeMessage} = ChromeUtils.import('resource:///modules/gloda/MimeMessage.jsm');
 
-var msg2uri = function(msg) {
-	return msg.folder.getUriForMsg(msg);
-};
-
-var getParams = function(search) {
-	const params = {};
-	for (let part of search.split('&')) {
-		let [key, raw] = part.split('=');
-		params[key] = decodeURIComponent(raw);
-	}
-	return params;
-};
-
 var unique = function(l, keyFn) {
 	var keys = [];
 	return l.filter(function(item) {
@@ -89,7 +76,7 @@ var xi = class extends ExtensionCommon.ExtensionAPI {
 				viewSource(id) {
 					var win = Services.wm.getMostRecentWindow('mail:3pane');
 					var msgHdr = context.extension.messageManager.get(id);
-					var uri = msgHdr.folder.getUriForMsg(msgHdr)
+					var uri = msgHdr.folder.getUriForMsg(msgHdr);
 					win.ViewPageSource([uri]);
 				},
 				createTab(url) {

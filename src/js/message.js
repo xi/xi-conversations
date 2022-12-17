@@ -32,7 +32,7 @@ var autoMarkAsRead = function(e, msg) {
 			actions.markAsRead(msg, true);
 			clear();
 		}
-	}
+	};
 	e.addEventListener('click', onAction);
 
 	clear = function() {
@@ -89,7 +89,11 @@ module.exports = function(msg, expanded) {
 		hasAttachments: (msg.attachmentInfos || []).length,
 		date: msg.date,
 		canReplyToList: msg.canReplyToList,
-		canReplyAll: (util.parseContacts(msg.recipients).length + util.parseContacts(msg.ccList).length + util.parseContacts(msg.bccList).length) > 1,
+		canReplyAll: (
+			util.parseContacts(msg.recipients).length
+			+ util.parseContacts(msg.ccList).length
+			+ util.parseContacts(msg.bccList).length
+		) > 1,
 	});
 	var e = util.html2element(html);
 

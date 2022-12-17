@@ -2,7 +2,7 @@
 
 var util = require('./util.js');
 
-var RE_LINK = /(https?:\/\/[^\s<>]*[^\s\])}<>.,:;?!\"'])/g;
+var RE_LINK = /(https?:\/\/[^\s<>]*[^\s\])}<>.,:;?!"'])/g;
 
 var createDetails = function(label, color) {
 	var details = document.createElement('details');
@@ -27,7 +27,6 @@ var renderLinks = function(parent, text) {
 };
 
 var renderQuotes = function(parent, lines, nested) {
-	var text = '';
 	var quote = [];
 
 	var flushQuote = function() {
