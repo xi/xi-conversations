@@ -8,7 +8,18 @@ var initialIDs = (util.getParams().ids || '').split(',');
 var container = document.querySelector('.conversation__main');
 var anyExpanded = false;
 
-browser.xi.getConversation(initialIDs).then(function(conversation) {
+var getMessageForId = function(id) {
+	return browser.messages.query({headerMessageId: id}).then(page => {
+		if (!page.messages.length) {
+			throw null;
+		}
+		return page.messages[0];
+	});
+};
+
+browser.xi.getConversation(initialIDs).catch(() => {
+	return Promise.all(initialIDs.map(getMessageForId));
+}).then(function(conversation) {
 	var subject = conversation[0].subject || '(no subject)';
 	document.querySelector('.conversation__subject').textContent = subject;
 	document.title = subject;
