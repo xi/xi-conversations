@@ -28,23 +28,9 @@
 			"type": "integer"
 		}]
 	}, {
-		"name": "createTab",
+		"name": "patchOpenSelectedMessages",
 		"type": "function",
 		"async": false,
-		"parameters": [{
-			"name": "url",
-			"type": "string"
-		}]
-	}],
-	"events": [{
-		"name": "onOpenTab",
-		"type": "function",
-		"parameters": [{
-			"name": "ids",
-			"type": "array",
-			"items": {
-				"type": "string"
-			}
-		}]
+		"parameters": []
 	}]
 }]

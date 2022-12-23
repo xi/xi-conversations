@@ -79,38 +79,32 @@ var xi = class extends ExtensionCommon.ExtensionAPI {
 					var uri = msgHdr.folder.getUriForMsg(msgHdr);
 					win.ViewPageSource([uri]);
 				},
-				createTab(url) {
-					var win = Services.wm.getMostRecentWindow('mail:3pane');
-					win.openTab('contentTab', {
-						url: context.uri.resolve(url),
-						linkHandler: 'single-page',
-						principal: context.extension.principal,
-					});
-				},
 				// cannot be replaced by messageDisplay.OnMessagesDisplayed because
 				// we need to replace the original handler
-				onOpenTab: new ExtensionCommon.EventManager({
-					context,
-					name: 'xi.onOpenTab',
-					register(fire) {
-						var observer = (win, topic) => {
-							if (topic === 'domwindowopened' && win.location.href === 'chrome://messenger/content/messenger.xhtml') {
-								win.MsgOpenSelectedMessages = () => {
-									var msgs = win.gFolderDisplay.selectedMessages;
-									fire.async(msgs.map(msgHdr => msgHdr.messageId));
-								};
-							}
-							win.addEventListener('load', () => observer(win, topic));
-						};
-
-						Services.ww.registerNotification(observer);
-
-						var e = Services.ww.getWindowEnumerator();
-						while (e.hasMoreElements()) {
-							observer(e.getNext(), 'domwindowopened');
+				patchOpenSelectedMessages() {
+					var observer = (win, topic) => {
+						if (topic === 'domwindowopened' && win.location.href === 'chrome://messenger/content/messenger.xhtml') {
+							win.MsgOpenSelectedMessages = () => {
+								var msgs = win.gFolderDisplay.selectedMessages;
+								var ids = msgs.map(msgHdr => msgHdr.messageId);
+								var url = '/content/main.html?ids=' + encodeURIComponent(ids);
+								win.openTab('contentTab', {
+									url: context.uri.resolve(url),
+									linkHandler: 'single-page',
+									principal: context.extension.principal,
+								});
+							};
 						}
-					},
-				}).api(),
+						win.addEventListener('load', () => observer(win, topic));
+					};
+
+					Services.ww.registerNotification(observer);
+
+					var e = Services.ww.getWindowEnumerator();
+					while (e.hasMoreElements()) {
+						observer(e.getNext(), 'domwindowopened');
+					}
+				},
 			},
 		};
 	}
