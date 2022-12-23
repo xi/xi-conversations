@@ -92,11 +92,12 @@ var xi = class extends ExtensionCommon.ExtensionAPI {
 								var msgs = win.gFolderDisplay.selectedMessages;
 								var ids = msgs.map(msgHdr => msgHdr.messageId);
 								var url = '/content/main.html?ids=' + encodeURIComponent(ids);
-								win.openTab('contentTab', {
+								var tab = win.openTab('contentTab', {
 									url: context.uri.resolve(url),
 									linkHandler: 'single-page',
 									principal: context.extension.principal,
 								});
+								tab.toolbar.hidden = true;
 							};
 						}
 						win.addEventListener('load', () => observer(win, topic));
