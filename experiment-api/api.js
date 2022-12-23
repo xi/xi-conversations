@@ -87,6 +87,8 @@ var xi = class extends ExtensionCommon.ExtensionAPI {
 						principal: context.extension.principal,
 					});
 				},
+				// cannot be replaced by messageDisplay.OnMessagesDisplayed because
+				// we need to replace the original handler
 				onOpenTab: new ExtensionCommon.EventManager({
 					context,
 					name: 'xi.onOpenTab',
