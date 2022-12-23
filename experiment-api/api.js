@@ -17,7 +17,7 @@ var unique = function(l, keyFn) {
 };
 
 var getConversation = function(ids) {
-	return new Promise(resolve => {
+	return new Promise((resolve, reject) => {
 		var conversationListener = {
 			onItemsAdded: function() {},
 			onItemsModified: function() {},
@@ -35,8 +35,12 @@ var getConversation = function(ids) {
 			onItemsModified: function() {},
 			onItemsRemoved: function() {},
 			onQueryCompleted: function(collection) {
-				var conversation = collection.items[0].conversation;
-				conversation.getMessagesCollection(conversationListener, true);
+				if (collection.items.length > 0) {
+					var conversation = collection.items[0].conversation;
+					conversation.getMessagesCollection(conversationListener, true);
+				} else {
+					reject();
+				}
 			},
 		};
 
