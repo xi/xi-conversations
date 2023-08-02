@@ -3,7 +3,7 @@
   "applications": {
     "gecko": {
       "id": "conversations@xi",
-      "strict_min_version": "78.0"
+      "strict_min_version": "91.0"
     }
   },
   "name": "Xi Conversations",
@@ -15,6 +15,7 @@
     "page": "background.html"
   },
   "permissions": [
+    "accountsRead",
     "messagesRead",
     "messagesMove"
   ],

@@ -15,12 +15,31 @@ var toggleFlagged = function(msg, star) {
 	});
 };
 
+var getIdentity = function(msg) {
+	return browser.identities.getDefault(msg.folder.accountId)
+		.then(identity => identity || {});
+};
+
+var reply = function(msg, replyType) {
+	getIdentity(msg).then(identity => {
+		browser.compose.beginReply(msg.id, replyType, {identityId: identity.id});
+	});
+};
+
 module.exports = {
-	replyToSender: msg => browser.compose.beginReply(msg.id),
-	replyAll: msg => browser.compose.beginReply(msg.id, 'replyToAll'),
-	replyToList: msg => browser.compose.beginReply(msg.id, 'replyToList'),
-	editAsNew: msg => browser.compose.beginNew(msg.id),
-	forward: msg => browser.compose.beginForward(msg.id),
+	replyToSender: msg => reply(msg, 'replyToSender'),
+	replyAll: msg => reply(msg, 'replyToAll'),
+	replyToList: msg => reply(msg, 'replyToList'),
+	editAsNew: msg => {
+		getIdentity(msg).then(identity => {
+			browser.compose.beginNew(msg.id, {'identityId': identity.id});
+		});
+	},
+	forward: msg => {
+		getIdentity(msg).then(identity => {
+			browser.compose.beginForward(msg.id, null, {'identityId': identity.id});
+		});
+	},
 	viewClassic: msg => browser.messageDisplay.open({messageId: msg.id}),
 	viewSource: viewSource,
 	markAsRead: markAsRead,
