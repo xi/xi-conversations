@@ -57,7 +57,7 @@ export var createIcon = function(key) {
 
 	if (key.substring(0, 2) === 'x-') {
 		use.setAttributeNS(nsxlink, 'href', `/content/material-icons.svg#${key.substring(2)}`);
-		svg.setAttribute('viewBox', '0 0 24 24');
+		svg.setAttribute('viewBox', '0 -960 960 960');
 	} else {
 		// File no longer exists. Is there a new one?
 		use.setAttributeNS(nsxlink, 'href', `chrome://messenger/skin/icons/mail-toolbar.svg#${key}`);
