@@ -47,14 +47,24 @@ export var html2element = function(html) {
 };
 
 export var createIcon = function(key) {
-	var html;
+	var nssvg = 'http://www.w3.org/2000/svg';
+	var nsxlink = 'http://www.w3.org/1999/xlink';
+
+	var svg = document.createElementNS(nssvg, 'svg') ;
+	var use = document.createElementNS(nssvg, 'use') ;
+	svg.setAttribute('class', 'icon');
+	svg.append(use);
+
 	if (key.substring(0, 2) === 'x-') {
-		html = '<svg class="icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><use xlink:href="/content/material-icons.svg#' + key.substring(2) + '"></use></svg>';
+		use.setAttributeNS(nsxlink, 'href', `/content/material-icons.svg#${key.substring(2)}`);
+		svg.setAttribute('viewBox', '0 0 24 24');
 	} else {
 		// File no longer exists. Is there a new one?
-		html = '<svg class="icon" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><use xlink:href="chrome://messenger/skin/icons/mail-toolbar.svg#' + key + '"></use></svg>';
+		use.setAttributeNS(nsxlink, 'href', `chrome://messenger/skin/icons/mail-toolbar.svg#${key}`);
+		svg.setAttribute('viewBox', '0 0 18 18');
 	}
-	return html2element(html);
+
+	return svg;
 };
 
 export var createDate = function(date) {
