@@ -14,7 +14,7 @@
 					{{/author}}
 				</style>
 				<header class="message__header">
-					<button class="star {{#isFlagged}}is-active{{/isFlagged}}" data-action="toggleFlagged">{{#icon}}x-star{{/icon}}</button>
+					<button class="star {{#isFlagged}}is-active{{/isFlagged}}" data-action="toggleFlagged">{{#icon}}star{{/icon}}</button>
 					{{#author}}<a class="message__author" href="mailto:{{ email }}">{{ name }}</a>{{/author}}
 					<span class="message__recipients">
 						{{#str}}to{{/str}}
@@ -30,39 +30,39 @@
 					</span>
 					<span class="message__summary">{{ summary }}</span>
 
-					{{#hasAttachments}}{{#icon}}x-attachment{{/icon}}{{/hasAttachments}}
+					{{#hasAttachments}}{{#icon}}attachment{{/icon}}{{/hasAttachments}}
 					{{#dateFilter}}{{ date }}{{/dateFilter}}
 
 					<span class="message__actions">
-						{{#canReplyAll}}<button class="button" title="{{#str}}replyAll{{/str}}" data-action="replyAll">{{#icon}}x-reply_all{{/icon}}</button{{/canReplyAll}}
+						{{#canReplyAll}}<button class="button" title="{{#str}}replyAll{{/str}}" data-action="replyAll">{{#icon}}reply_all{{/icon}}</button{{/canReplyAll}}
 						{{^canReplyAll}}
-							{{#canReplyToList}}<button class="button" title="{{#str}}replyList{{/str}}" data-action="replyToList">{{#icon}}x-list{{/icon}}</button{{/canReplyToList}}
-							{{^canReplyToList}}<button class="button" title="{{#str}}reply{{/str}}" data-action="replyToSender">{{#icon}}x-reply{{/icon}}</button{{/canReplyToList}}
+							{{#canReplyToList}}<button class="button" title="{{#str}}replyList{{/str}}" data-action="replyToList">{{#icon}}list{{/icon}}</button{{/canReplyToList}}
+							{{^canReplyToList}}<button class="button" title="{{#str}}reply{{/str}}" data-action="replyToSender">{{#icon}}reply{{/icon}}</button{{/canReplyToList}}
 						{{/canReplyAll}}
 
-						><button class="button dropdownToggle" title="{{#str}}more{{/str}}">{{#icon}}x-menu{{/icon}}</button>
+						><button class="button dropdownToggle" title="{{#str}}more{{/str}}">{{#icon}}menu{{/icon}}</button>
 						<div class="dropdown">
-							<button class="dropdown-item" data-action="replyToSender">{{#icon}}x-reply{{/icon}} {{#str}}reply{{/str}}</button>
-							{{#canReplyAll}}<button class="dropdown-item" data-action="replyAll">{{#icon}}x-reply_all{{/icon}} {{#str}}replyAll{{/str}}</button>{{/canReplyAll}}
-							{{#canReplyToList}}<button class="dropdown-item" data-action="replyToList">{{#icon}}x-list{{/icon}} {{#str}}replyList{{/str}}</button>{{/canReplyToList}}
-							<button class="dropdown-item" data-action="forward">{{#icon}}x-forward{{/icon}} {{#str}}forward{{/str}}</button>
-							<button class="dropdown-item" data-action="editAsNew">{{#icon}}x-create{{/icon}} {{#str}}edit{{/str}}</button>
-							<button class="dropdown-item" data-action="viewClassic">{{#icon}}x-open_in_new{{/icon}} {{#str}}viewClassic{{/str}}</button>
-							<button class="dropdown-item" data-action="viewSource">{{#icon}}x-code{{/icon}} {{#str}}viewSource{{/str}}</button>
+							<button class="dropdown-item" data-action="replyToSender">{{#icon}}reply{{/icon}} {{#str}}reply{{/str}}</button>
+							{{#canReplyAll}}<button class="dropdown-item" data-action="replyAll">{{#icon}}reply_all{{/icon}} {{#str}}replyAll{{/str}}</button>{{/canReplyAll}}
+							{{#canReplyToList}}<button class="dropdown-item" data-action="replyToList">{{#icon}}list{{/icon}} {{#str}}replyList{{/str}}</button>{{/canReplyToList}}
+							<button class="dropdown-item" data-action="forward">{{#icon}}forward{{/icon}} {{#str}}forward{{/str}}</button>
+							<button class="dropdown-item" data-action="editAsNew">{{#icon}}create{{/icon}} {{#str}}edit{{/str}}</button>
+							<button class="dropdown-item" data-action="viewClassic">{{#icon}}open_in_new{{/icon}} {{#str}}viewClassic{{/str}}</button>
+							<button class="dropdown-item" data-action="viewSource">{{#icon}}code{{/icon}} {{#str}}viewSource{{/str}}</button>
 						</div>
 					</span>
 				</header>
 
 				<div class="message__details">
 					{{#isJunk}}
-						<div class="alert alert--warning">{{#icon}}x-mode_heat{{/icon}} {{#str}}junk{{/str}}</div>
+						<div class="alert alert--warning">{{#icon}}mode_heat{{/icon}} {{#str}}junk{{/str}}</div>
 					{{/isJunk}}
 
 					<footer class="message__footer">
 						<ul class="attachments">
 							{{#attachments}}
 								<li>
-									<a class="attachment" href="{{ url }}">{{#icon}}x-attachment{{/icon}} {{ name }}</a>
+									<a class="attachment" href="{{ url }}">{{#icon}}attachment{{/icon}} {{ name }}</a>
 								</li>
 							{{/attachments}}
 						</ul>

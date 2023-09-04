@@ -81,7 +81,7 @@ export default function(msg) {
 	wrapper.append(pre);
 	browser.xi.getFull(msg.id).then(util.getBody).then(([body, isEncrypted]) => {
 		if (isEncrypted) {
-			wrapper.prepend(util.createAlert(browser.i18n.getMessage('encrypted'), 'x-lock', 'info'));
+			wrapper.prepend(util.createAlert(browser.i18n.getMessage('encrypted'), 'lock', 'info'));
 		}
 		renderBody(pre, body || msg.body || browser.i18n.getMessage('emptyBody'));
 	});
