@@ -3,6 +3,10 @@ var trimQuotes = function(s) {
 	return s && s.endsWith(s[0]) && quotes.includes(s[0]) ? s.slice(1, -1) : s;
 };
 
+var normalizeName = function(s) {
+	return s.split(', ').reverse().join(' ');
+}
+
 var getParams = function() {
 	const params = {};
 	for (let part of location.search.substr(1).split('&')) {
@@ -99,7 +103,7 @@ var parseContacts = function(raw) {
 		var match = /(.*) <(.*)>/.exec(r);
 		if (match) {
 			contacts.push({
-				name: trimQuotes(match[1]),
+				name: normalizeName(trimQuotes(match[1])),
 				email: match[2],
 			});
 		} else {
