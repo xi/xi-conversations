@@ -1,10 +1,8 @@
-all: content/main.js content/material-icons.svg
+all: content/js/mustache.mjs content/material-icons.svg
 
-content/main.js: src/js/main.js src/js/*.js node_modules
-	npx browserify $< -o $@
+content/js/mustache.mjs:
+	npm install mustache
+	cp node_modules/mustache/mustache.mjs $@
 
 content/material-icons.svg: scripts/get-material-icons.sh
 	$< > $@
-
-node_modules:
-	npm install mustache

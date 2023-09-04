@@ -1,8 +1,8 @@
-var Mustache = require('mustache');
+import Mustache from './mustache.mjs';
 
-var actions = require('./actions.js');
-var createBody = require('./body.js');
-var util = require('./util.js');
+import createBody from './body.js';
+import * as actions from './actions.js';
+import * as util from './util.js';
 
 var autoMarkAsRead = function(e, msg) {
 	var topWasInView = false;
@@ -67,7 +67,7 @@ var stringFilter = function() {
 	};
 };
 
-module.exports = function(msg, expanded) {
+export default function(msg, expanded) {
 	var tpl = document.getElementById('message-template').innerHTML;
 	var html = Mustache.render(tpl, {
 		icon: iconFilter,

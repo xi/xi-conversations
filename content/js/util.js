@@ -7,7 +7,7 @@ var normalizeName = function(s) {
 	return s.split(', ').reverse().join(' ');
 }
 
-var getParams = function() {
+export var getParams = function() {
 	const params = {};
 	for (let part of location.search.substr(1).split('&')) {
 		let [key, raw] = part.split('=');
@@ -16,7 +16,7 @@ var getParams = function() {
 	return params;
 };
 
-var getBody = function(msgPart) {
+export var getBody = function(msgPart) {
 	if (msgPart.body && msgPart.contentType.startsWith('text/plain')) {
 		return [msgPart.body, msgPart.isEncrypted];
 	} else if (msgPart.parts) {
@@ -38,7 +38,7 @@ var getBody = function(msgPart) {
 	}
 };
 
-var html2element = function(html) {
+export var html2element = function(html) {
 	// thunderbird 60 will remove some elements when directly assigning to
 	// innerHTML
 	var parser = new DOMParser();
@@ -46,7 +46,7 @@ var html2element = function(html) {
 	return doc.body.children[0];
 };
 
-var createIcon = function(key) {
+export var createIcon = function(key) {
 	var html;
 	if (key.substring(0, 2) === 'x-') {
 		html = '<svg class="icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><use xlink:href="/content/material-icons.svg#' + key.substring(2) + '"></use></svg>';
@@ -57,7 +57,7 @@ var createIcon = function(key) {
 	return html2element(html);
 };
 
-var createDate = function(date) {
+export var createDate = function(date) {
 	var now = new Date();
 	var e = document.createElement('time');
 	e.className = 'date';
@@ -70,7 +70,7 @@ var createDate = function(date) {
 	return e;
 };
 
-var createAlert = function(text, icon, level) {
+export var createAlert = function(text, icon, level) {
 	var e = document.createElement('div');
 	e.className = 'alert alert--' + level;
 	e.textContent = text;
@@ -78,7 +78,7 @@ var createAlert = function(text, icon, level) {
 	return e;
 };
 
-var pseudoRandomColor = function(s) {
+export var pseudoRandomColor = function(s) {
 	let hash = 0;
 	for (let i = 0; i < s.length; i++) {
 		const chr = s.charCodeAt(i);
@@ -97,7 +97,7 @@ var pseudoRandomColor = function(s) {
 	return 'hsl(' + hue + ', 70%, ' + Math.floor(lightness) + '%)';
 };
 
-var parseContacts = function(raw) {
+export var parseContacts = function(raw) {
 	var contacts = [];
 	for (var r of raw) {
 		var match = /(.*) <(.*)>/.exec(r);
@@ -114,15 +114,4 @@ var parseContacts = function(raw) {
 		}
 	}
 	return contacts;
-};
-
-module.exports = {
-	getParams: getParams,
-	getBody: getBody,
-	html2element: html2element,
-	createIcon: createIcon,
-	createDate: createDate,
-	createAlert: createAlert,
-	pseudoRandomColor: pseudoRandomColor,
-	parseContacts: parseContacts,
 };

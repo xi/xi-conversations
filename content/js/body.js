@@ -1,6 +1,6 @@
 /* global browser */
 
-var util = require('./util.js');
+import * as util from './util.js';
 
 var RE_LINK = /(https?:\/\/[^\s<>]*[^\s\])}<>.,:;?!"'])/g;
 
@@ -74,7 +74,7 @@ var renderBody = function(parent, text) {
 	}
 };
 
-module.exports = function(msg) {
+export default function(msg) {
 	var wrapper = document.createElement('div');
 	var pre = document.createElement('pre');
 	pre.className = 'message__body';

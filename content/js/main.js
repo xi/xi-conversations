@@ -1,7 +1,7 @@
 /* global browser */
 
-var createMessageElement = require('./message');
-var util = require('./util.js');
+import createMessageElement from './message.js';
+import * as util from './util.js';
 
 var initialIDs = (util.getParams().ids || '').split(',');
 
