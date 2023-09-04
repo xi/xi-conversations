@@ -24,7 +24,7 @@ body {
 	display: grid;
 	grid-template-rows: min-content 1fr;
 	background: var(--bg-tint);
-	height: 100vh;
+	block-size: 100vb;
 	margin: 0;
 	padding: 0;
 }
@@ -52,7 +52,7 @@ body {
 .icon {
 	display: inline-block;
 	fill: currentColor;
-	height: 1.5em;
+	block-size: 1.5em;
 	vertical-align: -0.4em;
 }
 
@@ -79,7 +79,7 @@ body {
 	padding: 1em;
 	background-color: var(--bg);
 	color: var(--fg);
-	border-bottom: 1px solid var(--border);
+	border-block-end: 1px solid var(--border);
 }
 
 .conversation__main {
@@ -95,12 +95,12 @@ body {
 .dropdown {
 	display: none;
 	position: absolute;
-	top: 2em;
-	right: 0;
+	inset-block-start: 2em;
+	inset-inline-end: 0;
 	z-index: 1;
 	background-color: var(--bg);
 	color: var(--fg);
-	min-width: 15em;
+	min-inline-size: 15em;
 	border-radius: 0.4em;
 	border: 1px solid var(--border);
 	overflow: hidden;
@@ -113,10 +113,11 @@ body {
 	background: none;
 	color: inherit;
 	display: block;
-	min-width: 100%;
+	min-inline-size: 100%;
 	font-size: inherit;
-	text-align: left;
-	padding: 0.2em 0.3em;
+	text-align: start;
+	padding-block: 0.2em
+	padding-inline: 0.3em;
 	white-space: nowrap;
 	cursor: pointer;
 }
@@ -129,11 +130,11 @@ body {
 }
 
 .message {
-	max-width: 70em;
-	margin: 0 auto 2px;
+	max-inline-size: 70em;
+	margin-block: 0 0.5em;
+	margin-inline: auto;
 	background-color: var(--bg);
 	color: var(--fg);
-	margin-bottom: 0.5em;
 	border: 1px solid var(--border);
 }
 .message .message__details,
@@ -161,7 +162,8 @@ body {
 }
 .message__body blockquote {
 	margin: 0;
-	padding: 0.4ex 1ex;
+	padding-block: 0.4ex;
+	padding-inline: 1ex;
 	border-inline-start: 2px solid rgb(114, 159, 207); /* Sky Blue 1 */
 }
 .message__body blockquote blockquote {
@@ -208,7 +210,7 @@ body {
 }
 
 .message__author {
-	margin-right: 0.5em;
+	margin-inline-end: 0.5em;
 	text-decoration: none;
 }
 
