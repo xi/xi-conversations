@@ -1,4 +1,4 @@
-import Mustache from './mustache.mjs';
+/* global browser */
 
 import createBody from './body.js';
 import * as actions from './actions.js';
@@ -41,46 +41,66 @@ var autoMarkAsRead = function(e, msg) {
 	};
 };
 
-var iconFilter = function() {
-	return function(text, render) {
-		var key = render(text);
-		return util.createIcon(key).outerHTML;
-	};
+var createAuthor = function(author) {
+	var a = util.h('a', {'class': 'message__author', 'href': `mailto:${author.email}`}, [author.name]);
+	a.style.color = util.pseudoRandomColor(author.email);
+	return a;
 };
 
-var dateFilter = function() {
-	return function(text, render) {
-		var date = new Date(render(text));
-		return util.createDate(date).outerHTML;
-	};
-};
-
-var authorColorFilter = function() {
-	return function(text, render) {
-		return util.pseudoRandomColor(render(text));
-	};
-};
-
-var stringFilter = function() {
-	return function(text, render) {
-		return browser.i18n.getMessage(render(text));
-	};
+var template = function(ctx) {
+	var h = util.h;
+	return h('article', {'class': ctx.isExpanded ? 'message is-expanded' : 'message', 'id': `msg-${ctx.id}`, 'tabindex': -1}, [
+		h('header', {'class': 'message__header'}, [
+			h('button', {'class': ctx.isFlagged ? 'star is-active' : 'star', 'data-action': 'toggleFlagged'}, [util.createIcon('star')]),
+			createAuthor(ctx.author),
+			' ',
+			h('span', {'class': 'message__recipients'}, [
+				browser.i18n.getMessage('to'),
+				' ',
+				...ctx.recipients.map(r => h('a', {'href': `mailto:${r.email}`}, [r.name])),
+				...ctx.cc.map(r => h('a', {'href': `mailto:${r.email}`, 'class': 'message__recipients__cc'}, [r.name])),
+				...ctx.bcc.map(r => h('a', {'href': `mailto:${r.email}`, 'class': 'message__recipients__bcc'}, [r.name])),
+			]),
+			h('span', {'class': 'message__summary'}, [ctx.summary]),
+			ctx.hasAttachments ? util.createIcon('attachment') : null,
+			util.createDate(ctx.date),
+			h('span', {'class': 'message__actions'}, [
+				ctx.canReplyAll
+					? h('button', {'class': 'button', 'title': browser.i18n.getMessage('replyAll'), 'data-action': 'replyAll'}, [util.createIcon('reply_all')])
+					: ctx.canReplyToList
+						? h('button', {'class': 'button', 'title': browser.i18n.getMessage('replyList'), 'data-action': 'replyToList'}, [util.createIcon('list')])
+						: h('button', {'class': 'button', 'title': browser.i18n.getMessage('reply'), 'data-action': 'replyToSender'}, [util.createIcon('reply')]),
+				h('button', {'class': 'button dropdownToggle', 'title': browser.i18n.getMessage('more')}, [util.createIcon('menu')]),
+				h('div', {'class': 'dropdown'}, [
+					h('button', {'class': 'dropdown-item', 'data-action': 'replyToSender'}, [util.createIcon('reply'), ' ', browser.i18n.getMessage('reply')]),
+					ctx.canReplyAll ? h('button', {'class': 'dropdown-item', 'data-action': 'replyAll'}, [util.createIcon('reply_all'), ' ', browser.i18n.getMessage('replyAll')]) : null,
+					ctx.canReplyToList ? h('button', {'class': 'dropdown-item', 'data-action': 'replyToList'}, [util.createIcon('list'), ' ', browser.i18n.getMessage('replyList')]) : null,
+					h('button', {'class': 'dropdown-item', 'data-action': 'forward'}, [util.createIcon('forward'), ' ', browser.i18n.getMessage('forward')]),
+					h('button', {'class': 'dropdown-item', 'data-action': 'editAsNew'}, [util.createIcon('create'), ' ', browser.i18n.getMessage('edit')]),
+					h('button', {'class': 'dropdown-item', 'data-action': 'viewClassic'}, [util.createIcon('open_in_new'), ' ', browser.i18n.getMessage('viewClassic')]),
+					h('button', {'class': 'dropdown-item', 'data-action': 'viewSource'}, [util.createIcon('code'), ' ', browser.i18n.getMessage('viewSource')]),
+				]),
+			]),
+		]),
+		h('div', {'class': 'message__details'}, [
+			ctx.isJunk ? util.createAlert(browser.i18n.getMessage('junk'), 'mode_heat', 'warning') : null,
+			h('footer', {'class': 'message__footer'}, [
+				h('ul', {'class': 'attachments'}, (ctx.attachments || []).map(a => h('li', {}, [
+					h('a', {'class': 'attachment', 'href': a.url}, [util.createIcon('attachment'), ' ', a.name]),
+				]))),
+			]),
+		]),
+	]);
 };
 
 export default function(msg, expanded) {
-	var tpl = document.getElementById('message-template').innerHTML;
-	var html = Mustache.render(tpl, {
-		icon: iconFilter,
-		dateFilter: dateFilter,
-		authorColor: authorColorFilter,
-		str: stringFilter,
-
+	var e = template({
 		id: msg.id,
 		isExpanded: expanded,
 		isFlagged: msg.flagged,
 		isJunk: msg.junk,
 		isEncrypted: msg.isEncrypted,
-		author: util.parseContacts([msg.author]),
+		author: util.parseContacts([msg.author])[0],
 		recipients: util.parseContacts(msg.recipients),
 		cc: util.parseContacts(msg.ccList),
 		bcc: util.parseContacts(msg.bccList),
@@ -95,7 +115,6 @@ export default function(msg, expanded) {
 			+ util.parseContacts(msg.bccList).length
 		) > 1,
 	});
-	var e = util.html2element(html);
 
 	autoMarkAsRead(e, msg);
 

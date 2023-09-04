@@ -38,12 +38,17 @@ export var getBody = function(msgPart) {
 	}
 };
 
-export var html2element = function(html) {
-	// thunderbird 60 will remove some elements when directly assigning to
-	// innerHTML
-	var parser = new DOMParser();
-	var doc = parser.parseFromString('<!DOCTYPE html>\n' + html, 'text/html');
-	return doc.body.children[0];
+export var h = function(tag, attrs, children) {
+	var el = document.createElement(tag);
+	for (let attr in attrs) {
+		el.setAttribute(attr, attrs[attr]);
+	}
+	for (let child of children) {
+		if (child) {
+			el.append(child);
+		}
+	}
+	return el;
 };
 
 export var createIcon = function(key) {
@@ -62,23 +67,15 @@ export var createIcon = function(key) {
 
 export var createDate = function(date) {
 	var now = new Date();
-	var e = document.createElement('time');
-	e.className = 'date';
-	if (date.toDateString() === now.toDateString()) {
-		e.textContent = date.toLocaleTimeString('sv');
-	} else {
-		e.textContent = date.toLocaleDateString('sv');
-	}
-	e.title = date.toLocaleString();
-	return e;
+	return h('time', {'class': 'date', 'title': date.toLocaleString()}, [
+		date.toDateString() === now.toDateString()
+			? date.toLocaleTimeString('sv')
+			: date.toLocaleDateString('sv')
+	]);
 };
 
 export var createAlert = function(text, icon, level) {
-	var e = document.createElement('div');
-	e.className = 'alert alert--' + level;
-	e.textContent = text;
-	e.prepend(createIcon(icon));
-	return e;
+	return h('div', {'class': `alert alert--${level}`}, [createIcon(icon), text]);
 };
 
 export var pseudoRandomColor = function(s) {
