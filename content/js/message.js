@@ -49,13 +49,15 @@ var createAuthor = function(author) {
 
 var template = function(ctx) {
 	var h = util.h;
+	var _ = browser.i18n.getMessage;
+
 	return h('article', {'class': ctx.isExpanded ? 'message is-expanded' : 'message', 'id': `msg-${ctx.id}`, 'tabindex': -1}, [
 		h('header', {'class': 'message__header'}, [
 			h('button', {'class': ctx.isFlagged ? 'star is-active' : 'star', 'data-action': 'toggleFlagged'}, [util.createIcon('star')]),
 			createAuthor(ctx.author),
 			' ',
 			h('span', {'class': 'message__recipients'}, [
-				browser.i18n.getMessage('to'),
+				_('to'),
 				' ',
 				...ctx.recipients.map(r => h('a', {'href': `mailto:${r.email}`}, [r.name])),
 				...ctx.cc.map(r => h('a', {'href': `mailto:${r.email}`, 'class': 'message__recipients__cc'}, [r.name])),
@@ -66,24 +68,24 @@ var template = function(ctx) {
 			util.createDate(ctx.date),
 			h('span', {'class': 'message__actions'}, [
 				ctx.canReplyAll
-					? h('button', {'class': 'button', 'title': browser.i18n.getMessage('replyAll'), 'data-action': 'replyAll'}, [util.createIcon('reply_all')])
+					? h('button', {'class': 'button', 'title': _('replyAll'), 'data-action': 'replyAll'}, [util.createIcon('reply_all')])
 					: ctx.canReplyToList
-						? h('button', {'class': 'button', 'title': browser.i18n.getMessage('replyList'), 'data-action': 'replyToList'}, [util.createIcon('list')])
-						: h('button', {'class': 'button', 'title': browser.i18n.getMessage('reply'), 'data-action': 'replyToSender'}, [util.createIcon('reply')]),
-				h('button', {'class': 'button dropdownToggle', 'title': browser.i18n.getMessage('more')}, [util.createIcon('menu')]),
+						? h('button', {'class': 'button', 'title': _('replyList'), 'data-action': 'replyToList'}, [util.createIcon('list')])
+						: h('button', {'class': 'button', 'title': _('reply'), 'data-action': 'replyToSender'}, [util.createIcon('reply')]),
+				h('button', {'class': 'button dropdownToggle', 'title': _('more')}, [util.createIcon('menu')]),
 				h('div', {'class': 'dropdown'}, [
-					h('button', {'class': 'dropdown-item', 'data-action': 'replyToSender'}, [util.createIcon('reply'), ' ', browser.i18n.getMessage('reply')]),
-					ctx.canReplyAll ? h('button', {'class': 'dropdown-item', 'data-action': 'replyAll'}, [util.createIcon('reply_all'), ' ', browser.i18n.getMessage('replyAll')]) : null,
-					ctx.canReplyToList ? h('button', {'class': 'dropdown-item', 'data-action': 'replyToList'}, [util.createIcon('list'), ' ', browser.i18n.getMessage('replyList')]) : null,
-					h('button', {'class': 'dropdown-item', 'data-action': 'forward'}, [util.createIcon('forward'), ' ', browser.i18n.getMessage('forward')]),
-					h('button', {'class': 'dropdown-item', 'data-action': 'editAsNew'}, [util.createIcon('create'), ' ', browser.i18n.getMessage('edit')]),
-					h('button', {'class': 'dropdown-item', 'data-action': 'viewClassic'}, [util.createIcon('open_in_new'), ' ', browser.i18n.getMessage('viewClassic')]),
-					h('button', {'class': 'dropdown-item', 'data-action': 'viewSource'}, [util.createIcon('code'), ' ', browser.i18n.getMessage('viewSource')]),
+					h('button', {'class': 'dropdown-item', 'data-action': 'replyToSender'}, [util.createIcon('reply'), ' ', _('reply')]),
+					ctx.canReplyAll ? h('button', {'class': 'dropdown-item', 'data-action': 'replyAll'}, [util.createIcon('reply_all'), ' ', _('replyAll')]) : null,
+					ctx.canReplyToList ? h('button', {'class': 'dropdown-item', 'data-action': 'replyToList'}, [util.createIcon('list'), ' ', _('replyList')]) : null,
+					h('button', {'class': 'dropdown-item', 'data-action': 'forward'}, [util.createIcon('forward'), ' ', _('forward')]),
+					h('button', {'class': 'dropdown-item', 'data-action': 'editAsNew'}, [util.createIcon('create'), ' ', _('edit')]),
+					h('button', {'class': 'dropdown-item', 'data-action': 'viewClassic'}, [util.createIcon('open_in_new'), ' ', _('viewClassic')]),
+					h('button', {'class': 'dropdown-item', 'data-action': 'viewSource'}, [util.createIcon('code'), ' ', _('viewSource')]),
 				]),
 			]),
 		]),
 		h('div', {'class': 'message__details'}, [
-			ctx.isJunk ? util.createAlert(browser.i18n.getMessage('junk'), 'mode_heat', 'warning') : null,
+			ctx.isJunk ? util.createAlert(_('junk'), 'mode_heat', 'warning') : null,
 			h('footer', {'class': 'message__footer'}, [
 				h('ul', {'class': 'attachments'}, (ctx.attachments || []).map(a => h('li', {}, [
 					h('a', {'class': 'attachment', 'href': a.url}, [util.createIcon('attachment'), ' ', a.name]),
