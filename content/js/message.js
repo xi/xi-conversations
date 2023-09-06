@@ -47,9 +47,17 @@ export default function(msg, expanded) {
 
 	var canReplyAll = msg.recipients.length + msg.ccList.length + msg.bccList.length > 1;
 
+	var createButton = function(attrs, icon, label, labelVisible) {
+		if (labelVisible) {
+			return h('button', Object.assign({'type': 'button'}, attrs), [util.createIcon(icon), ' ', label]);
+		} else {
+			return h('button', Object.assign({'type': 'button'}, attrs), [util.createIcon(icon, label)]);
+		}
+	};
+
 	var e = h('article', {'class': expanded ? 'message is-expanded' : 'message', 'id': `msg-${msg.id}`, 'tabindex': -1}, [
 		h('header', {'class': 'message__header'}, [
-			h('button', {'class': 'star', 'aria-pressed': msg.flagged, 'data-action': 'toggleFlagged'}, [util.createIcon('star', _('star'))]),
+			createButton({'class': 'star', 'aria-pressed': msg.flagged, 'data-action': 'toggleFlagged'}, 'star', _('star')),
 			...util.parseContacts([msg.author]).map(author => h('a', {
 				'class': 'message__author',
 				'href': `mailto:${author.email}`,
@@ -68,19 +76,19 @@ export default function(msg, expanded) {
 			util.createDate(msg.date),
 			h('span', {'class': 'message__actions'}, [
 				canReplyAll
-					? h('button', {'class': 'button', 'data-action': 'replyAll'}, [util.createIcon('reply_all', _('replyAll'))])
+					? createButton({'class': 'button', 'data-action': 'replyAll'}, 'reply_all', _('replyAll'))
 					: msg.canReplyToList
-						? h('button', {'class': 'button', 'data-action': 'replyToList'}, [util.createIcon('list', _('replyList'))])
-						: h('button', {'class': 'button', 'data-action': 'replyToSender'}, [util.createIcon('reply', _('reply'))]),
-				h('button', {'class': 'button dropdownToggle'}, [util.createIcon('menu', _('more'))]),
+						? createButton({'class': 'button', 'data-action': 'replyToList'}, 'list', _('replyList'))
+						: createButton({'class': 'button', 'data-action': 'replyToSender'}, 'reply', _('reply')),
+				createButton({'class': 'button dropdownToggle'}, 'menu', _('more')),
 				h('div', {'class': 'dropdown'}, [
-					h('button', {'class': 'dropdown-item', 'data-action': 'replyToSender'}, [util.createIcon('reply'), ' ', _('reply')]),
-					canReplyAll ? h('button', {'class': 'dropdown-item', 'data-action': 'replyAll'}, [util.createIcon('reply_all'), ' ', _('replyAll')]) : null,
-					msg.canReplyToList ? h('button', {'class': 'dropdown-item', 'data-action': 'replyToList'}, [util.createIcon('list'), ' ', _('replyList')]) : null,
-					h('button', {'class': 'dropdown-item', 'data-action': 'forward'}, [util.createIcon('forward'), ' ', _('forward')]),
-					h('button', {'class': 'dropdown-item', 'data-action': 'editAsNew'}, [util.createIcon('create'), ' ', _('edit')]),
-					h('button', {'class': 'dropdown-item', 'data-action': 'viewClassic'}, [util.createIcon('open_in_new'), ' ', _('viewClassic')]),
-					h('button', {'class': 'dropdown-item', 'data-action': 'viewSource'}, [util.createIcon('code'), ' ', _('viewSource')]),
+					createButton({'class': 'dropdown-item', 'data-action': 'replyToSender'}, 'reply', _('reply'), true),
+					canReplyAll ? createButton({'class': 'dropdown-item', 'data-action': 'replyAll'}, 'reply_all', _('replyAll'), true) : null,
+					msg.canReplyToList ? createButton({'class': 'dropdown-item', 'data-action': 'replyToList'}, 'list', _('replyList'), true) : null,
+					createButton({'class': 'dropdown-item', 'data-action': 'forward'}, 'forward', _('forward'), true),
+					createButton({'class': 'dropdown-item', 'data-action': 'editAsNew'}, 'create', _('edit'), true),
+					createButton({'class': 'dropdown-item', 'data-action': 'viewClassic'}, 'open_in_new', _('viewClassic'), true),
+					createButton({'class': 'dropdown-item', 'data-action': 'viewSource'}, 'code', _('viewSource'), true),
 				]),
 			]),
 		]),
