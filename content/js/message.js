@@ -72,11 +72,11 @@ export default function(msg, expanded) {
 			util.createDate(msg.date),
 			h('span', {'class': 'message__actions'}, [
 				canReplyAll
-					? h('button', {'class': 'button', 'title': _('replyAll'), 'data-action': 'replyAll'}, [util.createIcon('reply_all')])
+					? h('button', {'class': 'button', 'data-action': 'replyAll'}, [util.createIcon('reply_all', _('replyAll'))])
 					: msg.canReplyToList
-						? h('button', {'class': 'button', 'title': _('replyList'), 'data-action': 'replyToList'}, [util.createIcon('list')])
-						: h('button', {'class': 'button', 'title': _('reply'), 'data-action': 'replyToSender'}, [util.createIcon('reply')]),
-				h('button', {'class': 'button dropdownToggle', 'title': _('more')}, [util.createIcon('menu')]),
+						? h('button', {'class': 'button', 'data-action': 'replyToList'}, [util.createIcon('list', _('replyList'))])
+						: h('button', {'class': 'button', 'data-action': 'replyToSender'}, [util.createIcon('reply', _('reply'))]),
+				h('button', {'class': 'button dropdownToggle'}, [util.createIcon('menu', _('more'))]),
 				h('div', {'class': 'dropdown'}, [
 					h('button', {'class': 'dropdown-item', 'data-action': 'replyToSender'}, [util.createIcon('reply'), ' ', _('reply')]),
 					canReplyAll ? h('button', {'class': 'dropdown-item', 'data-action': 'replyAll'}, [util.createIcon('reply_all'), ' ', _('replyAll')]) : null,

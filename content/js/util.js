@@ -55,7 +55,7 @@ export var h = function(tag, attrs, children) {
 	return el;
 };
 
-export var createIcon = function(key) {
+export var createIcon = function(key, label) {
 	var nssvg = 'http://www.w3.org/2000/svg';
 	var nsxlink = 'http://www.w3.org/1999/xlink';
 
@@ -65,6 +65,13 @@ export var createIcon = function(key) {
 	svg.setAttribute('viewBox', '0 -960 960 960');
 	use.setAttributeNS(nsxlink, 'href', `/content/material-icons.svg#${key}`);
 	svg.append(use);
+
+	if (label) {
+		svg.setAttribute('aria-label', label);
+		svg.setAttribute('title', label);
+	} else {
+		svg.setAttribute('aria-hidden', 'true');
+	}
 
 	return svg;
 };
