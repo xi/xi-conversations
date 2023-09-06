@@ -105,7 +105,7 @@ body {
 	border: 1px solid var(--border);
 	overflow: hidden;
 }
-.dropdown.is-expanded {
+[aria-expanded="true"] + .dropdown {
 	display: block;
 }
 .dropdown-item {

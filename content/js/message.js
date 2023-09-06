@@ -43,8 +43,11 @@ var autoMarkAsRead = function(e, msg) {
 
 var toggleDropdown = function(msg, button) {
 	event.preventDefault();
-	var dropdown = button.parentElement.querySelector('.dropdown');
-	dropdown.classList.toggle('is-expanded');
+	if (button.getAttribute('aria-expaned') === true) {
+		button.setAttribute('aria-expanded', 'false');
+	} else {
+		button.setAttribute('aria-expanded', 'true');
+	}
 };
 
 export default function(msg, expanded) {
@@ -88,7 +91,7 @@ export default function(msg, expanded) {
 					: msg.canReplyToList
 						? createButton({'class': 'button'}, actions.replyToList, 'list', _('replyList'))
 						: createButton({'class': 'button'}, actions.replyToSender, 'reply', _('reply')),
-				createButton({'class': 'button'}, toggleDropdown, 'menu', _('more')),
+				createButton({'class': 'button dropdownToggle', 'aria-expanded': 'false'}, toggleDropdown, 'menu', _('more')),
 				h('div', {'class': 'dropdown'}, [
 					createButton({'class': 'dropdown-item'}, actions.replyToSender, 'reply', _('reply'), true),
 					canReplyAll ? createButton({'class': 'dropdown-item'}, actions.replyAll, 'reply_all', _('replyAll'), true) : null,
@@ -123,10 +126,11 @@ export default function(msg, expanded) {
 	});
 
 	// dropdown events
+	var dropdownToggle = e.querySelector('.dropdownToggle');
 	var dropdown = e.querySelector('.dropdown');
-	document.addEventListener('focusout', function(event) {
+	e.addEventListener('focusout', function(event) {
 		if (!event.relatedTarget || !dropdown.contains(event.relatedTarget)) {
-			dropdown.classList.remove('is-expanded');
+			dropdownToggle.setAttribute('aria-expanded', 'false');
 		}
 	});
 
