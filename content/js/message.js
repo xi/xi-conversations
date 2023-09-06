@@ -45,11 +45,7 @@ export default function(msg, expanded) {
 	var h = util.h;
 	var _ = browser.i18n.getMessage;
 
-	var canReplyAll = (
-		util.parseContacts(msg.recipients).length
-		+ util.parseContacts(msg.ccList).length
-		+ util.parseContacts(msg.bccList).length
-	) > 1;
+	var canReplyAll = msg.recipients.length + msg.ccList.length + msg.bccList.length > 1;
 
 	var e = h('article', {'class': expanded ? 'message is-expanded' : 'message', 'id': `msg-${msg.id}`, 'tabindex': -1}, [
 		h('header', {'class': 'message__header'}, [
