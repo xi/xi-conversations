@@ -53,7 +53,7 @@ export default function(msg, expanded) {
 
 	var e = h('article', {'class': expanded ? 'message is-expanded' : 'message', 'id': `msg-${msg.id}`, 'tabindex': -1}, [
 		h('header', {'class': 'message__header'}, [
-			h('button', {'class': 'star', 'aria-pressed': msg.flagged, 'data-action': 'toggleFlagged'}, [util.createIcon('star')]),
+			h('button', {'class': 'star', 'aria-pressed': msg.flagged, 'data-action': 'toggleFlagged'}, [util.createIcon('star', _('star'))]),
 			...util.parseContacts([msg.author]).map(author => h('a', {
 				'class': 'message__author',
 				'href': `mailto:${author.email}`,
@@ -68,7 +68,7 @@ export default function(msg, expanded) {
 				...util.parseContacts(msg.bccList).map(r => h('a', {'href': `mailto:${r.email}`, 'class': 'message__recipients__bcc'}, [r.name])),
 			]),
 			h('span', {'class': 'message__summary'}, [(msg.body || '').substring(0, 150)]),
-			(msg.attachmentInfos || []).length ? util.createIcon('attachment') : null,
+			(msg.attachmentInfos || []).length ? util.createIcon('attachment', _('attachment')) : null,
 			util.createDate(msg.date),
 			h('span', {'class': 'message__actions'}, [
 				canReplyAll

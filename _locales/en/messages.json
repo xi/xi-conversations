@@ -7,6 +7,8 @@
 	"edit": {"message": "edit as new"},
 	"viewClassic": {"message": "view in classic reader"},
 	"viewSource": {"message": "view source"},
+	"star": {"message": "star"},
+	"attachment": {"message": "attachment"},
 	"junk": {"message": "This is junk"},
 	"to": {"message": "to"},
 	"toggleQuote": {"message": "-- toggle quote --"},
