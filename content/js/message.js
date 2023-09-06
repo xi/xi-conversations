@@ -53,7 +53,7 @@ export default function(msg, expanded) {
 
 	var e = h('article', {'class': expanded ? 'message is-expanded' : 'message', 'id': `msg-${msg.id}`, 'tabindex': -1}, [
 		h('header', {'class': 'message__header'}, [
-			h('button', {'class': msg.flagged ? 'star is-active' : 'star', 'data-action': 'toggleFlagged'}, [util.createIcon('star')]),
+			h('button', {'class': 'star', 'aria-pressed': msg.flagged, 'data-action': 'toggleFlagged'}, [util.createIcon('star')]),
 			...util.parseContacts([msg.author]).map(author => h('a', {
 				'class': 'message__author',
 				'href': `mailto:${author.email}`,

@@ -259,6 +259,6 @@ body {
 	color: inherit;
 	padding: 0;
 }
-.star.is-active {
+.star[aria-pressed="true"] {
 	color: #fcb040;
 }

@@ -11,7 +11,7 @@ export var markAsRead = function(msg, read) {
 export var toggleFlagged = function(msg, star) {
 	msg.flagged = !msg.flagged;
 	browser.messages.update(msg.id, {flagged: msg.flagged}).then(() => {
-		star.classList.toggle('is-active', msg.flagged);
+		star.setAttribute('aria-pressed', msg.flagged);
 	});
 };
 
