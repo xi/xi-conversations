@@ -41,7 +41,11 @@ export var getBody = function(msgPart) {
 export var h = function(tag, attrs, children) {
 	var el = document.createElement(tag);
 	for (let attr in attrs) {
-		el.setAttribute(attr, attrs[attr]);
+		if (attr.startsWith('style:')) {
+			el.style[attr.substring(6)] = attrs[attr];
+		} else {
+			el.setAttribute(attr, attrs[attr]);
+		}
 	}
 	for (let child of children) {
 		if (child) {

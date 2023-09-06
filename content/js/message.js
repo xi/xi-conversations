@@ -41,12 +41,6 @@ var autoMarkAsRead = function(e, msg) {
 	};
 };
 
-var createAuthor = function(author) {
-	var a = util.h('a', {'class': 'message__author', 'href': `mailto:${author.email}`}, [author.name]);
-	a.style.color = util.pseudoRandomColor(author.email);
-	return a;
-};
-
 export default function(msg, expanded) {
 	var h = util.h;
 	var _ = browser.i18n.getMessage;
@@ -60,7 +54,11 @@ export default function(msg, expanded) {
 	var e = h('article', {'class': expanded ? 'message is-expanded' : 'message', 'id': `msg-${msg.id}`, 'tabindex': -1}, [
 		h('header', {'class': 'message__header'}, [
 			h('button', {'class': msg.flagged ? 'star is-active' : 'star', 'data-action': 'toggleFlagged'}, [util.createIcon('star')]),
-			createAuthor(util.parseContacts([msg.author])[0]),
+			...util.parseContacts([msg.author]).map(author => h('a', {
+				'class': 'message__author',
+				'href': `mailto:${author.email}`,
+				'style:color': util.pseudoRandomColor(author.email),
+			}, [author.name])),
 			' ',
 			h('span', {'class': 'message__recipients'}, [
 				_('to'),
