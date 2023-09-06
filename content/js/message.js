@@ -50,7 +50,7 @@ var toggleDropdown = function(msg, button) {
 	}
 };
 
-export default function(msg, expanded) {
+var template = function(msg) {
 	var h = util.h;
 	var _ = browser.i18n.getMessage;
 
@@ -66,7 +66,7 @@ export default function(msg, expanded) {
 		return button;
 	};
 
-	var e = h('article', {'class': expanded ? 'message is-expanded' : 'message', 'id': `msg-${msg.id}`, 'tabindex': -1}, [
+	return h('article', {'class': 'message', 'id': `msg-${msg.id}`, 'tabindex': -1}, [
 		h('header', {'class': 'message__header'}, [
 			createButton({'class': 'star', 'aria-pressed': msg.flagged}, actions.toggleFlagged, 'star', _('star')),
 			...util.parseContacts([msg.author]).map(author => h('a', {
@@ -112,6 +112,14 @@ export default function(msg, expanded) {
 			]),
 		]),
 	]);
+};
+
+export default function(msg, expanded) {
+	var e = template(msg);
+
+	if (expanded) {
+		e.classList.add('is-expanded');
+	}
 
 	autoMarkAsRead(e, msg);
 
