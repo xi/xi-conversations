@@ -103,7 +103,6 @@ body {
 	min-inline-size: 15em;
 	border-radius: 0.4em;
 	border: 1px solid var(--border);
-	overflow: hidden;
 }
 [aria-expanded="true"] + .dropdown {
 	display: block;
@@ -127,6 +126,14 @@ body {
 .dropdown-item:hover {
 	background-color: var(--highlight-bg);
 	color: var(--highlight-fg);
+}
+.dropdown-item:first-child {
+	border-start-start-radius: inherit;
+	border-start-end-radius: inherit;
+}
+.dropdown-item:last-child {
+	border-end-start-radius: inherit;
+	border-end-end-radius: inherit;
 }
 
 .message {
