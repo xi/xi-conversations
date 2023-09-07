@@ -141,6 +141,11 @@ export default function(msg, expanded) {
 			dropdownToggle.setAttribute('aria-expanded', 'false');
 		}
 	});
+	document.addEventListener('keydown', function(event) {
+		if (event.keyCode === 27) {
+			dropdownToggle.setAttribute('aria-expanded', 'false');
+		}
+	});
 
 	// body
 	var footer = e.querySelector('.message__footer');
