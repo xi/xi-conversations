@@ -27,7 +27,7 @@ var autoMarkAsRead = function(e, msg) {
 		}
 	}, 100);
 
-	var onAction = function(event) {
+	var onAction = event => {
 		if (event.target.closest('button')) {
 			actions.markAsRead(msg, true);
 			clear();
@@ -125,7 +125,7 @@ export default function(msg, expanded) {
 
 	// header events
 	var header = e.querySelector('.message__header');
-	header.addEventListener('click', function(event) {
+	header.addEventListener('click', event => {
 		if (!event.defaultPrevented) {
 			event.preventDefault();
 			e.classList.toggle('is-expanded');
@@ -136,12 +136,12 @@ export default function(msg, expanded) {
 	// dropdown events
 	var dropdownToggle = e.querySelector('.dropdownToggle');
 	var dropdown = e.querySelector('.dropdown');
-	e.addEventListener('focusout', function(event) {
+	e.addEventListener('focusout', event => {
 		if (!event.relatedTarget || !dropdown.contains(event.relatedTarget)) {
 			dropdownToggle.setAttribute('aria-expanded', 'false');
 		}
 	});
-	document.addEventListener('keydown', function(event) {
+	document.addEventListener('keydown', event => {
 		if (event.keyCode === 27) {
 			dropdownToggle.setAttribute('aria-expanded', 'false');
 		}
