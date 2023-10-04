@@ -18,6 +18,16 @@ var unique = function(l, keyFn) {
 	});
 };
 
+var waitForLoad = function(win) {
+	return new Promise(resolve => {
+		if (win.document.readyState === 'complete') {
+			resolve();
+		} else {
+			win.addEventListener('load', resolve);
+		}
+	});
+};
+
 var getConversation = function(ids) {
 	return new Promise((resolve, reject) => {
 		var conversationListener = {
@@ -91,32 +101,22 @@ var xi = class extends ExtensionCommon.ExtensionAPI {
 						{URL: url},
 					);
 				},
-				// cannot be replaced by messageDisplay.OnMessagesDisplayed because
-				// we need to replace the original handler
-				patchOpenSelectedMessages() {
-					var observer = (win, topic) => {
-						if (topic === 'domwindowopened' && win.location.href === 'chrome://messenger/content/messenger.xhtml') {
-							win.MsgOpenSelectedMessages = () => {
-								var msgs = win.gFolderDisplay.selectedMessages;
-								var ids = msgs.map(msgHdr => msgHdr.messageId);
-								var url = '/content/main.html?ids=' + encodeURIComponent(ids);
-								var tab = win.openTab('contentTab', {
-									url: context.uri.resolve(url),
-									linkHandler: 'single-page',
-									principal: context.extension.principal,
-								});
-								tab.toolbar.hidden = true;
-							};
-						}
-						win.addEventListener('load', () => observer(win, topic));
-					};
-
-					Services.ww.registerNotification(observer);
-
-					var e = Services.ww.getWindowEnumerator();
-					while (e.hasMoreElements()) {
-						observer(e.getNext(), 'domwindowopened');
-					}
+				patchTab(id) {
+					var tabObject = context.extension.tabManager.get(id);
+					var win = tabObject.nativeTab.chromeBrowser.contentWindow;
+					return waitForLoad(win).then(() => {
+						win.threadPane._onItemActivate = () => {
+							var msgs = win.gDBView.getSelectedMsgHdrs();
+							var ids = msgs.map(msgHdr => msgHdr.messageId);
+							var url = '/content/main.html?ids=' + encodeURIComponent(ids);
+							var tab = win.openTab('contentTab', {
+								url: context.uri.resolve(url),
+								linkHandler: 'single-page',
+								principal: context.extension.principal,
+							});
+							tab.toolbar.hidden = true;
+						};
+					});
 				},
 			},
 		};

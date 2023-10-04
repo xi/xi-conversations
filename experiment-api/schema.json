@@ -28,9 +28,12 @@
 			"type": "integer"
 		}]
 	}, {
-		"name": "patchOpenSelectedMessages",
+		"name": "patchTab",
 		"type": "function",
-		"async": false,
-		"parameters": []
+		"async": true,
+		"parameters": [{
+			"name": "id",
+			"type": "integer"
+		}]
 	}]
 }]

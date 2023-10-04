@@ -17,7 +17,8 @@
   "permissions": [
     "accountsRead",
     "messagesRead",
-    "messagesMove"
+    "messagesMove",
+    "tabs"
   ],
   "experiment_apis": {
     "xi": {
