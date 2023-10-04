@@ -4,6 +4,7 @@ var {ExtensionCommon} = ChromeUtils.import('resource://gre/modules/ExtensionComm
 var {Gloda} = ChromeUtils.import('resource:///modules/gloda/GlodaPublic.jsm');
 var {Services} = ChromeUtils.import('resource://gre/modules/Services.jsm');
 var {MsgHdrToMimeMessage} = ChromeUtils.import('resource:///modules/gloda/MimeMessage.jsm');
+var {MailServices} = ChromeUtils.import('resource:///modules/MailServices.jsm');
 
 var unique = function(l, keyFn) {
 	var keys = [];
@@ -81,7 +82,13 @@ var xi = class extends ExtensionCommon.ExtensionAPI {
 					var win = Services.wm.getMostRecentWindow('mail:3pane');
 					var msgHdr = context.extension.messageManager.get(id);
 					var uri = msgHdr.folder.getUriForMsg(msgHdr);
-					win.ViewPageSource([uri]);
+					var url = MailServices.mailSession.ConvertMsgURIToMsgURL(uri, null);
+					win.openDialog(
+						'chrome://messenger/content/viewSource.xhtml',
+						'_blank',
+						'all,dialog=no',
+						{URL: url},
+					);
 				},
 				// cannot be replaced by messageDisplay.OnMessagesDisplayed because
 				// we need to replace the original handler
