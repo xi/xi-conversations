@@ -2,6 +2,7 @@
 
 var {ExtensionCommon} = ChromeUtils.import('resource://gre/modules/ExtensionCommon.jsm');
 var {Gloda} = ChromeUtils.import('resource:///modules/gloda/GlodaPublic.jsm');
+var {GlodaConstants} = ChromeUtils.import('resource:///modules/gloda/GlodaConstants.jsm');
 var {Services} = ChromeUtils.import('resource://gre/modules/Services.jsm');
 var {MsgHdrToMimeMessage} = ChromeUtils.import('resource:///modules/gloda/MimeMessage.jsm');
 var {MailServices} = ChromeUtils.import('resource:///modules/MailServices.jsm');
@@ -45,7 +46,7 @@ var getConversation = function(ids) {
 			},
 		};
 
-		var query = Gloda.newQuery(Gloda.NOUN_MESSAGE);
+		var query = Gloda.newQuery(GlodaConstants.NOUN_MESSAGE);
 		query.headerMessageID.apply(query, ids);
 		query.getCollection(listener, null);
 	});
