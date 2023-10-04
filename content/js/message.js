@@ -149,11 +149,10 @@ export default function(msg, expanded) {
 
 	// body
 	var footer = e.querySelector('.message__footer');
-	var details = e.querySelector('.message__details');
 	var bodyLoaded = false;
 	var lazyLoadBody = function() {
 		if (!bodyLoaded && e.classList.contains('is-expanded')) {
-			details.insertBefore(createBody(msg), footer);
+			footer.before(createBody(msg));
 			bodyLoaded = true;
 		}
 	};
