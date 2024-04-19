@@ -1,4 +1,5 @@
 {
+	"refresh": {"message": "refresh"},
 	"replyList": {"message": "reply to list"},
 	"replyAll": {"message": "reply all"},
 	"reply": {"message": "reply"},

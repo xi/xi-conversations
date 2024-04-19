@@ -3,6 +3,10 @@
 import createMessageElement from './message.js';
 import * as util from './util.js';
 
+document.querySelector('.conversation__refresh').append(
+	util.createIcon('refresh', browser.i18n.getMessage('refresh'))
+);
+
 var initialIDs = (util.getParams().ids || '').split(',');
 
 var container = document.querySelector('.conversation__main');
