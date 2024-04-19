@@ -2,8 +2,10 @@
 
 var {ExtensionCommon} = ChromeUtils.import('resource://gre/modules/ExtensionCommon.jsm');
 var {Gloda} = ChromeUtils.import('resource:///modules/gloda/GlodaPublic.jsm');
+var {GlodaConstants} = ChromeUtils.import('resource:///modules/gloda/GlodaConstants.jsm');
 var {Services} = ChromeUtils.import('resource://gre/modules/Services.jsm');
 var {MsgHdrToMimeMessage} = ChromeUtils.import('resource:///modules/gloda/MimeMessage.jsm');
+var {MailServices} = ChromeUtils.import('resource:///modules/MailServices.jsm');
 
 var unique = function(l, keyFn) {
 	var keys = [];
@@ -12,6 +14,16 @@ var unique = function(l, keyFn) {
 		if (!keys.includes(key)) {
 			keys.push(key);
 			return true;
+		}
+	});
+};
+
+var waitForLoad = function(win) {
+	return new Promise(resolve => {
+		if (win.document.readyState === 'complete') {
+			resolve();
+		} else {
+			win.addEventListener('load', resolve);
 		}
 	});
 };
@@ -44,7 +56,7 @@ var getConversation = function(ids) {
 			},
 		};
 
-		var query = Gloda.newQuery(Gloda.NOUN_MESSAGE);
+		var query = Gloda.newQuery(GlodaConstants.NOUN_MESSAGE);
 		query.headerMessageID.apply(query, ids);
 		query.getCollection(listener, null);
 	});
@@ -81,34 +93,30 @@ var xi = class extends ExtensionCommon.ExtensionAPI {
 					var win = Services.wm.getMostRecentWindow('mail:3pane');
 					var msgHdr = context.extension.messageManager.get(id);
 					var uri = msgHdr.folder.getUriForMsg(msgHdr);
-					win.ViewPageSource([uri]);
+					var url = MailServices.mailSession.ConvertMsgURIToMsgURL(uri, null);
+					win.openDialog(
+						'chrome://messenger/content/viewSource.xhtml',
+						'_blank',
+						'all,dialog=no',
+						{URL: url},
+					);
 				},
-				// cannot be replaced by messageDisplay.OnMessagesDisplayed because
-				// we need to replace the original handler
-				patchOpenSelectedMessages() {
-					var observer = (win, topic) => {
-						if (topic === 'domwindowopened' && win.location.href === 'chrome://messenger/content/messenger.xhtml') {
-							win.MsgOpenSelectedMessages = () => {
-								var msgs = win.gFolderDisplay.selectedMessages;
-								var ids = msgs.map(msgHdr => msgHdr.messageId);
-								var url = '/content/main.html?ids=' + encodeURIComponent(ids);
-								var tab = win.openTab('contentTab', {
-									url: context.uri.resolve(url),
-									linkHandler: 'single-page',
-									principal: context.extension.principal,
-								});
-								tab.toolbar.hidden = true;
-							};
-						}
-						win.addEventListener('load', () => observer(win, topic));
-					};
-
-					Services.ww.registerNotification(observer);
-
-					var e = Services.ww.getWindowEnumerator();
-					while (e.hasMoreElements()) {
-						observer(e.getNext(), 'domwindowopened');
-					}
+				patchTab(id) {
+					var tabObject = context.extension.tabManager.get(id);
+					var win = tabObject.nativeTab.chromeBrowser.contentWindow;
+					return waitForLoad(win).then(() => {
+						win.threadPane._onItemActivate = () => {
+							var msgs = win.gDBView.getSelectedMsgHdrs();
+							var ids = msgs.map(msgHdr => msgHdr.messageId);
+							var url = '/content/main.html?ids=' + encodeURIComponent(ids);
+							var tab = win.openTab('contentTab', {
+								url: context.uri.resolve(url),
+								linkHandler: 'single-page',
+								principal: context.extension.principal,
+							});
+							tab.toolbar.hidden = true;
+						};
+					});
 				},
 			},
 		};
