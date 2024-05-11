@@ -50,6 +50,18 @@ var toggleDropdown = function(msg, button) {
 	}
 };
 
+var getListUrl = function(msg, key, prefix) {
+	// see https://www.rfc-editor.org/rfc/rfc2369
+	for (let header of msg.full.headers[key] || []) {
+		for (let item of header.split(', ')) {
+			var url = item.slice(item.indexOf('<') + 1, -1);
+			if (url.startsWith(prefix)) {
+				return url;
+			}
+		}
+	}
+}
+
 var template = function(msg) {
 	var h = util.h;
 	var _ = browser.i18n.getMessage;
@@ -65,6 +77,15 @@ var template = function(msg) {
 		});
 		return button;
 	};
+
+	var createLink = function(attrs, href, icon, label, labelVisible) {
+		var content = labelVisible ? [util.createIcon(icon), ' ', label] : [util.createIcon(icon, label)];
+		return h('a', Object.assign({'href': href}, attrs), content);
+	};
+
+	var listHelp = getListUrl(msg, 'list-help', 'http');
+	var listArchive = getListUrl(msg, 'list-archive', 'http');
+	var listUnsubscribe = getListUrl(msg, 'list-unsubscribe', 'http') || getListUrl(msg, 'list-unsubscribe', '');
 
 	return h('article', {'class': 'message', 'id': `msg-${msg.id}`, 'tabindex': -1}, [
 		h('header', {'class': 'message__header'}, [
@@ -100,6 +121,10 @@ var template = function(msg) {
 					createButton({'class': 'dropdown-item'}, actions.editAsNew, 'create', _('edit'), true),
 					createButton({'class': 'dropdown-item'}, actions.viewClassic, 'open_in_new', _('viewClassic'), true),
 					createButton({'class': 'dropdown-item'}, actions.viewSource, 'code', _('viewSource'), true),
+
+					listHelp ? createLink({'class': 'dropdown-item'}, listHelp, 'info', _('listHelp'), true): null,
+					listArchive ? createLink({'class': 'dropdown-item'}, listArchive, 'inventory_2', _('listArchive'), true): null,
+					listUnsubscribe ? createLink({'class': 'dropdown-item'}, listUnsubscribe, 'unsubscribe', _('listUnsubscribe'), true): null,
 				]),
 			]),
 		]),
@@ -126,7 +151,7 @@ export default function(msg, expanded) {
 	// header events
 	var header = e.querySelector('.message__header');
 	header.addEventListener('click', event => {
-		if (!event.defaultPrevented) {
+		if (!event.defaultPrevented && !event.target.closest('a[href]')) {
 			event.preventDefault();
 			e.classList.toggle('is-expanded');
 			lazyLoadBody();

@@ -16,5 +16,8 @@
 	"toggleSig": {"message": "-- toggle signature --"},
 	"encrypted": {"message": "encrypted message"},
 	"emptyBody": {"message": "(empty)"},
-	"encryptedBody": {"message": "(encrypted)"}
+	"encryptedBody": {"message": "(encrypted)"},
+	"listHelp": {"message": "list info"},
+	"listArchive": {"message": "list archive"},
+	"listUnsubscribe": {"message": "unsubscribe"}
 }
