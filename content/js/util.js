@@ -62,7 +62,7 @@ export var createIcon = function(key, label) {
 	var svg = document.createElementNS(nssvg, 'svg') ;
 	var use = document.createElementNS(nssvg, 'use') ;
 	svg.setAttribute('class', 'icon');
-	svg.setAttribute('viewBox', '0 -960 960 960');
+	svg.setAttribute('viewBox', '0 0 24 24');
 	use.setAttributeNS(nsxlink, 'href', `/content/material-icons.svg#${key}`);
 	svg.append(use);
 
