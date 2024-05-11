@@ -43,7 +43,7 @@ var autoMarkAsRead = function(e, msg) {
 
 var toggleDropdown = function(msg, button) {
 	event.preventDefault();
-	if (button.getAttribute('aria-expaned') === true) {
+	if (button.getAttribute('aria-expanded') === 'true') {
 		button.setAttribute('aria-expanded', 'false');
 	} else {
 		button.setAttribute('aria-expanded', 'true');
