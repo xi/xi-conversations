@@ -97,15 +97,7 @@ export var pseudoRandomColor = function(s) {
 		hash &= 0xffff;
 	}
 	var hue = Math.floor(360 * hash / 0xffff);
-
-	// try to provide a consistent lightness across hues
-	var lightnessStops = [48, 25, 28, 27, 62, 42];
-	var j = Math.floor(hue / 60);
-	var l1 = lightnessStops[j];
-	var l2 = lightnessStops[(j + 1) % 6];
-	var lightness = Math.floor((hue / 60 - j) * (l2 - l1) + l1);
-
-	return 'hsl(' + hue + ', 70%, ' + Math.floor(lightness) + '%)';
+	return `oklch(53% 0.16 ${hue + 30})`;
 };
 
 export var parseContacts = function(raw) {
