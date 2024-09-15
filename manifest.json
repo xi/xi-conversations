@@ -1,11 +1,5 @@
 {
-  "manifest_version": 2,
-  "applications": {
-    "gecko": {
-      "id": "conversations@xi",
-      "strict_min_version": "91.0"
-    }
-  },
+  "manifest_version": 3,
   "name": "Xi Conversations",
   "description": "Minimal clone of thunderbird conversations",
   "version": "0.0.0",
@@ -32,6 +26,12 @@
         "paths": [["xi"]],
         "script": "experiment-api/api.js"
       }
+    }
+  },
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "conversations@xi",
+      "strict_min_version": "91.0"
     }
   }
 }
