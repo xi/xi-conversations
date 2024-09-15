@@ -79,6 +79,7 @@ export var pseudoRandomColor = function(s) {
 };
 
 export var parseContacts = function(raw) {
+	// sync version of messengerUtilities.parseMailboxString()
 	var contacts = [];
 	for (var r of raw) {
 		var match = /(.*) <(.*)>/.exec(r);
