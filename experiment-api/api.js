@@ -3,7 +3,6 @@
 var {ExtensionCommon} = ChromeUtils.import('resource://gre/modules/ExtensionCommon.jsm');
 var {Gloda} = ChromeUtils.import('resource:///modules/gloda/GlodaPublic.jsm');
 var {GlodaConstants} = ChromeUtils.import('resource:///modules/gloda/GlodaConstants.jsm');
-var {MsgHdrToMimeMessage} = ChromeUtils.import('resource:///modules/gloda/MimeMessage.jsm');
 var {MailServices} = ChromeUtils.import('resource:///modules/MailServices.jsm');
 
 var unique = function(l, keyFn) {
@@ -77,16 +76,6 @@ var xi = class extends ExtensionCommon.ExtensionAPI {
 				getConversation(ids) {
 					// https://bugzilla.mozilla.org/show_bug.cgi?id=1665676
 					return getConversation(ids).then(results => results.map(glodaMsg2msg));
-				},
-				getFull(id) {
-					// the original getFull() is restricted to these fields:
-					// body, contentType, headers, name partName, size
-					var msgHdr = context.extension.messageManager.get(id);
-					return new Promise(resolve => {
-						MsgHdrToMimeMessage(msgHdr, null, (aMsgHdr, aMimeMsg) => {
-							resolve(aMimeMsg);
-						}, false, {examineEncryptedParts: true});
-					});
 				},
 				viewSource(id) {
 					var win = Services.wm.getMostRecentWindow('mail:3pane');

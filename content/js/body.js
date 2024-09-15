@@ -79,11 +79,24 @@ export default function(msg) {
 	var pre = document.createElement('pre');
 	pre.className = 'message__body';
 	wrapper.append(pre);
-	browser.xi.getFull(msg.id).then(util.getBody).then(([body, isEncrypted]) => {
-		if (isEncrypted) {
+	browser.messages.listInlineTextParts(msg.id).then(async parts => {
+		var body = '';
+		if (parts.some(p => p.contentType.startsWith('text/plain'))) {
+			body = parts
+				.filter(p => p.contentType.startsWith('text/plain'))
+				.map(p => p.content)
+				.join('\n\n');
+		} else if (parts.some(p => p.contentType.startsWith('text/html'))) {
+			var html = parts.find(p => p.contentType.startsWith('text/html')).content;
+			body = await browser.messengerUtilities.convertToPlainText(html);
+		} else if (parts.length) {
+			body = parts[0].content;
+		}
+
+		if (msg.full.decryptionStatus !== 'none') {
 			wrapper.prepend(util.createAlert(browser.i18n.getMessage('encrypted'), 'lock', 'info'));
 		}
-		renderBody(pre, body || msg.body || browser.i18n.getMessage('emptyBody'));
+		renderBody(pre, body || browser.i18n.getMessage('emptyBody'));
 	});
 
 	return wrapper;

@@ -16,28 +16,6 @@ export var getParams = function() {
 	return params;
 };
 
-export var getBody = function(msgPart) {
-	if (msgPart.body && msgPart.contentType.startsWith('text/plain')) {
-		return [msgPart.body, msgPart.isEncrypted];
-	} else if (msgPart.parts) {
-		var bodies = [];
-		var encrypted = (
-			msgPart.isEncrypted
-			&& !msgPart.contentType.startsWith('multipart/signed')
-		);
-		for (var part of msgPart.parts) {
-			var [body, e] = getBody(part);
-			if (body) {
-				bodies.push(body);
-				encrypted |= e;
-			}
-		}
-		return [bodies.join('\n\n'), encrypted];
-	} else {
-		return ['', false];
-	}
-};
-
 export var h = function(tag, attrs, children) {
 	var el = document.createElement(tag);
 	for (let attr in attrs) {
