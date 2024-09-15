@@ -78,7 +78,7 @@ export var createIcon = function(key, label) {
 
 export var createDate = function(date) {
 	var now = new Date();
-	return h('time', {'class': 'date', 'title': date.toLocaleString()}, [
+	return h('time', {'class': 'date', 'title': date.toLocaleString('sv')}, [
 		date.toDateString() === now.toDateString()
 			? date.toLocaleTimeString('sv')
 			: date.toLocaleDateString('sv')
