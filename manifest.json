@@ -21,6 +21,7 @@
     "accountsRead",
     "messagesRead",
     "messagesMove",
+    "messagesUpdate",
     "tabs"
   ],
   "experiment_apis": {
