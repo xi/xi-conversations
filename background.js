@@ -1,12 +1,12 @@
 /* global browser */
 
 browser.tabs.onCreated.addListener(tab => {
-	if (tab.mailTab) {
+	if (tab.type === 'mail') {
 		browser.xi.patchTab(tab.id);
 	}
 });
 
-browser.tabs.query({mailTab: true}).then(tabs => {
+browser.tabs.query({type: 'mail'}).then(tabs => {
 	tabs.forEach(tab => {
 		browser.xi.patchTab(tab.id);
 	});
