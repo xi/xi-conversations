@@ -11,6 +11,9 @@
   "version": "0.0.0",
   "author": "Tobias Bengfort",
   "default_locale": "en",
+  "icons": {
+    "48": "icon.svg"
+  },
   "background": {
     "page": "background.html"
   },
