@@ -1,9 +1,8 @@
-/* global ChromeUtils */
+/* global ChromeUtils Services */
 
 var {ExtensionCommon} = ChromeUtils.import('resource://gre/modules/ExtensionCommon.jsm');
 var {Gloda} = ChromeUtils.import('resource:///modules/gloda/GlodaPublic.jsm');
 var {GlodaConstants} = ChromeUtils.import('resource:///modules/gloda/GlodaConstants.jsm');
-var {Services} = ChromeUtils.import('resource://gre/modules/Services.jsm');
 var {MsgHdrToMimeMessage} = ChromeUtils.import('resource:///modules/gloda/MimeMessage.jsm');
 var {MailServices} = ChromeUtils.import('resource:///modules/MailServices.jsm');
 
