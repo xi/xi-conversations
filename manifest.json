@@ -15,7 +15,7 @@
     "48": "icon.svg"
   },
   "background": {
-    "page": "background.html"
+    "scripts": ["background.js"]
   },
   "permissions": [
     "accountsRead",
