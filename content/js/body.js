@@ -60,7 +60,7 @@ var renderBody = function(parent, text) {
 	// https://en.wikipedia.org/wiki/Posting_style
 	// http://www.asciiribbon.org/
 
-	var [body, ...sig] = text.split('\n-- \n');
+	var [body, ...sig] = text.replaceAll('\r', '').split('\n-- \n');
 	renderQuotes(parent, body.split('\n'));
 
 	if (sig.length) {
