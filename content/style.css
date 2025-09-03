@@ -6,6 +6,7 @@
 	--odd: -moz-OddTreeRow;
 	--highlight-bg: -moz-CellHighlight;
 	--highlight-fg: -moz-CellHighlightText;
+	--shadow: #0005;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -72,12 +73,14 @@ body {
 
 .conversation__header {
 	display: flex;
+	z-index: 2;
 	justify-content: space-between;
 	padding: 1em;
 	gap: 1em;
 	background-color: var(--bg);
 	color: var(--fg);
 	border-block-end: 1px solid var(--border);
+	box-shadow: 0 0 0.2em var(--shadow);
 }
 
 .conversation__main {
@@ -101,6 +104,7 @@ body {
 	min-inline-size: 15em;
 	border-radius: 0.4em;
 	border: 1px solid var(--border);
+	box-shadow: 0 0 0.1em var(--shadow);
 }
 [aria-expanded="true"] + .dropdown {
 	display: block;
@@ -143,6 +147,7 @@ body {
 	background-color: var(--bg);
 	color: var(--fg);
 	border: 1px solid var(--border);
+	box-shadow: 0 0 0.1em var(--shadow);
 }
 .message .message__details,
 .message .message__recipients {
