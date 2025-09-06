@@ -75,6 +75,7 @@ body {
 	display: flex;
 	z-index: 2;
 	justify-content: space-between;
+	align-items: center;
 	padding: 1em;
 	gap: 1em;
 	background-color: var(--bg);
