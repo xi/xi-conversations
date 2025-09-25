@@ -1,9 +1,10 @@
-/* global ChromeUtils Services */
+/* global ChromeUtils Services ExtensionCommon */
 
-var {ExtensionCommon} = ChromeUtils.import('resource://gre/modules/ExtensionCommon.jsm');
-var {Gloda} = ChromeUtils.import('resource:///modules/gloda/GlodaPublic.jsm');
-var {GlodaConstants} = ChromeUtils.import('resource:///modules/gloda/GlodaConstants.jsm');
-var {MailServices} = ChromeUtils.import('resource:///modules/MailServices.jsm');
+ChromeUtils.defineESModuleGetters(this, {
+	Gloda: "resource:///modules/gloda/GlodaPublic.sys.mjs",
+	GlodaConstants: "resource:///modules/gloda/GlodaConstants.sys.mjs",
+	MailServices: "resource:///modules/MailServices.sys.mjs",
+});
 
 var unique = function(l, keyFn) {
 	var keys = [];
