@@ -1,9 +1,9 @@
 /* global ChromeUtils Services ExtensionCommon */
 
 ChromeUtils.defineESModuleGetters(this, {
-	Gloda: "resource:///modules/gloda/GlodaPublic.sys.mjs",
-	GlodaConstants: "resource:///modules/gloda/GlodaConstants.sys.mjs",
-	MailServices: "resource:///modules/MailServices.sys.mjs",
+	Gloda: 'resource:///modules/gloda/GlodaPublic.sys.mjs',
+	GlodaConstants: 'resource:///modules/gloda/GlodaConstants.sys.mjs',
+	MailServices: 'resource:///modules/MailServices.sys.mjs',
 });
 
 var unique = function(l, keyFn) {
