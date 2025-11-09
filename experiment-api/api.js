@@ -90,22 +90,22 @@ var xi = class extends ExtensionCommon.ExtensionAPI {
 						{URL: url},
 					);
 				},
-				patchTab(id) {
+				async patchTab(id) {
 					var tabObject = context.extension.tabManager.get(id);
 					var win = tabObject.nativeTab.chromeBrowser.contentWindow;
-					return waitForLoad(win).then(() => {
-						win.threadPane._onItemActivate = () => {
-							var msgs = win.gDBView.getSelectedMsgHdrs();
-							var ids = msgs.map(msgHdr => msgHdr.messageId);
-							var url = '/content/main.html?ids=' + encodeURIComponent(ids);
-							var tab = win.openTab('contentTab', {
-								url: context.uri.resolve(url),
-								linkHandler: 'single-page',
-								principal: context.extension.principal,
-							});
-							tab.toolbar.hidden = true;
-						};
-					});
+					await waitForLoad(win);
+
+					win.threadPane._onItemActivate = () => {
+						var msgs = win.gDBView.getSelectedMsgHdrs();
+						var ids = msgs.map(msgHdr => msgHdr.messageId);
+						var url = '/content/main.html?ids=' + encodeURIComponent(ids);
+						var tab = win.openTab('contentTab', {
+							url: context.uri.resolve(url),
+							linkHandler: 'single-page',
+							principal: context.extension.principal,
+						});
+						tab.toolbar.hidden = true;
+					};
 				},
 			},
 		};
