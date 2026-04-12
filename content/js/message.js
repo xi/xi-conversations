@@ -167,7 +167,7 @@ export default function(msg, expanded) {
 		}
 	});
 	document.addEventListener('keydown', event => {
-		if (event.keyCode === 27) {
+		if (event.key === 'Escape') {
 			dropdownToggle.setAttribute('aria-expanded', 'false');
 		}
 	});
