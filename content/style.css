@@ -1,4 +1,5 @@
 :root {
+	color-scheme: light dark;
 	--bg-tint: #00000006;
 	--bg: Menu;
 	--fg: MenuText;
@@ -7,12 +8,6 @@
 	--highlight-bg: -moz-CellHighlight;
 	--highlight-fg: -moz-CellHighlightText;
 	--shadow: #0005;
-}
-
-@media (prefers-color-scheme: dark) {
-	:root {
-		color-scheme: dark;
-	}
 }
 
 body {
