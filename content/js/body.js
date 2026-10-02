@@ -79,6 +79,8 @@ export default function(msg) {
 	var pre = document.createElement('pre');
 	pre.className = 'message__body';
 	wrapper.append(pre);
+
+	// wrapper if filled async, after we return
 	browser.messages.listInlineTextParts(msg.id).then(async parts => {
 		var body = '';
 		if (parts.some(p => p.contentType.startsWith('text/plain'))) {
