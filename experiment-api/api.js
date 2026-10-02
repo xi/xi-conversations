@@ -6,18 +6,18 @@ ChromeUtils.defineESModuleGetters(this, {
 	MailServices: 'resource:///modules/MailServices.sys.mjs',
 });
 
-var unique = function(l, keyFn) {
+function unique(l, keyFn) {
 	var keys = [];
-	return l.filter(function(item) {
+	return l.filter(item => {
 		var key = keyFn(item);
 		if (!keys.includes(key)) {
 			keys.push(key);
 			return true;
 		}
 	});
-};
+}
 
-var waitForLoad = function(win) {
+function waitForLoad(win) {
 	return new Promise(resolve => {
 		if (win.document.readyState === 'complete') {
 			resolve();
@@ -25,9 +25,9 @@ var waitForLoad = function(win) {
 			win.addEventListener('load', resolve);
 		}
 	});
-};
+}
 
-var getConversation = function(ids) {
+function getConversation(ids) {
 	return new Promise((resolve, reject) => {
 		var conversationListener = {
 			onItemsAdded: function() {},
@@ -59,7 +59,7 @@ var getConversation = function(ids) {
 		query.headerMessageID.apply(query, ids);
 		query.getCollection(listener, null);
 	});
-};
+}
 
 var xi = class extends ExtensionCommon.ExtensionAPI {
 	getAPI(context) {

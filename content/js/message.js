@@ -4,12 +4,12 @@ import createBody from './body.js';
 import * as actions from './actions.js';
 import * as util from './util.js';
 
-var autoMarkAsRead = function(e, msg) {
+function autoMarkAsRead(e, msg) {
 	var topWasInView = false;
 	var bottomWasInView = false;
 	var clear;
 
-	var intervalId = window.setInterval(function() {
+	var intervalId = window.setInterval(() => {
 		var rect = e.getBoundingClientRect();
 		var height = window.innerHeight || document.documentElement.clientHeight;
 
@@ -39,18 +39,18 @@ var autoMarkAsRead = function(e, msg) {
 		window.clearInterval(intervalId);
 		e.removeEventListener('click', onAction);
 	};
-};
+}
 
-var toggleDropdown = function(msg, button) {
+function toggleDropdown(msg, button) {
 	event.preventDefault();
 	if (button.getAttribute('aria-expanded') === 'true') {
 		button.setAttribute('aria-expanded', 'false');
 	} else {
 		button.setAttribute('aria-expanded', 'true');
 	}
-};
+}
 
-var getListUrl = function(msg, key, prefix) {
+function getListUrl(msg, key, prefix) {
 	// see https://www.rfc-editor.org/rfc/rfc2369
 	for (let header of msg.full.headers[key] || []) {
 		for (let item of header.split(', ')) {
@@ -62,7 +62,7 @@ var getListUrl = function(msg, key, prefix) {
 	}
 }
 
-var template = function(msg) {
+function template(msg) {
 	var h = util.h;
 	var _ = browser.i18n.getMessage;
 
@@ -137,7 +137,7 @@ var template = function(msg) {
 			]),
 		]),
 	]);
-};
+}
 
 export default function(msg, expanded) {
 	var e = template(msg);
@@ -184,4 +184,4 @@ export default function(msg, expanded) {
 	lazyLoadBody();
 
 	return e;
-};
+}

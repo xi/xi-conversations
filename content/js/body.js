@@ -4,16 +4,16 @@ import * as util from './util.js';
 
 var RE_LINK = /(https?:\/\/[^\s<>]*[^\s\])}<>.,:;?!"'])/g;
 
-var createDetails = function(label, color) {
+function createDetails(label, color) {
 	var details = document.createElement('details');
 	var summary = document.createElement('summary');
 	summary.textContent = label;
 	summary.style.color = color;
 	details.append(summary);
 	return details;
-};
+}
 
-var renderLinks = function(parent, text) {
+function renderLinks(parent, text) {
 	text.split(RE_LINK).forEach((s, i) => {
 		if (i % 2 === 0) {
 			parent.append(document.createTextNode(s));
@@ -24,9 +24,9 @@ var renderLinks = function(parent, text) {
 			parent.append(a);
 		}
 	});
-};
+}
 
-var renderQuotes = function(parent, lines, nested) {
+function renderQuotes(parent, lines, nested) {
 	var quote = [];
 
 	var flushQuote = function() {
@@ -53,9 +53,9 @@ var renderQuotes = function(parent, lines, nested) {
 		}
 	}
 	flushQuote();
-};
+}
 
-var renderBody = function(parent, text) {
+function renderBody(parent, text) {
 	// https://www.rfc-editor.org/rfc/rfc3676
 	// https://en.wikipedia.org/wiki/Posting_style
 	// http://www.asciiribbon.org/
@@ -72,7 +72,7 @@ var renderBody = function(parent, text) {
 		details.append(div);
 		parent.append(details);
 	}
-};
+}
 
 export default function(msg) {
 	var wrapper = document.createElement('div');

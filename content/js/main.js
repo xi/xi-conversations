@@ -12,14 +12,14 @@ var initialIDs = (util.getParams().ids || '').split(',');
 var container = document.querySelector('.conversation__main');
 var anyExpanded = false;
 
-var getMessageForId = function(id) {
+function getMessageForId(id) {
 	return browser.messages.query({headerMessageId: id}).then(page => {
 		if (!page.messages.length) {
 			throw null;
 		}
 		return page.messages[0];
 	});
-};
+}
 
 browser.xi.getConversation(initialIDs).catch(() => {
 	return Promise.all(initialIDs.map(getMessageForId));
@@ -28,7 +28,7 @@ browser.xi.getConversation(initialIDs).catch(() => {
 		msg.full = full;
 		return msg;
 	});
-}))).then(function(conversation) {
+}))).then(conversation => {
 	var subject = conversation[0].subject || '(no subject)';
 	document.querySelector('.conversation__subject').textContent = subject;
 	document.title = subject;
