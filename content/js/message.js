@@ -52,8 +52,8 @@ function toggleDropdown(msg, button) {
 
 function getListUrl(msg, key, prefix) {
 	// see https://www.rfc-editor.org/rfc/rfc2369
-	for (let header of msg.full.headers[key] || []) {
-		for (let item of header.split(', ')) {
+	for (const header of msg.full.headers[key] || []) {
+		for (const item of header.split(', ')) {
 			var url = item.slice(item.indexOf('<') + 1, -1);
 			if (url.startsWith(prefix)) {
 				return url;
