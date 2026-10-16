@@ -90,11 +90,11 @@ body {
 }
 
 .dropdown {
-	display: none;
-	position: absolute;
-	inset-block-start: 2em;
-	inset-inline-end: 0;
-	z-index: 1;
+	padding: 0;
+	margin: 0;
+	inset: auto;
+	position-area: block-end span-inline-start;
+	position-try-fallbacks: flip-block;
 	background-color: var(--bg);
 	color: var(--fg);
 	min-inline-size: 15em;
@@ -241,10 +241,6 @@ body {
 
 .message__recipients__bcc::before {
 	content: "bcc:";
-}
-
-.message__actions {
-	position: relative;
 }
 
 .attachments {

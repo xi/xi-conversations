@@ -41,15 +41,6 @@ function autoMarkAsRead(e, msg) {
 	};
 }
 
-function toggleDropdown(msg, button) {
-	event.preventDefault();
-	if (button.getAttribute('aria-expanded') === 'true') {
-		button.setAttribute('aria-expanded', 'false');
-	} else {
-		button.setAttribute('aria-expanded', 'true');
-	}
-}
-
 function getListUrl(msg, key, prefix) {
 	// see https://www.rfc-editor.org/rfc/rfc2369
 	for (const header of msg.full.headers[key] || []) {
@@ -112,8 +103,8 @@ function template(msg) {
 					: msg.canReplyToList
 						? createButton({'class': 'button'}, actions.replyToList, 'list', _('replyList'))
 						: createButton({'class': 'button'}, actions.replyToSender, 'reply', _('reply')),
-				createButton({'class': 'button dropdownToggle', 'aria-expanded': 'false'}, toggleDropdown, 'menu', _('more')),
-				h('div', {'class': 'dropdown'}, [
+				h('button', {'class': 'button', 'popovertarget': `msg-${msg.id}-dropdown`}, [util.createIcon('menu', _('more'))]),
+				h('div', {'class': 'dropdown', 'id': `msg-${msg.id}-dropdown`, 'popover': 'auto'}, [
 					createButton({'class': 'dropdown-item'}, actions.replyToSender, 'reply', _('reply'), true),
 					canReplyAll ? createButton({'class': 'dropdown-item'}, actions.replyAll, 'reply_all', _('replyAll'), true) : null,
 					msg.canReplyToList ? createButton({'class': 'dropdown-item'}, actions.replyToList, 'list', _('replyList'), true) : null,
@@ -151,24 +142,10 @@ export default function(msg, expanded) {
 	// header events
 	var header = e.querySelector('.message__header');
 	header.addEventListener('click', event => {
-		if (!event.defaultPrevented && !event.target.closest('a[href]')) {
+		if (!event.defaultPrevented && !event.target.closest('a[href], [popovertarget]')) {
 			event.preventDefault();
 			e.classList.toggle('is-expanded');
 			lazyLoadBody();
-		}
-	});
-
-	// dropdown events
-	var dropdownToggle = e.querySelector('.dropdownToggle');
-	var dropdown = e.querySelector('.dropdown');
-	e.addEventListener('focusout', event => {
-		if (!event.relatedTarget || !dropdown.contains(event.relatedTarget)) {
-			dropdownToggle.setAttribute('aria-expanded', 'false');
-		}
-	});
-	document.addEventListener('keydown', event => {
-		if (event.key === 'Escape') {
-			dropdownToggle.setAttribute('aria-expanded', 'false');
 		}
 	});
 
