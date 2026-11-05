@@ -149,6 +149,14 @@ export default function(msg, expanded) {
 		}
 	});
 
+	// dropdown events
+	var dropdown = e.querySelector('[popover]');
+	e.addEventListener('focusout', event => {
+		if (!event.relatedTarget || !dropdown.contains(event.relatedTarget)) {
+			dropdown.hidePopover();
+		}
+	});
+
 	// body
 	var footer = e.querySelector('.message__footer');
 	var bodyLoaded = false;
