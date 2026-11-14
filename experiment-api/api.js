@@ -20,7 +20,7 @@ function unique(l, keyFn) {
 function waitForLoad(win) {
 	return new Promise(resolve => {
 		if (win.document.readyState === 'complete') {
-			resolve();
+			win.setTimeout(resolve, 100);
 		} else {
 			win.addEventListener('load', resolve);
 		}
