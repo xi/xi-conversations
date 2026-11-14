@@ -31,7 +31,7 @@
   "browser_specific_settings": {
     "gecko": {
       "id": "conversations@xi",
-      "strict_min_version": "91.0"
+      "strict_min_version": "153.0"
     }
   }
 }
