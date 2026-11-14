@@ -32,8 +32,6 @@ is not to say that it would not work. But I do not recommend it.
 If you feel adventurous and actually want to try this out, you will need to do
 the following steps:
 
--	Install node with npm and browserify as well as sassc.
--	Run `make`.
 -	Link the repository to `$PROFILE/extensions/conversations@xi`.
 -	Restart thunderbird.
 
