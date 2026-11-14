@@ -94,7 +94,7 @@ function template(msg) {
 				...util.parseContacts(msg.bccList).map(r => h('a', {'href': `mailto:${r.email}`, 'class': 'message__recipients__bcc'}, [r.name])),
 			]),
 			h('span', {'class': 'message__summary'}, [(msg.body || '').substring(0, 150)]),
-			(msg.attachmentInfos || []).length ? util.createIcon('attachment', _('attachment')) : null,
+			(msg.attachments || []).length ? util.createIcon('attachment', _('attachment')) : null,
 			util.createDate(msg.date),
 			h('span', {'class': 'message__actions'}, [
 				canReplyAll
@@ -121,9 +121,17 @@ function template(msg) {
 		h('div', {'class': 'message__details'}, [
 			msg.junk ? util.createAlert(_('junk'), 'mode_heat', 'warning') : null,
 			h('footer', {'class': 'message__footer'}, [
-				h('ul', {'class': 'attachments'}, (msg.attachmentInfos || []).map(a => h('li', {}, [
-					h('a', {'class': 'attachment', 'href': a.url}, [util.createIcon('attachment'), ' ', a.name]),
-				]))),
+				h('ul', {'class': 'attachments'}, msg.attachments.map(part => {
+					const btn = h('button', {'type': 'button', 'class': 'attachment'}, [
+						util.createIcon('attachment'), ' ', part.name,
+					]);
+					btn.addEventListener('click', async event => {
+						event.preventDefault();
+						const tab = await browser.tabs.getCurrent();
+						browser.messages.openAttachment(msg.id, part.partName, tab.id);
+					});
+					return h('li', {}, [btn]);
+				})),
 			]),
 		]),
 	]);

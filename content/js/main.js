@@ -24,8 +24,12 @@ function getMessageForId(id) {
 browser.xi.getConversation(initialIDs).catch(() => {
 	return Promise.all(initialIDs.map(getMessageForId));
 }).then(conversation => Promise.all(conversation.map(msg => {
-	return browser.messages.getFull(msg.id).then(full => {
+	return Promise.all([
+		browser.messages.getFull(msg.id),
+		browser.messages.listAttachments(msg.id),
+	]).then(([full, attachments]) => {
 		msg.full = full;
+		msg.attachments = attachments;
 		return msg;
 	});
 }))).then(conversation => {

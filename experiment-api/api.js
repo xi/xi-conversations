@@ -68,7 +68,6 @@ var xi = class extends ExtensionCommon.ExtensionAPI {
 			return Object.assign({}, msg, {
 				body: glodaMsg._indexedBodyText,
 				canReplyToList: !!glodaMsg.mailingLists,
-				attachmentInfos: (glodaMsg.attachmentInfos || []).map(a => ({name: a.name, url: a.url})),
 			});
 		};
 
