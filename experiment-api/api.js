@@ -6,15 +6,20 @@ ChromeUtils.defineESModuleGetters(this, {
 	MailServices: 'resource:///modules/MailServices.sys.mjs',
 });
 
-function unique(l, keyFn) {
+function unique(l, keyFn, rank) {
 	const keys = [];
-	return l.filter(item => {
+	const output = [];
+	for (const item of l) {
 		const key = keyFn(item);
-		if (!keys.includes(key)) {
+		const index = keys.indexOf(key);
+		if (index === -1) {
 			keys.push(key);
-			return true;
+			output.push(item);
+		} else if (rank(item) > rank(output[index])) {
+			output[index] = item;
 		}
-	});
+	}
+	return output;
 }
 
 function waitForLoad(win) {
@@ -27,7 +32,7 @@ function waitForLoad(win) {
 	});
 }
 
-function getConversation(ids) {
+function getConversation(ids, serverKey, folderUri) {
 	return new Promise((resolve, reject) => {
 		const conversationListener = {
 			onItemsAdded() {},
@@ -36,7 +41,19 @@ function getConversation(ids) {
 			onQueryCompleted(collection) {
 				let results = collection.items;
 				results = results.filter(glodaMsg => glodaMsg.folderMessage);
-				results = unique(results, glodaMsg => glodaMsg.headerMessageID);
+				results = unique(
+					results,
+					glodaMsg => glodaMsg.headerMessageID,
+					glodaMsg => {
+						if (glodaMsg.folder.uri === folderUri) {
+							return 2;
+						} else if (glodaMsg.account.id === serverKey) {
+							return 1;
+						} else {
+							return 0;
+						}
+					},
+				);
 				resolve(results);
 			},
 		};
@@ -73,9 +90,9 @@ var xi = class extends ExtensionCommon.ExtensionAPI {
 
 		return {
 			xi: {
-				getConversation(ids) {
+				getConversation(ids, serverKey, folderUri) {
 					// https://bugzilla.mozilla.org/show_bug.cgi?id=1665676
-					return getConversation(ids).then(results => results.map(glodaMsg2msg));
+					return getConversation(ids, serverKey, folderUri).then(results => results.map(glodaMsg2msg));
 				},
 				viewSource(id) {
 					const win = Services.wm.getMostRecentWindow('mail:3pane');
@@ -97,7 +114,11 @@ var xi = class extends ExtensionCommon.ExtensionAPI {
 					win.threadPane._onItemActivate = () => {
 						const msgs = win.gDBView.getSelectedMsgHdrs();
 						const ids = msgs.map(msgHdr => msgHdr.messageId);
-						const url = '/content/main.html?ids=' + encodeURIComponent(ids);
+						const serverKey = msgs[0].folder?.server?.key || '';
+						const folderUri = msgs[0].folder?.URI || '';
+						const url = '/content/main.html?ids=' + encodeURIComponent(ids)
+							+ '&server=' + encodeURIComponent(serverKey)
+							+ '&folder=' + encodeURIComponent(folderUri);
 						const tab = win.openTab('contentTab', {
 							url: context.uri.resolve(url),
 							linkHandler: 'single-page',

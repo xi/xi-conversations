@@ -10,6 +10,12 @@
 			"items": {
 				"type": "string"
 			}
+		}, {
+			"name": "serverKey",
+			"type": "string"
+		}, {
+			"name": "folderUri",
+			"type": "string"
 		}]
 	}, {
 		"name": "viewSource",

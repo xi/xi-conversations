@@ -7,7 +7,10 @@ document.querySelector('.conversation__refresh').append(
 	util.createIcon('refresh', browser.i18n.getMessage('refresh'))
 );
 
-const initialIDs = (util.getParams().ids || '').split(',');
+const params = util.getParams();
+const initialIDs = (params.ids || '').split(',');
+const serverKey = params.server || '';
+const folderUri = params.folder || '';
 
 const container = document.querySelector('.conversation__main');
 let anyExpanded = false;
@@ -21,7 +24,7 @@ function getMessageForId(id) {
 	});
 }
 
-browser.xi.getConversation(initialIDs).catch(() => {
+browser.xi.getConversation(initialIDs, serverKey, folderUri).catch(() => {
 	return Promise.all(initialIDs.map(getMessageForId));
 }).then(conversation => Promise.all(conversation.map(msg => {
 	return Promise.all([
