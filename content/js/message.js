@@ -4,6 +4,24 @@ import createBody from './body.js';
 import * as actions from './actions.js';
 import * as util from './util.js';
 
+const h = util.h;
+const _ = browser.i18n.getMessage;
+
+function createButton(msg, attrs, action, icon, label, labelVisible) {
+	const content = labelVisible ? [util.createIcon(icon), ' ', label] : [util.createIcon(icon, label)];
+	const button = h('button', Object.assign({'type': 'button'}, attrs), content);
+	button.addEventListener('click', event => {
+		event.preventDefault();
+		action(msg, button);
+	});
+	return button;
+}
+
+function createLink(attrs, href, icon, label, labelVisible) {
+	const content = labelVisible ? [util.createIcon(icon), ' ', label] : [util.createIcon(icon, label)];
+	return h('a', Object.assign({'href': href}, attrs), content);
+}
+
 function autoMarkAsRead(e, msg) {
 	let topWasInView = false;
 	let bottomWasInView = false;
@@ -53,25 +71,7 @@ function getListUrl(msg, key, prefix) {
 }
 
 function template(msg) {
-	const h = util.h;
-	const _ = browser.i18n.getMessage;
-
 	const canReplyAll = msg.recipients.length + msg.ccList.length + msg.bccList.length > 1;
-
-	const createButton = function(attrs, action, icon, label, labelVisible) {
-		const content = labelVisible ? [util.createIcon(icon), ' ', label] : [util.createIcon(icon, label)];
-		const button = h('button', Object.assign({'type': 'button'}, attrs), content);
-		button.addEventListener('click', event => {
-			event.preventDefault();
-			action(msg, button);
-		});
-		return button;
-	};
-
-	const createLink = function(attrs, href, icon, label, labelVisible) {
-		const content = labelVisible ? [util.createIcon(icon), ' ', label] : [util.createIcon(icon, label)];
-		return h('a', Object.assign({'href': href}, attrs), content);
-	};
 
 	const listHelp = getListUrl(msg, 'list-help', 'http');
 	const listArchive = getListUrl(msg, 'list-archive', 'http');
@@ -79,7 +79,7 @@ function template(msg) {
 
 	return h('article', {'class': 'message', 'id': `msg-${msg.id}`, 'tabindex': -1}, [
 		h('header', {'class': 'message__header'}, [
-			createButton({'class': 'star', 'aria-pressed': msg.flagged}, actions.toggleFlagged, 'star', _('star')),
+			createButton(msg, {'class': 'star', 'aria-pressed': msg.flagged}, actions.toggleFlagged, 'star', _('star')),
 			...util.parseContacts([msg.author]).map(author => h('a', {
 				'class': 'message__author',
 				'href': `mailto:${author.email}`,
@@ -98,19 +98,19 @@ function template(msg) {
 			util.createDate(msg.date),
 			h('span', {'class': 'message__actions'}, [
 				canReplyAll
-					? createButton({'class': 'button'}, actions.replyAll, 'reply_all', _('replyAll'))
+					? createButton(msg, {'class': 'button'}, actions.replyAll, 'reply_all', _('replyAll'))
 					: msg.canReplyToList
-						? createButton({'class': 'button'}, actions.replyToList, 'list', _('replyList'))
-						: createButton({'class': 'button'}, actions.replyToSender, 'reply', _('reply')),
+						? createButton(msg, {'class': 'button'}, actions.replyToList, 'list', _('replyList'))
+						: createButton(msg, {'class': 'button'}, actions.replyToSender, 'reply', _('reply')),
 				h('button', {'class': 'button', 'popovertarget': `msg-${msg.id}-dropdown`}, [util.createIcon('menu', _('more'))]),
 				h('div', {'class': 'dropdown', 'id': `msg-${msg.id}-dropdown`, 'popover': 'auto'}, [
-					createButton({'class': 'dropdown-item'}, actions.replyToSender, 'reply', _('reply'), true),
-					canReplyAll ? createButton({'class': 'dropdown-item'}, actions.replyAll, 'reply_all', _('replyAll'), true) : null,
-					msg.canReplyToList ? createButton({'class': 'dropdown-item'}, actions.replyToList, 'list', _('replyList'), true) : null,
-					createButton({'class': 'dropdown-item'}, actions.forward, 'forward', _('forward'), true),
-					createButton({'class': 'dropdown-item'}, actions.editAsNew, 'create', _('edit'), true),
-					createButton({'class': 'dropdown-item'}, actions.viewClassic, 'open_in_new', _('viewClassic'), true),
-					createButton({'class': 'dropdown-item'}, actions.viewSource, 'code', _('viewSource'), true),
+					createButton(msg, {'class': 'dropdown-item'}, actions.replyToSender, 'reply', _('reply'), true),
+					canReplyAll ? createButton(msg, {'class': 'dropdown-item'}, actions.replyAll, 'reply_all', _('replyAll'), true) : null,
+					msg.canReplyToList ? createButton(msg, {'class': 'dropdown-item'}, actions.replyToList, 'list', _('replyList'), true) : null,
+					createButton(msg, {'class': 'dropdown-item'}, actions.forward, 'forward', _('forward'), true),
+					createButton(msg, {'class': 'dropdown-item'}, actions.editAsNew, 'create', _('edit'), true),
+					createButton(msg, {'class': 'dropdown-item'}, actions.viewClassic, 'open_in_new', _('viewClassic'), true),
+					createButton(msg, {'class': 'dropdown-item'}, actions.viewSource, 'code', _('viewSource'), true),
 
 					listHelp ? createLink({'class': 'dropdown-item'}, listHelp, 'info', _('listHelp'), true): null,
 					listArchive ? createLink({'class': 'dropdown-item'}, listArchive, 'inventory_2', _('listArchive'), true): null,
