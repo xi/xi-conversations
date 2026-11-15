@@ -24,9 +24,9 @@ async function reply(msg, replyType) {
 	await browser.compose.beginReply(msg.id, replyType, {identityId: identity.id});
 }
 
-export var replyToSender = msg => reply(msg, 'replyToSender');
-export var replyAll = msg => reply(msg, 'replyToAll');
-export var replyToList = msg => reply(msg, 'replyToList');
+export const replyToSender = msg => reply(msg, 'replyToSender');
+export const replyAll = msg => reply(msg, 'replyToAll');
+export const replyToList = msg => reply(msg, 'replyToList');
 
 export async function editAsNew(msg) {
 	const identity = await getIdentity(msg);

@@ -7,10 +7,10 @@ document.querySelector('.conversation__refresh').append(
 	util.createIcon('refresh', browser.i18n.getMessage('refresh'))
 );
 
-var initialIDs = (util.getParams().ids || '').split(',');
+const initialIDs = (util.getParams().ids || '').split(',');
 
-var container = document.querySelector('.conversation__main');
-var anyExpanded = false;
+const container = document.querySelector('.conversation__main');
+let anyExpanded = false;
 
 function getMessageForId(id) {
 	return browser.messages.query({headerMessageId: id}).then(page => {
@@ -29,7 +29,7 @@ browser.xi.getConversation(initialIDs).catch(() => {
 		return msg;
 	});
 }))).then(conversation => {
-	var subject = conversation[0].subject || '(no subject)';
+	const subject = conversation[0].subject || '(no subject)';
 	document.querySelector('.conversation__subject').textContent = subject;
 	document.title = subject;
 

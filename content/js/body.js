@@ -2,11 +2,11 @@
 
 import * as util from './util.js';
 
-var RE_LINK = /(https?:\/\/[^\s<>]*[^\s\])}<>.,:;?!"'])/g;
+const RE_LINK = /(https?:\/\/[^\s<>]*[^\s\])}<>.,:;?!"'])/g;
 
 function createDetails(label, color) {
-	var details = document.createElement('details');
-	var summary = document.createElement('summary');
+	const details = document.createElement('details');
+	const summary = document.createElement('summary');
 	summary.textContent = label;
 	summary.style.color = color;
 	details.append(summary);
@@ -18,7 +18,7 @@ function renderLinks(parent, text) {
 		if (i % 2 === 0) {
 			parent.append(document.createTextNode(s));
 		} else {
-			var a = document.createElement('a');
+			const a = document.createElement('a');
 			a.textContent = s;
 			a.href = s;
 			parent.append(a);
@@ -27,16 +27,16 @@ function renderLinks(parent, text) {
 }
 
 function renderQuotes(parent, lines, nested) {
-	var quote = [];
+	let quote = [];
 
-	var flushQuote = function() {
+	const flushQuote = () => {
 		if (quote.length) {
-			var blockquote = document.createElement('blockquote');
+			const blockquote = document.createElement('blockquote');
 			renderQuotes(blockquote, quote, true);
 			if (nested) {
 				parent.append(blockquote);
 			} else {
-				var details = createDetails(browser.i18n.getMessage('toggleQuote'), 'orange');
+				const details = createDetails(browser.i18n.getMessage('toggleQuote'), 'orange');
 				details.append(blockquote);
 				parent.append(details);
 			}
@@ -44,7 +44,7 @@ function renderQuotes(parent, lines, nested) {
 		}
 	};
 
-	for (var line of lines) {
+	for (const line of lines) {
 		if (line.startsWith('>')) {
 			quote.push(line.substr(1).trimStart());
 		} else {
@@ -60,36 +60,36 @@ function renderBody(parent, text) {
 	// https://en.wikipedia.org/wiki/Posting_style
 	// http://www.asciiribbon.org/
 
-	var [body, ...sig] = text.replaceAll('\r', '').split('\n-- \n');
+	const [body, ...sig] = text.replaceAll('\r', '').split('\n-- \n');
 	renderQuotes(parent, body.split('\n'));
 
 	if (sig.length) {
-		var div = document.createElement('div');
+		const div = document.createElement('div');
 		div.className = 'moz-signature';
 		renderLinks(div, sig.join('\n-- \n'));
 
-		var details = createDetails(browser.i18n.getMessage('toggleSig'), 'rgb(56, 117, 215)');
+		const details = createDetails(browser.i18n.getMessage('toggleSig'), 'rgb(56, 117, 215)');
 		details.append(div);
 		parent.append(details);
 	}
 }
 
 export default function(msg) {
-	var wrapper = document.createElement('div');
-	var pre = document.createElement('pre');
+	const wrapper = document.createElement('div');
+	const pre = document.createElement('pre');
 	pre.className = 'message__body';
 	wrapper.append(pre);
 
 	// wrapper if filled async, after we return
 	browser.messages.listInlineTextParts(msg.id).then(async parts => {
-		var body = '';
+		let body = '';
 		if (parts.some(p => p.contentType.startsWith('text/plain'))) {
 			body = parts
 				.filter(p => p.contentType.startsWith('text/plain'))
 				.map(p => p.content)
 				.join('\n\n');
 		} else if (parts.some(p => p.contentType.startsWith('text/html'))) {
-			var html = parts.find(p => p.contentType.startsWith('text/html')).content;
+			const html = parts.find(p => p.contentType.startsWith('text/html')).content;
 			body = await browser.messengerUtilities.convertToPlainText(html);
 		} else if (parts.length) {
 			body = parts[0].content;

@@ -1,4 +1,4 @@
-/* global ChromeUtils Services ExtensionCommon */
+/* global ChromeUtils Gloda GlodaConstants ExtensionCommon Services MailServices */
 
 ChromeUtils.defineESModuleGetters(this, {
 	Gloda: 'resource:///modules/gloda/GlodaPublic.sys.mjs',
@@ -7,9 +7,9 @@ ChromeUtils.defineESModuleGetters(this, {
 });
 
 function unique(l, keyFn) {
-	var keys = [];
+	const keys = [];
 	return l.filter(item => {
-		var key = keyFn(item);
+		const key = keyFn(item);
 		if (!keys.includes(key)) {
 			keys.push(key);
 			return true;
@@ -29,25 +29,25 @@ function waitForLoad(win) {
 
 function getConversation(ids) {
 	return new Promise((resolve, reject) => {
-		var conversationListener = {
-			onItemsAdded: function() {},
-			onItemsModified: function() {},
-			onItemsRemoved: function() {},
-			onQueryCompleted: function(collection) {
-				var results = collection.items;
+		const conversationListener = {
+			onItemsAdded() {},
+			onItemsModified() {},
+			onItemsRemoved() {},
+			onQueryCompleted(collection) {
+				let results = collection.items;
 				results = results.filter(glodaMsg => glodaMsg.folderMessage);
 				results = unique(results, glodaMsg => glodaMsg.headerMessageID);
 				resolve(results);
 			},
 		};
 
-		var listener = {
-			onItemsAdded: function() {},
-			onItemsModified: function() {},
-			onItemsRemoved: function() {},
-			onQueryCompleted: function(collection) {
+		const listener = {
+			onItemsAdded() {},
+			onItemsModified() {},
+			onItemsRemoved() {},
+			onQueryCompleted(collection) {
 				if (collection.items.length > 0) {
-					var conversation = collection.items[0].conversation;
+					const conversation = collection.items[0].conversation;
 					conversation.getMessagesCollection(conversationListener, true);
 				} else {
 					reject();
@@ -55,7 +55,7 @@ function getConversation(ids) {
 			},
 		};
 
-		var query = Gloda.newQuery(GlodaConstants.NOUN_MESSAGE);
+		const query = Gloda.newQuery(GlodaConstants.NOUN_MESSAGE);
 		query.headerMessageID.apply(query, ids);
 		query.getCollection(listener, null);
 	});
@@ -63,8 +63,8 @@ function getConversation(ids) {
 
 var xi = class extends ExtensionCommon.ExtensionAPI {
 	getAPI(context) {
-		var glodaMsg2msg = function(glodaMsg) {
-			var msg = context.extension.messageManager.convert(glodaMsg.folderMessage);
+		const glodaMsg2msg = glodaMsg => {
+			const msg = context.extension.messageManager.convert(glodaMsg.folderMessage);
 			return Object.assign({}, msg, {
 				body: glodaMsg._indexedBodyText,
 				canReplyToList: !!glodaMsg.mailingLists,
@@ -79,10 +79,10 @@ var xi = class extends ExtensionCommon.ExtensionAPI {
 					return getConversation(ids).then(results => results.map(glodaMsg2msg));
 				},
 				viewSource(id) {
-					var win = Services.wm.getMostRecentWindow('mail:3pane');
-					var msgHdr = context.extension.messageManager.get(id);
-					var uri = msgHdr.folder.getUriForMsg(msgHdr);
-					var url = MailServices.mailSession.ConvertMsgURIToMsgURL(uri, null);
+					const win = Services.wm.getMostRecentWindow('mail:3pane');
+					const msgHdr = context.extension.messageManager.get(id);
+					const uri = msgHdr.folder.getUriForMsg(msgHdr);
+					const url = MailServices.mailSession.ConvertMsgURIToMsgURL(uri, null);
 					win.openDialog(
 						'chrome://messenger/content/viewSource.xhtml',
 						'_blank',
@@ -91,15 +91,15 @@ var xi = class extends ExtensionCommon.ExtensionAPI {
 					);
 				},
 				async patchTab(id) {
-					var tabObject = context.extension.tabManager.get(id);
-					var win = tabObject.nativeTab.chromeBrowser.contentWindow;
+					const tabObject = context.extension.tabManager.get(id);
+					const win = tabObject.nativeTab.chromeBrowser.contentWindow;
 					await waitForLoad(win);
 
 					win.threadPane._onItemActivate = () => {
-						var msgs = win.gDBView.getSelectedMsgHdrs();
-						var ids = msgs.map(msgHdr => msgHdr.messageId);
-						var url = '/content/main.html?ids=' + encodeURIComponent(ids);
-						var tab = win.openTab('contentTab', {
+						const msgs = win.gDBView.getSelectedMsgHdrs();
+						const ids = msgs.map(msgHdr => msgHdr.messageId);
+						const url = '/content/main.html?ids=' + encodeURIComponent(ids);
+						const tab = win.openTab('contentTab', {
 							url: context.uri.resolve(url),
 							linkHandler: 'single-page',
 							principal: context.extension.principal,

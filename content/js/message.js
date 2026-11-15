@@ -5,13 +5,12 @@ import * as actions from './actions.js';
 import * as util from './util.js';
 
 function autoMarkAsRead(e, msg) {
-	var topWasInView = false;
-	var bottomWasInView = false;
-	var clear;
+	let topWasInView = false;
+	let bottomWasInView = false;
 
-	var intervalId = window.setInterval(() => {
-		var rect = e.getBoundingClientRect();
-		var height = window.innerHeight || document.documentElement.clientHeight;
+	const intervalId = window.setInterval(() => {
+		const rect = e.getBoundingClientRect();
+		const height = window.innerHeight || document.documentElement.clientHeight;
 
 		if (e.classList.contains('is-expanded')) {
 			if (rect.top >= 0 && rect.top < height) {
@@ -27,7 +26,7 @@ function autoMarkAsRead(e, msg) {
 		}
 	}, 100);
 
-	var onAction = event => {
+	const onAction = event => {
 		if (event.target.closest('button')) {
 			actions.markAsRead(msg, true);
 			clear();
@@ -35,7 +34,7 @@ function autoMarkAsRead(e, msg) {
 	};
 	e.addEventListener('click', onAction);
 
-	clear = function() {
+	const clear = () => {
 		window.clearInterval(intervalId);
 		e.removeEventListener('click', onAction);
 	};
@@ -45,7 +44,7 @@ function getListUrl(msg, key, prefix) {
 	// see https://www.rfc-editor.org/rfc/rfc2369
 	for (const header of msg.full.headers[key] || []) {
 		for (const item of header.split(', ')) {
-			var url = item.slice(item.indexOf('<') + 1, -1);
+			const url = item.slice(item.indexOf('<') + 1, -1);
 			if (url.startsWith(prefix)) {
 				return url;
 			}
@@ -54,14 +53,14 @@ function getListUrl(msg, key, prefix) {
 }
 
 function template(msg) {
-	var h = util.h;
-	var _ = browser.i18n.getMessage;
+	const h = util.h;
+	const _ = browser.i18n.getMessage;
 
-	var canReplyAll = msg.recipients.length + msg.ccList.length + msg.bccList.length > 1;
+	const canReplyAll = msg.recipients.length + msg.ccList.length + msg.bccList.length > 1;
 
-	var createButton = function(attrs, action, icon, label, labelVisible) {
-		var content = labelVisible ? [util.createIcon(icon), ' ', label] : [util.createIcon(icon, label)];
-		var button = h('button', Object.assign({'type': 'button'}, attrs), content);
+	const createButton = function(attrs, action, icon, label, labelVisible) {
+		const content = labelVisible ? [util.createIcon(icon), ' ', label] : [util.createIcon(icon, label)];
+		const button = h('button', Object.assign({'type': 'button'}, attrs), content);
 		button.addEventListener('click', event => {
 			event.preventDefault();
 			action(msg, button);
@@ -69,14 +68,14 @@ function template(msg) {
 		return button;
 	};
 
-	var createLink = function(attrs, href, icon, label, labelVisible) {
-		var content = labelVisible ? [util.createIcon(icon), ' ', label] : [util.createIcon(icon, label)];
+	const createLink = function(attrs, href, icon, label, labelVisible) {
+		const content = labelVisible ? [util.createIcon(icon), ' ', label] : [util.createIcon(icon, label)];
 		return h('a', Object.assign({'href': href}, attrs), content);
 	};
 
-	var listHelp = getListUrl(msg, 'list-help', 'http');
-	var listArchive = getListUrl(msg, 'list-archive', 'http');
-	var listUnsubscribe = getListUrl(msg, 'list-unsubscribe', 'http') || getListUrl(msg, 'list-unsubscribe', '');
+	const listHelp = getListUrl(msg, 'list-help', 'http');
+	const listArchive = getListUrl(msg, 'list-archive', 'http');
+	const listUnsubscribe = getListUrl(msg, 'list-unsubscribe', 'http') || getListUrl(msg, 'list-unsubscribe', '');
 
 	return h('article', {'class': 'message', 'id': `msg-${msg.id}`, 'tabindex': -1}, [
 		h('header', {'class': 'message__header'}, [
@@ -131,7 +130,7 @@ function template(msg) {
 }
 
 export default function(msg, expanded) {
-	var e = template(msg);
+	const e = template(msg);
 
 	if (expanded) {
 		e.classList.add('is-expanded');
@@ -140,7 +139,7 @@ export default function(msg, expanded) {
 	autoMarkAsRead(e, msg);
 
 	// header events
-	var header = e.querySelector('.message__header');
+	const header = e.querySelector('.message__header');
 	header.addEventListener('click', event => {
 		if (!event.defaultPrevented && !event.target.closest('a[href], [popovertarget]')) {
 			event.preventDefault();
@@ -150,7 +149,7 @@ export default function(msg, expanded) {
 	});
 
 	// dropdown events
-	var dropdown = e.querySelector('[popover]');
+	const dropdown = e.querySelector('[popover]');
 	e.addEventListener('focusout', event => {
 		if (!event.relatedTarget || !dropdown.contains(event.relatedTarget)) {
 			dropdown.hidePopover();
@@ -158,9 +157,9 @@ export default function(msg, expanded) {
 	});
 
 	// body
-	var footer = e.querySelector('.message__footer');
-	var bodyLoaded = false;
-	var lazyLoadBody = function() {
+	const footer = e.querySelector('.message__footer');
+	let bodyLoaded = false;
+	const lazyLoadBody = () => {
 		if (!bodyLoaded && e.classList.contains('is-expanded')) {
 			footer.before(createBody(msg));
 			bodyLoaded = true;
